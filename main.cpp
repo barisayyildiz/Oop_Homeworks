@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 using namespace std;
 
@@ -48,10 +49,47 @@ void initGrid(char (*grid)[6])
 int main()
 {
 	char grid[6][6];
-
 	initGrid(grid);
 	drawGrid(grid);
 
+	int gameOver = 0, gameType;
+	string move;
+
+	while(1)
+	{
+		cout << "Please enter 0 for 2-player and 1 for 1 player mod" << endl;
+		cin >> gameType;
+
+		if(gameType == 0 || gameType == 1)
+			break;
+		else
+			cout << "Please enter a valid input..." << endl;
+	}
+
+	if(gameType == 0)
+	{
+		while(!gameOver)
+		{
+			cout << "Please enter your move : ";
+			getline(cin, move);
+
+			cout << move << endl;
+
+			cout << "move : "<< move.length() << endl;
+
+
+		}
+
+
+
+
+
+	//multiplayer mode
+	}else
+	{
+		cout << "Not available currently..." << endl;
+	}
+	
 
 
 	return 0;
