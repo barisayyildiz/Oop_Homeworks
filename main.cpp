@@ -12,9 +12,9 @@ int isMoveable(char (*grid)[12], int (*allmoves)[12], int xPos, int yPos, int n)
 
 int backTracking(char (*grid)[12], int xPos, int yPos, int n, int turn);
 
-int didXWin(char (*grid)[12], int (*allmoves)[12], int xPos, int yPos, int n);
+int didXWin(char (*grid)[12], int (*allmoves)[12], int xPos, int yPos, int n, int turn);
 
-int didOWin(char (*grid)[12], int (*allmoves)[12], int xPos, int yPos, int n);
+int didOWin(char (*grid)[12], int (*allmoves)[12], int xPos, int yPos, int n, int turn);
 
 
 
@@ -135,14 +135,23 @@ int main()
 
 //===================FUNCTIONS==========================//
 
-int isMoveable(char (*grid)[12], int (*allmoves)[12], int xPos, int yPos, int n)
+int isMoveable(char (*grid)[12], int (*allmoves)[12], int xPos, int yPos, int n, int turn)
 {
-	if(grid[xPos][yPos] != '.' && allmoves[xPos][yPos] == 0)
-	{
-		//cout << (bool)(grid[xPos][yPos] == '.') << endl;
-		//cout << "hareket edilebilir\n";
+	/*
+	if((turn == 0 && grid[xPos][yPos] == 'x' && allmoves[xPos][yPos] == 0) || (turn == 1 && grid[xPos][yPos] == 'o' && allmoves[xPos][yPos] == 0))
 		return 1;
+	*/
+
+	if(turn == 0)
+	{
+		if(grid[xPos][yPos] == 'x' && allmoves[xPos][yPos] == 0)
+			return 1;
+	}else
+	{
+		if(grid[xPos][yPos] == 'o' && allmoves[xPos][yPos] == 0)
+			return 1;
 	}
+
 	return 0;
 }
 
@@ -167,7 +176,7 @@ int backTracking(char (*grid)[12], int xPos, int yPos, int n, int turn)
 	{
 		for(int i=0; i<n; i++)
 		{
-			if(grid[i][0] == 'x' && didXWin(grid, allmoves, xPos, yPos, n))
+			if(grid[i][0] == 'x' && didXWin(grid, allmoves, i, 0, n, turn))
 				return 1;
 		}
 		
@@ -175,7 +184,7 @@ int backTracking(char (*grid)[12], int xPos, int yPos, int n, int turn)
 	{
 		for(int i=0; i<n; i++)
 		{
-			if(grid[0][i] == 'o' && didOWin(grid, allmoves, xPos, yPos, n))
+			if(grid[0][i] == 'o' && didOWin(grid, allmoves, 0, i, n, turn))
 				return 1;
 		}
 
@@ -184,7 +193,7 @@ int backTracking(char (*grid)[12], int xPos, int yPos, int n, int turn)
 	return 0;
 }
 
-int didXWin(char (*grid)[12], int (*allmoves)[12], int xPos, int yPos, int n)
+int didXWin(char (*grid)[12], int (*allmoves)[12], int xPos, int yPos, int n, int turn)
 {
 	if(yPos == n-1)
 	{
@@ -211,9 +220,9 @@ int didXWin(char (*grid)[12], int (*allmoves)[12], int xPos, int yPos, int n)
 			continue;
 		}
 
-		if(isMoveable(grid, allmoves, tempX ,tempY, n))
+		if(isMoveable(grid, allmoves, tempX ,tempY, n, turn))
 		{
-			if(didXWin(grid, allmoves, tempX, tempY, n))
+			if(didXWin(grid, allmoves, tempX, tempY, n, turn))
 			{
 				// capitalize
 				cout << "qweqwe" << endl;
@@ -230,7 +239,7 @@ int didXWin(char (*grid)[12], int (*allmoves)[12], int xPos, int yPos, int n)
 
 }
 
-int didOWin(char (*grid)[12], int (*allmoves)[12], int xPos, int yPos, int n)
+int didOWin(char (*grid)[12], int (*allmoves)[12], int xPos, int yPos, int n, int turn)
 {
 	if(xPos == n-1)
 	{
@@ -257,9 +266,9 @@ int didOWin(char (*grid)[12], int (*allmoves)[12], int xPos, int yPos, int n)
 			continue;
 		}
 
-		if(isMoveable(grid, allmoves, tempX ,tempY, n))
+		if(isMoveable(grid, allmoves, tempX ,tempY, n, turn))
 		{
-			if(didOWin(grid, allmoves, tempX, tempY, n))
+			if(didOWin(grid, allmoves, tempX, tempY, n, turn))
 			{
 				// capitalize
 				cout << "qweqwe" << endl;
