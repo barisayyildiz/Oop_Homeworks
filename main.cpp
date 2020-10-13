@@ -4,11 +4,11 @@
 using namespace std;
 
 
-void drawGrid(char (*grid)[6])
+void drawGrid(char (*grid)[12], int n)
 {
 	// header
 	cout << "  ";
-	for(int i=0; i<6; i++)
+	for(int i=0; i<n; i++)
 	{
 		cout << static_cast<char>(97 + i) << " ";
 	}
@@ -17,7 +17,7 @@ void drawGrid(char (*grid)[6])
 
 
 
-	for(int i=0; i<6; i++)
+	for(int i=0; i<n; i++)
 	{
 		// rakamlar
 		cout << i+1 << " ";
@@ -26,7 +26,7 @@ void drawGrid(char (*grid)[6])
 		for(int indent=0; indent<=i; indent++)
 			cout << " ";
 
-		for(int j=0; j<6; j++)
+		for(int j=0; j<n; j++)
 		{
 			cout << grid[i][j] << " ";
 		}
@@ -34,26 +34,41 @@ void drawGrid(char (*grid)[6])
 	}
 }
 
-void initGrid(char (*grid)[6])
+void initGrid(char (*grid)[12], int n)
 {
-
-	for(int i=0; i<6; i++)
+	for(int i=0; i<n; i++)
 	{
-		for(int j=0; j<6; j++)
+		for(int j=0; j<n; j++)
 		{
 			grid[i][j] = '.';
 		}
 	}
 }
 
+
 int main()
 {
-	char grid[6][6];
-	initGrid(grid);
-	drawGrid(grid);
+	char grid[12][12];
 
-	int gameOver = 0, gameType;
-	string move;
+	// turn => 0 : computer / user-1, 1 : user-1 / user-2
+	int gameOver = 0, gameType, turn = 0, n;
+	string moveChar;
+	int moveNum;
+	int xPos, yPos;
+
+	while(1)
+	{
+		cout << "Size of grid [7-12] : ";
+		cin >> n;
+
+		if(n < 7 || n > 12)
+			cout << "Invalid input" << endl;
+		else
+			break;
+	}
+
+	initGrid(grid, n);
+	drawGrid(grid, n);
 
 	while(1)
 	{
@@ -70,18 +85,38 @@ int main()
 	{
 		while(!gameOver)
 		{
-			cout << "Please enter your move : ";
-			getline(cin, move);
+			cout << "\nUser-" << turn+1 << "'s turn" << endl;
+			cout << "Please enter your move (ex : A 3) : ";
+			//getline(cin, move);
+			cin >> moveChar >> moveNum;
 
-			cout << move << endl;
+			//moveChar.length() > 1
+			cout << moveChar.length() << " " << moveNum << endl;
 
-			cout << "move : "<< move.length() << endl;
+			// invalid input
+			if(moveChar.length() > 1 || moveNum > n || moveNum < 0 || !((moveChar[0] >= 'A' && moveChar[0] < 'A' + n) || (moveChar[0] >= 'a' && moveChar[0] < 'a' + n)))
+			{
+				cout << "Invalid input" << endl;
+				continue;
+			}
 
+			// valid input
+			xPos = moveNum - 1;
+			if(moveChar[0] >= 'A')
+				yPos = moveChar[0] - 65;
+			else
+				yPos = moveChar[0] - 97;
+
+			if(turn == 0)
+				grid[xPos][yPos] = 'x';
+			else
+				grid[xPos][yPos] = 'o';
+
+			turn = !turn;
+
+			drawGrid(grid, n);
 
 		}
-
-
-
 
 
 	//multiplayer mode
