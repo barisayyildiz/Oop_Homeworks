@@ -34,7 +34,7 @@ int main()
 		cout << "Size of grid [7-12] : ";
 		cin >> n;
 
-		if(n < 7 || n > 12)
+		if(n < 3 || n > 12)
 			cout << "Invalid input" << endl;
 		else
 			break;
@@ -172,11 +172,12 @@ int backTracking(char (*grid)[12], int xPos, int yPos, int n, int turn)
 	// 1 -> win
 
 	int allmoves[12][12];
+	initAllMoves(allmoves);
 	if(turn == 0) // x, left to right
 	{
 		for(int i=0; i<n; i++)
 		{
-			if(grid[i][0] == 'x' && didXWin(grid, allmoves, i, 0, n, turn))
+			if(grid[i][0] == 'x' && didXWin(grid, allmoves, 0, i, n, turn))
 				return 1;
 		}
 		
@@ -201,6 +202,8 @@ int didXWin(char (*grid)[12], int (*allmoves)[12], int xPos, int yPos, int n, in
 		grid[xPos][yPos] -= 32;
 		return 1;
 	}
+
+	cout << "(" << xPos << "," << yPos << ")" << endl;
 
 	allmoves[xPos][yPos] = 1;
 
