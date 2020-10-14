@@ -4,6 +4,9 @@
 using namespace std;
 
 
+#define EPSILONE 0.0001
+
+
 void drawGrid(char (*grid)[12], int n);
 
 void initGrid(char (*grid)[12], int n);
@@ -16,8 +19,13 @@ int didXWin(char (*grid)[12], int (*allmoves)[12], int xPos, int yPos, int n, in
 
 int didOWin(char (*grid)[12], int (*allmoves)[12], int xPos, int yPos, int n, int turn);
 
+void calculateBestMove(char (*grid)[12], int *pos, int counter, int n);
 
+int manhattanDistance(int p1x, int p1y, int p2x, int p2y);
 
+double abs(double num);
+
+void centerofGravity(int *center, int totalX, int totalY, int counter);
 
 int main()
 {
@@ -28,6 +36,8 @@ int main()
 	string moveChar;
 	int moveNum;
 	int xPos, yPos;
+
+	int bestPos[2];
 
 	while(1)
 	{
@@ -54,16 +64,41 @@ int main()
 			cout << "Please enter a valid input..." << endl;
 	}
 
-	if(gameType == 0)
+	while(!gameOver)
 	{
-		while(!gameOver)
+
+		if(gameType == 1 && turn == 0)
 		{
-			cout << "\nUser-" << turn+1 << "'s turn" << endl;
+			// computer's turn
+			cout << "\nComputer's turn" << endl;
+
+			// make your move
+
+			calculateBestMove(grid, bestPos, counter, n);
+
+			xPos = bestPos[0];
+			yPos = bestPos[1];
+
+			cout << bestPos[0] << " : "<<bestPos[1] << endl << endl;
+
+
+		}else
+		{
+			// user's turn
+
+			// header message
+			if(gameType == 1)
+			{
+				// user vs bot
+				cout << "\nUser's turn" << endl;
+			}else
+			{
+				cout << "\nUser-" << turn+1 << "'s turn" << endl;
+			}
+
 			cout << "Please enter your move (ex : A 3) : ";
-			//getline(cin, move);
 			cin >> moveChar >> moveNum;
 
-			//moveChar.length() > 1
 			cout << moveChar.length() << " " << moveNum << endl;
 
 			// invalid input
@@ -86,46 +121,43 @@ int main()
 				cout << "Position is not empty" << endl; 
 				continue;
 			}
-
-			// place x's and o's
-			if(turn == 0)
-				grid[xPos][yPos] = 'x';
-			else
-				grid[xPos][yPos] = 'o';
-
-			// switch the turn and increase the counter
-			counter++;
-
-			//draw grid
-			drawGrid(grid, n);
-
-			cout << "n*n : " << n*n << " counter : " << counter << " turn : " << turn << endl;
-
-
-
-			if(backTracking(grid, xPos, yPos, n, turn))
-			{
-				cout << "\nUser-" << turn+1 << " wins" << endl;
-				drawGrid(grid, n);
-				gameOver = 1;
-			}else if(counter == n*n)
-			{
-				cout << "It's a tie..." << endl;
-				gameOver = 1;
-			}
-
-			turn = !turn;
-
 		}
 
+		// place x's and o's
+		if(turn == 0)
+			grid[xPos][yPos] = 'x';
+		else
+			grid[xPos][yPos] = 'o';
 
-	//multiplayer mode
-	}else
-	{
-		cout << "Not available currently..." << endl;
+		counter++;
+
+		
+
+		cout << "n*n : " << n*n << " counter : " << counter << " turn : " << turn << endl;	
+
+		if(backTracking(grid, xPos, yPos, n, turn))
+		{
+			// winning message
+			if(gameType == 1 && turn == 0)
+				cout << "\nComputer wins" << endl;
+			else if(gameType == 1 && turn == 1)
+				cout << "\nUser wins" << endl;
+			else
+				cout << "\nUser-" << turn+1 << " wins" << endl;
+
+			gameOver = 1;
+		}else if(counter == n*n)
+		{
+			cout << "It's a tie..." << endl;
+			gameOver = 1;
+		}
+
+		//draw grid
+		drawGrid(grid, n);
+
+		turn = !turn;
+
 	}
-	
-
 
 	return 0;
 }
@@ -134,6 +166,100 @@ int main()
 
 
 //===================FUNCTIONS==========================//
+
+void calculateBestMove(char (*grid)[12], int *pos, int counter, int n)
+{
+	// computer is making the first move
+	if(counter == 0)
+	{
+		pos[0] = n/2;
+		pos[1] = n/2;
+		return ;
+	}
+	counter = 0;
+
+	int totalX = 0, totalY = 0;
+	int center[2];
+
+	for(int i=0; i<n; i++)
+	{
+		for(int j=0; j<n; j++)
+		{
+			if(grid[i][j] == 'o')
+			{
+				totalX += i;
+				totalY += j;
+				counter++;
+			}
+		}
+	}
+
+	//calculate the center of gravity
+	centerofGravity(center, totalX, totalY, counter);
+
+	center[0] = totalX / counter;
+	center[1] = totalY / counter;
+
+	cout << "total x : totalY : counter ==> " << totalX << " : " << totalY << " : " << counter << endl;
+
+	cout << "center of gravity : " << center[0] << " : " << center[1] << endl;
+
+	if(grid[center[0]][center[1]] == '.')
+	{
+		pos[0] = center[0];
+		pos[1] = center[1];
+		return;
+	}
+
+	int direction[4][2] = {{0,1}, {1,0}, {0,-1}, {-1,0}};
+	int turn = 0;
+
+	while(grid[center[0]][center[1]] != '.')
+	{
+		if(center[0] + direction[turn][0] >= n || center[0] + direction[turn][0] < 0 || center[1] + direction[turn][1] >= n || center[1] + direction[turn][1] < 0)
+		{
+			turn++;
+			turn %= 4;
+			continue;
+		}
+
+		center[0] += direction[turn][0];
+		center[1] += direction[turn][1];
+
+	}
+
+	pos[0] = center[0];
+	pos[1] = center[1];
+
+	return;
+}
+
+int manhattanDistance(int p1x, int p1y, int p2x, int p2y)
+{
+	return (abs(p1x - p2x) + abs(p1y - p2y));
+}
+
+
+double abs(double num)
+{
+	if(num > 0)
+		return num;
+	return -num;
+}
+
+
+
+void centerofGravity(int *center, int totalX, int totalY, int counter)
+{
+	int x = totalX / counter;
+	int y = totalX / counter;
+
+	center[0] = x;
+	center[1] = y;
+
+	return;
+}
+
 
 int isMoveable(char (*grid)[12], int (*allmoves)[12], int xPos, int yPos, int n, int turn)
 {
@@ -287,49 +413,6 @@ int didOWin(char (*grid)[12], int (*allmoves)[12], int xPos, int yPos, int n, in
 	return 0;
 
 }
-
-/*
-int backTracking(char (*grid)[12], int (*allmoves)[12], int xPos, int yPos)
-{
-	//sona gelmişsek
-	if(xPos == 5)
-		return 1;
-
-	allmoves[xPos][yPos] = 1;
-
-	cout << "=====================\n";
-	cout << "xPos : " << xPos << " yPos : " << yPos << endl;
-
-	int tempX = xPos, tempY = yPos;
-
-	int moveRange[6][2] = {{-1,0}, {0,1}, {1,0}, {0,-1}, {-1,1}, {1,-1}};
-	for(int i=0; i<6; i++)
-	{
-		tempX = xPos + moveRange[i][0];
-		tempY = yPos + moveRange[i][1];
-
-		cout << "tempX : " << tempX << " tempY : " << tempY << endl;
-
-		// out of border
-		if(tempX < 0 || tempX >= 6 || tempY < 0 || tempY >= 6)
-		{
-			cout << "out of border...\n";
-			continue;
-		}
-
-		if(isMoveable(grid, allmoves, tempX ,tempY))
-		{
-			if(backTracking(grid, allmoves, tempX, tempY))
-				return 1;
-		}else
-		{
-			cout << "gidilemez!!!\n";
-		}
-	}
-
-	return 0;
-}
-*/
 
 
 void drawGrid(char (*grid)[12], int n)
