@@ -99,7 +99,7 @@ int main()
 			cout << "Please enter your move (ex : A 3) : ";
 			cin >> moveChar >> moveNum;
 
-			cout << moveChar.length() << " " << moveNum << endl;
+			cout << moveChar << " : " << moveNum << endl;
 
 			// invalid input
 			if(moveChar.length() > 1 || moveNum > n || moveNum <= 0 || !((moveChar[0] >= 'A' && moveChar[0] < 'A' + n) || (moveChar[0] >= 'a' && moveChar[0] < 'a' + n)))
@@ -121,6 +121,9 @@ int main()
 				cout << "Position is not empty" << endl; 
 				continue;
 			}
+
+			cout << "xpos : " << xPos << ", ypos : " << yPos << endl;
+
 		}
 
 		// place x's and o's
@@ -165,7 +168,7 @@ int main()
 
 
 
-//===================FUNCTIONS==========================//
+//===================FUNCTIONS==========================//z
 
 void calculateBestMove(char (*grid)[12], int *pos, int counter, int n)
 {
@@ -297,20 +300,38 @@ int backTracking(char (*grid)[12], int xPos, int yPos, int n, int turn)
 	// 0 -> no win
 	// 1 -> win
 
+	cout << "xpos : " << xPos << ", ypos : " << yPos << ", n : " << n << endl;
+
 	int allmoves[12][12];
 	initAllMoves(allmoves);
 	if(turn == 0) // x, left to right
 	{
 		for(int i=0; i<n; i++)
 		{
-			if(grid[i][0] == 'x' && didXWin(grid, allmoves, 0, i, n, turn))
+			initAllMoves(allmoves);
+
+			for(int a=0; a<n; a++)
+			{
+				for(int b=0; b<n; b++)
+				{
+					cout << allmoves[a][b];
+				}
+				cout << endl;
+			}
+
+			cout << i << endl;
+			if(grid[i][0] == 'x' && didXWin(grid, allmoves, i, 0, n, turn))
+			{
+				cout << "doğru" << endl;
 				return 1;
+			}
 		}
 		
 	}else
 	{
 		for(int i=0; i<n; i++)
 		{
+			initAllMoves(allmoves);
 			if(grid[0][i] == 'o' && didOWin(grid, allmoves, 0, i, n, turn))
 				return 1;
 		}
