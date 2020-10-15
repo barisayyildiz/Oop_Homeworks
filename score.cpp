@@ -29,6 +29,12 @@ void centerofGravity(int *center, int totalX, int totalY, int counter);
 
 int minimax(char (*grid)[12], int depth, int isMaximize, int alpha, int beta, int counter, int n, int *xPos, int *yPos);
 
+void initAllMoves(int (*allmoves)[12]);
+
+int scoreHelper(char (*grid)[12], int (*visited)[12], int xPos, int yPos, int n, int turn);
+
+int calculateScore(char (*grid)[12], int n, int turn);
+
 int main()
 {
 	char grid[12][12];
@@ -42,6 +48,8 @@ int main()
 	int bestPos[2];
 
 	int score;
+
+	int visited[12][12];
 
 	while(1)
 	{
@@ -82,7 +90,9 @@ int main()
 
 			cout << xPos << " : "<<yPos << endl << endl;
 
-			cout << "score : " << score << endl << endl;
+			
+
+			//initAllMoves(visited);
 
 			/*
 			calculateBestMove(grid, bestPos, counter, n);
@@ -143,6 +153,10 @@ int main()
 
 		counter++;
 
+		score = calculateScore(grid, n, turn);
+
+		cout << "score : " << score << endl << endl;
+
 		
 
 		cout << "n*n : " << n*n << " counter : " << counter << " turn : " << turn << endl;	
@@ -180,8 +194,130 @@ int main()
 
 //===================FUNCTIONS==========================//
 
+int calculateScore(char (*grid)[12], int n, int turn)
+{
+	int visited[12][12];
+	initAllMoves(visited);
+	int score = -100;
+	int value;
+
+	for(int i=0; i<n; i++)
+		{
+			for(int j=0; j<n; j++)
+			{
+				if(grid[i][j] == 'x')
+				{
+					initAllMoves(visited);
+					value = scoreHelper(grid, visited, i, j, n, turn);
+					if(value > score)
+						score = value;
+				}
+			}
+		}
+
+	return score;
+}
+
+int scoreHelper(char (*grid)[12], int (*visited)[12], int xPos, int yPos, int n, int turn)
+{
+	if(xPos >= n || xPos < 0 or yPos >= n || yPos < 0)
+		return 0;
+
+	int maximum = 0;
+
+	int directionX[4][2] = {{0,1}, {-1,1}, {-1,0}, {1,0}};
+	int directionO[4][2] = {{1,0}, {1,-1}, {0,-1}, {0,1}};
+	int temp_x, temp_y;
+	int total;
+
+	//cout << "x : " << xPos << " , y : " << yPos << endl;
+
+	if(turn == 0)
+	{
+		// X's turn
+		for(int i=0; i<4; i++)
+		{
+			temp_x = xPos + directionX[i][0];
+			temp_y = yPos + directionX[i][1];
+			if(temp_x >= n || temp_x < 0 or temp_y >= n || temp_y < 0)
+				continue;
+
+			if(visited[temp_x][temp_y] == 1)
+				continue;
+
+			if(i == 0 || i == 1)
+			{
+				// +10 points
+				if(grid[temp_x][temp_y] == 'x')
+				{
+					//cout << "qqqqqqqqq" << endl;
+					visited[temp_x][temp_y] = 1;
+					total = 10 + scoreHelper(grid, visited, temp_x, temp_y, n, turn);
+					if(total > maximum)
+						maximum = total;
+				}
+			}else
+			{
+				// +1 points
+				if(grid[temp_x][temp_y] == 'x')
+				{
+					//cout << "wwwwwwwwwww" << endl;
+					visited[temp_x][temp_y] = 1;
+					total = 1 + scoreHelper(grid, visited, temp_x, temp_y, n, turn);
+					if(total > maximum)
+						maximum = total;
+				}
+			}
+		}
+	}else
+	{
+		// O's turn
+		for(int i=0; i<4; i++)
+		{
+			temp_x = xPos + directionO[i][0];
+			temp_y = yPos + directionO[i][1];
+			if(temp_x >= n || temp_x < 0 or temp_y >= n || temp_y < 0)
+				continue;
+
+			if(visited[temp_x][temp_y] == 1)
+				continue;
+
+			if(i == 0 || i == 1)
+			{
+				// +10 points
+				if(grid[temp_x][temp_y] == 'o')
+				{
+					cout << "qqqqqqqqq" << endl;
+					visited[temp_x][temp_y] = 1;
+					total = 10 + scoreHelper(grid, visited, temp_x, temp_y, n, turn);
+					if(total > maximum)
+						maximum = total;
+				}
+			}else
+			{
+				// +1 points
+				if(grid[temp_x][temp_y] == 'o')
+				{
+					cout << "wwwwwwwwwww" << endl;
+					visited[temp_x][temp_y] = 1;
+					total = 1 + scoreHelper(grid, visited, temp_x, temp_y, n, turn);
+					if(total > maximum)
+						maximum = total;
+				}
+			}
+		}
+
+
+	}
+
+	
+	return maximum;
+
+}
+
 int minimax(char (*grid)[12], int depth, int isMaximize, int alpha, int beta, int counter, int n, int *xPos, int *yPos)
 {
+	/*
 	int aiWin = backTracking(grid, 0, 0, n, 0);
 	int userWin = backTracking(grid, 0, 0, n, 1);
 
@@ -189,9 +325,10 @@ int minimax(char (*grid)[12], int depth, int isMaximize, int alpha, int beta, in
 		return 10;
 	else if(userWin != 0)
 		return -10;
+	*/
 
-	if(depth == 4)
-		return 0;
+	if(depth == 4 || counter == n*n-1)
+		return calculateScore(grid, n, 0);
 
 	int val, temp, temp_x, temp_y;
 
@@ -214,12 +351,22 @@ int minimax(char (*grid)[12], int depth, int isMaximize, int alpha, int beta, in
 						temp_x = i;
 						temp_y = j;
 
+						
+
 						alpha = temp;
 					}
 				}
 			}
-			*xPos = temp_x;
-			*yPos = temp_y;
+
+			if(val != -1000)
+			{
+				*xPos = temp_x;
+				*yPos = temp_y;
+			}
+			
+
+			cout << "=====>>" << temp_x << " : " << temp_y << endl;
+			
 			
 			if(beta <= alpha)
 				break;
@@ -254,8 +401,12 @@ int minimax(char (*grid)[12], int depth, int isMaximize, int alpha, int beta, in
 					}
 				}
 			}
-			*xPos = temp_x;
-			*yPos = temp_y;
+
+			if(val != 1000)
+			{
+				*xPos = temp_x;
+				*yPos = temp_y;
+			}
 			
 			if(beta <= alpha)
 				break;
