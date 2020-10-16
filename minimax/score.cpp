@@ -17,6 +17,10 @@ int main()
 
 	int bestPos[2];
 
+	int score;
+
+	int visited[12][12];
+
 	while(1)
 	{
 		cout << "Size of grid [7-12] : ";
@@ -52,12 +56,9 @@ int main()
 
 			// make your move
 
-			calculateBestMove(grid, bestPos, counter, n);
+			//score = minimax(grid, 0, 1, SMALL_NUMBER, BIG_NUMBER, counter, n, &xPos, &yPos);
 
-			xPos = bestPos[0];
-			yPos = bestPos[1];
-
-			//cout << bestPos[0] << " : "<<bestPos[1] << endl << endl;
+			//cout << xPos << " : "<<yPos << endl << endl;
 
 
 		}else
@@ -77,7 +78,7 @@ int main()
 			cout << "Please enter your move (ex : A 3) : ";
 			cin >> moveChar >> moveNum;
 
-			//cout << moveChar << " : " << moveNum << endl;
+			cout << moveChar.length() << " " << moveNum << endl;
 
 			// invalid input
 			if(moveChar.length() > 1 || moveNum > n || moveNum <= 0 || !((moveChar[0] >= 'A' && moveChar[0] < 'A' + n) || (moveChar[0] >= 'a' && moveChar[0] < 'a' + n)))
@@ -99,9 +100,6 @@ int main()
 				cout << "Position is not empty" << endl; 
 				continue;
 			}
-
-			//cout << "xpos : " << xPos << ", ypos : " << yPos << endl;
-
 		}
 
 		// place x's and o's
@@ -111,6 +109,10 @@ int main()
 			grid[xPos][yPos] = 'o';
 
 		counter++;
+
+		score = calculateScore(grid, n, turn);
+
+		cout << "score : " << score << endl << endl;
 
 		
 
