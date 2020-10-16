@@ -202,9 +202,11 @@ int minimax(char (*grid)[12], int depth, int isMaximize, int alpha, int beta, in
 		{
 			for(int j=0; j<n; j++)
 			{
+				cout << "counter : " << counter << endl;
 				// cell is empty
 				if(grid[i][j] == '.')
 				{
+					cout << "$$$$$$counter : " << counter << endl;
 					grid[i][j] = 'x';
 					temp = minimax(grid, depth+1, alpha, beta, !isMaximize, counter+1, n, xPos, yPos);
 					grid[i][j] = '.';
@@ -238,9 +240,12 @@ int minimax(char (*grid)[12], int depth, int isMaximize, int alpha, int beta, in
 		{
 			for(int j=0; j<n; j++)
 			{
+				cout << "counter : " << counter << endl;
 				// cell is empty
 				if(grid[i][j] == '.')
 				{
+					cout << "$$$$$$counter : " << counter << endl;
+					
 					grid[i][j] = 'o';
 					temp = minimax(grid, depth+1, alpha, beta, !isMaximize, counter+1, n, xPos, yPos);
 					grid[i][j] = '.';

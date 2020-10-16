@@ -4,7 +4,8 @@
 using namespace std;
 
 
-#define EPSILONE 0.0001
+#define BIG_NUMBER 1000
+#define SMALL_NUMBER -1000
 
 
 void drawGrid(char (*grid)[12], int n);
@@ -34,6 +35,8 @@ void initAllMoves(int (*allmoves)[12]);
 int scoreHelper(char (*grid)[12], int (*visited)[12], int xPos, int yPos, int n, int turn);
 
 int calculateScore(char (*grid)[12], int n, int turn);
+
+void findFirstEmptySpot(char (*grid)[12], int *xPos, int *yPos, int n);
 
 int main()
 {
@@ -86,7 +89,7 @@ int main()
 
 			// make your move
 
-			score = minimax(grid, 0, 1, -10000, 10000, counter, n, &xPos, &yPos);
+			score = minimax(grid, 0, 1, SMALL_NUMBER, BIG_NUMBER, counter, n, &xPos, &yPos);
 
 			cout << xPos << " : "<<yPos << endl << endl;
 
@@ -198,7 +201,7 @@ int calculateScore(char (*grid)[12], int n, int turn)
 {
 	int visited[12][12];
 	initAllMoves(visited);
-	int score = -100;
+	int score = SMALL_NUMBER;
 	int value;
 
 	for(int i=0; i<n; i++)
@@ -287,7 +290,7 @@ int scoreHelper(char (*grid)[12], int (*visited)[12], int xPos, int yPos, int n,
 				// +10 points
 				if(grid[temp_x][temp_y] == 'o')
 				{
-					cout << "qqqqqqqqq" << endl;
+					//cout << "qqqqqqqqq" << endl;
 					visited[temp_x][temp_y] = 1;
 					total = 10 + scoreHelper(grid, visited, temp_x, temp_y, n, turn);
 					if(total > maximum)
@@ -298,7 +301,7 @@ int scoreHelper(char (*grid)[12], int (*visited)[12], int xPos, int yPos, int n,
 				// +1 points
 				if(grid[temp_x][temp_y] == 'o')
 				{
-					cout << "wwwwwwwwwww" << endl;
+					//cout << "wwwwwwwwwww" << endl;
 					visited[temp_x][temp_y] = 1;
 					total = 1 + scoreHelper(grid, visited, temp_x, temp_y, n, turn);
 					if(total > maximum)
@@ -313,6 +316,22 @@ int scoreHelper(char (*grid)[12], int (*visited)[12], int xPos, int yPos, int n,
 	
 	return maximum;
 
+}
+
+void findFirstEmptySpot(char (*grid)[12], int *xPos, int *yPos, int n)
+{
+	for(int i=0; i<n; i++)
+	{
+		for(int j=0; j<n; j++)
+		{
+			if(grid[i][j] == '.')
+			{
+				*xPos = i;
+				*yPos = j;
+				return;
+			}
+		}
+	}
 }
 
 int minimax(char (*grid)[12], int depth, int isMaximize, int alpha, int beta, int counter, int n, int *xPos, int *yPos)
@@ -334,7 +353,7 @@ int minimax(char (*grid)[12], int depth, int isMaximize, int alpha, int beta, in
 
 	if(isMaximize)
 	{
-		val = -1000;
+		val = SMALL_NUMBER;
 		for(int i=0; i<n; i++)
 		{
 			for(int j=0; j<n; j++)
@@ -358,14 +377,17 @@ int minimax(char (*grid)[12], int depth, int isMaximize, int alpha, int beta, in
 				}
 			}
 
-			if(val != -1000)
+			if(val != SMALL_NUMBER)
 			{
 				*xPos = temp_x;
 				*yPos = temp_y;
+			}else
+			{
+				findFirstEmptySpot(grid, xPos, yPos, n);
 			}
 			
 
-			cout << "=====>>" << temp_x << " : " << temp_y << endl;
+			//cout << "=====>>" << temp_x << " : " << temp_y << endl;
 			
 			
 			if(beta <= alpha)
@@ -380,7 +402,7 @@ int minimax(char (*grid)[12], int depth, int isMaximize, int alpha, int beta, in
 	}else
 	{
 
-		val = 1000;
+		val = BIG_NUMBER;
 		for(int i=0; i<n; i++)
 		{
 			for(int j=0; j<n; j++)
@@ -402,10 +424,13 @@ int minimax(char (*grid)[12], int depth, int isMaximize, int alpha, int beta, in
 				}
 			}
 
-			if(val != 1000)
+			if(val != BIG_NUMBER)
 			{
 				*xPos = temp_x;
 				*yPos = temp_y;
+			}else
+			{
+				findFirstEmptySpot(grid, xPos, yPos, n);
 			}
 			
 			if(beta <= alpha)

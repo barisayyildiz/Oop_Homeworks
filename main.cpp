@@ -21,10 +21,6 @@ int didOWin(char (*grid)[12], int (*allmoves)[12], int xPos, int yPos, int n, in
 
 void calculateBestMove(char (*grid)[12], int *pos, int counter, int n);
 
-int manhattanDistance(int p1x, int p1y, int p2x, int p2y);
-
-double abs(double num);
-
 void centerofGravity(int *center, int totalX, int totalY, int counter);
 
 int main()
@@ -236,20 +232,6 @@ void calculateBestMove(char (*grid)[12], int *pos, int counter, int n)
 
 	return;
 }
-
-int manhattanDistance(int p1x, int p1y, int p2x, int p2y)
-{
-	return (abs(p1x - p2x) + abs(p1y - p2y));
-}
-
-
-double abs(double num)
-{
-	if(num > 0)
-		return num;
-	return -num;
-}
-
 
 
 void centerofGravity(int *center, int totalX, int totalY, int counter)
