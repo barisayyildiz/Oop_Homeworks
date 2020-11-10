@@ -16,7 +16,7 @@ cell Hex::Cell::getStatus()
 	return status;
 }
 
-void Hex::Cell::setStatus(int xPos, int yPos, cell s)
+void Hex::Cell::setStatus(cell s)
 {
 	status = s;
 }
@@ -53,15 +53,15 @@ Hex::Hex()
 
 
 
-Hex::Cell Hex::getCell(int xPos, int yPos)
+std::vector < std::vector <Hex::Cell> >& Hex::getCell()
 {
-	return hexCells[xPos][yPos];
+	return hexCells;
 }
 
-Hex::Cell& Hex::getAdress(int xPos, int yPos)
-{
-	return hexCells[xPos][yPos];
-}
+// Hex::Cell& Hex::getAdress(int xPos, int yPos)
+// {
+// 	return hexCells[xPos][yPos];
+// }
 
 // void Hex::func(int xPos, int yPos, cell s)
 // {

@@ -32,8 +32,8 @@ private:
 
 public:
 	Hex();
-	Cell getCell(int xPos, int yPos);
-	Cell& getAdress(int xPos, int yPos);
+	std::vector < std::vector <Cell> >& getCell();
+	// Cell& getAdress(int xPos, int yPos);
 	void func(int xPos, int yPos, cell);
 };
 
