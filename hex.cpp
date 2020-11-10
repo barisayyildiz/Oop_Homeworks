@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <fstream>
 
 #include "hex.h"
 
@@ -344,6 +345,124 @@ int Hex::isMoveable(vector<vector<int>> visited, int xPos, int yPos)
 	}
 
 	return 0;
+}
+
+
+// ===================== FILE IO ==================== //
+
+
+int Hex::orderChar(char c)
+{
+	if(c == '.')
+	{
+		return 0;
+	}else if(c == 'x')
+	{
+		return 1;
+	}else if(c == 'o')
+	{
+		return 2;
+	}else if(c == 'X')
+	{
+		return 3;
+	}else	// 'O'
+	{
+		return 4;
+	}
+
+}
+
+void Hex::saveBoard(string filename)
+{
+	ofstream fout;
+
+	char temp;
+
+	fout.open(filename);
+
+	fout << size << endl;
+	fout << counter << endl;
+	fout << gameType << endl;
+	fout << turn << endl;
+
+	for(int i=0; i<size; i++)
+	{
+		for(int  j=0; j<size; j++)
+		{
+			temp = static_cast<char>( hexCells[i][j].getStatus() );
+
+			fout << orderChar(temp);
+		}
+		fout << endl;
+	}
+
+
+	fout.close();
+}
+
+void Hex::loadBoard(string filename)
+{
+	ifstream fin;
+
+	int temp;
+	int newSize;
+
+	string line;
+
+	fin.open(filename);
+
+	if(!fin)
+	{
+		cerr << "No such file exists...\n\n";
+		return;
+	}
+
+	fin >> newSize;
+	fin >> counter;
+	fin >> gameType;
+	fin >> turn;
+
+	cout << "test!!!!!!!!!!!!!!!!!!!!" << endl;
+	// Need to resize!!!
+
+	hexCells.resize(newSize);
+	for(int i=0; i<newSize; i++)
+		hexCells[i].resize(newSize);
+
+	size = newSize;
+
+
+	for(int i=0; i<size; i++)
+	{
+		fin >> line;
+		for(int j=0; j<size; j++)
+		{
+			temp = line[j] - '0';
+			hexCells[i][j] = static_cast<cell>(temp);
+
+			switch(temp)
+			{
+				case 0:
+					hexCells[i][j].setStatus(empty);
+					break;
+				case 1:
+					hexCells[i][j].setStatus(xLower);
+					break;
+				case 2:
+					hexCells[i][j].setStatus(oLower);
+					break;
+				case 3:
+					hexCells[i][j].setStatus(xCapital);
+					break;
+				case 4:
+					hexCells[i][j].setStatus(oCapital);
+					break;
+			}
+		}
+	}
+
+	drawBoard();
+
 }
 
 

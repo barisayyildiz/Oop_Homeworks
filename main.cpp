@@ -1,5 +1,7 @@
 #include <iostream>
 #include <vector>
+#include <string>
+#include <fstream>
 
 #include "hex.h"
 
@@ -24,6 +26,10 @@ int main()
 	h1.play();
 	h1.play(5,0);
 
+	h1.drawBoard();
+
+	h1.loadBoard("board1.txt");
+
 	// h1.play();
 	// h1.play(1,1);
 	// h1.play();
@@ -42,9 +48,6 @@ int main()
 	// h1.play();
 	// h1.play();
 	
-
-
-	h1.drawBoard();
 
 	
 	// cell c = xLower;

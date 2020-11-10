@@ -33,6 +33,9 @@ private:
 	int didSomebodyWin(std::vector<std::vector<int>> visited, int xPos, int yPos);
 	int isMoveable(std::vector<std::vector<int>> visited, int xPos, int yPos);
 
+	// FILE I/O
+	int orderChar(char c);
+
 public:
 	Hex();
 	void drawBoard();
@@ -41,6 +44,11 @@ public:
 	void play(int xPos, int yPos);
 	void playGame();
 	void compare(Hex h1);
+
+	// FILE I/O
+	void saveBoard(std::string filename);
+	void loadBoard(std::string filename);
+
 };
 
 #endif
