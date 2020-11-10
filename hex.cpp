@@ -96,6 +96,16 @@ void Hex::play(int xPos, int yPos)
 	// user's turn
 	counter++;
 	hexCells[xPos][yPos].setStatus(oLower);
+	
+
+	cout << "turn : " << turn << endl;
+	cout << "bitti : " << isEndOfTheGame() << endl;
+
+	if(turn)
+		turn = 0;
+	else
+		turn = 1;
+
 }
 
 void Hex::play()
@@ -106,6 +116,17 @@ void Hex::play()
 
 	counter++;
 	hexCells[xPos][yPos].setStatus(xLower);
+
+
+	cout << "turn : " << turn << endl;
+	cout << "bitti : " << isEndOfTheGame() << endl;
+
+	if(turn)
+		turn = 0;
+	else
+		turn = 1;
+
+
 }
 
 void Hex::calculateBestMove(int &xPos, int &yPos)
@@ -190,7 +211,8 @@ void Hex::centerofGravity(int *center, int totalX, int totalY, int increment)
 
 int Hex::isEndOfTheGame()
 {
-	cell visited[12][12];
+	// int visited[12][12];
+	vector<vector<int>> visited(size, vector<int> (size, 0));
 
 
 	if(turn == 0) // x, left to right
@@ -199,7 +221,7 @@ int Hex::isEndOfTheGame()
 		{
 			initVisited(visited);
 
-			if(grid[i][0].getStatus() == xLower && didSomebodyWin(visited, i, 0))
+			if(hexCells[i][0].getStatus() == xLower && didSomebodyWin(visited, i, 0))
 				return 1;
 		}
 		
@@ -208,7 +230,7 @@ int Hex::isEndOfTheGame()
 		for(int i=0; i<size; i++)
 		{
 			initVisited(visited);
-			if(grid[0][i].getStatus() == oLower && didSomebodyWin(visited, 0, i))
+			if(hexCells[0][i].getStatus() == oLower && didSomebodyWin(visited, 0, i))
 				return 1;
 		}
 	}
@@ -216,14 +238,112 @@ int Hex::isEndOfTheGame()
 	return 0;
 }
 
-void Hex::initVisited(cell (*visited)[])
+void Hex::initVisited(vector<vector<int>> visited)
 {
 	for(int i=0; i<size; i++)
 	{
 		for(int j=0; j<size; j++)
 		{
-			visited[i][j] = empty;
+			visited[i][j] = 0;
 		}
 	}
 }
+
+
+int Hex::didSomebodyWin(vector<vector<int>> visited, int xPos, int yPos)
+{
+	int tempX = xPos, tempY = yPos;
+	int moveRange[6][2] = {{-1,0}, {0,1}, {1,0}, {0,-1}, {-1,1}, {1,-1}};
+
+	if(turn == 0)
+	{
+		// X's turn
+		if(yPos == size-1)
+		{
+			hexCells[xPos][yPos].setStatus(xCapital);
+			return 1;
+		}
+
+		visited[xPos][yPos] = 1;
+		
+		for(auto i=0; i<6; i++)
+		{
+			tempX = xPos + moveRange[i][0];
+			tempY = yPos + moveRange[i][1];
+
+			// out of border
+			if(tempX < 0 || tempX >= size || tempY < 0 || tempY >= size)
+			{
+				continue;
+			}
+
+			if(isMoveable(visited, tempX ,tempY))
+			{
+				if(didSomebodyWin(visited, tempX, tempY))
+				{
+					// capitalize
+					// grid[xPos][yPos] -= 32;
+					hexCells[xPos][yPos].setStatus(xCapital);
+					return 1;
+				}
+			}
+		}
+
+		return 0;
+
+	}else
+	{
+		// O's turn
+		if(xPos == size-1)
+		{
+			// capitalize
+			hexCells[xPos][yPos] = oCapital;
+			return 1;
+		}
+
+		visited[xPos][yPos] = 1;
+
+
+		for(auto i=0; i<6; i++)
+		{
+			tempX = xPos + moveRange[i][0];
+			tempY = yPos + moveRange[i][1];
+
+			// out of border
+			if(tempX < 0 || tempX >= size || tempY < 0 || tempY >= size)
+			{
+				continue;
+			}
+
+			if(isMoveable(visited, tempX ,tempY))
+			{
+				if(didSomebodyWin(visited, tempX, tempY))
+				{
+					// capitalize
+					hexCells[xPos][yPos].setStatus(oCapital);
+					return 1;
+				}
+			}
+		}
+		return 0;
+	}
+
+
+}
+
+int Hex::isMoveable(vector<vector<int>> visited, int xPos, int yPos)
+{
+	if(turn == 0)
+	{
+		if(hexCells[xPos][yPos].getStatus() == xLower && visited[xPos][yPos] == 0)
+			return 1;
+	}else
+	{
+		if(hexCells[xPos][yPos].getStatus() == oLower && visited[xPos][yPos] == 0)
+			return 1;
+	}
+
+	return 0;
+}
+
 

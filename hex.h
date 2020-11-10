@@ -29,8 +29,9 @@ private:
 	void calculateBestMove(int &xPos, int &yPos);
 	void centerofGravity(int *center, int totalX, int totalY, int increment);
 	int isEndOfTheGame();
-	void initVisited(cell (*visited)[]);
-	int didSomebodyWin(cell (*visited)[], int xPos, int yPos);
+	void initVisited(std::vector<std::vector<int>> visited);
+	int didSomebodyWin(std::vector<std::vector<int>> visited, int xPos, int yPos);
+	int isMoveable(std::vector<std::vector<int>> visited, int xPos, int yPos);
 
 public:
 	Hex();
@@ -43,32 +44,3 @@ public:
 };
 
 #endif
-
-
-// class Hex
-// {
-// private:
-// 	class Cell
-// 	{
-// 	private:
-// 		cell status;
-// 	public:
-// 		Cell(cell s = empty);
-// 		cell getStatus();
-// 		void setStatus(cell s);
-// 	};
-
-// 	std::vector < std::vector <Cell> > hexCells;
-	
-// 	// std::vector < std::vector<Cell> > hexCells(5, vector<Cell> (5, empty));	// expected identifier before numeric constant
-// 	// std::vector< std::vector< Cell > > hexCells;
-// 	// Cell hexCells;
-// 	// vector<vector<int>> vec(m, vector<int> (n, 0));
-
-// public:
-// 	Hex();
-// 	std::vector < std::vector <Cell> >& getAdress();
-// 	std::vector < std::vector <Cell> > getSingleCell(int i, int j);
-// 	void drawBoard();
-// };
-
