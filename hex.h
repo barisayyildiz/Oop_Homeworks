@@ -33,6 +33,8 @@ private:
 	int didSomebodyWin(std::vector<std::vector<int>> visited, int xPos, int yPos);
 	int isMoveable(std::vector<std::vector<int>> visited, int xPos, int yPos);
 
+	static int nonEmptyCells;
+
 	// FILE I/O
 	int orderChar(char c);
 
@@ -44,6 +46,8 @@ public:
 	void play(int xPos, int yPos);
 	void playGame();
 	void compare(Hex h1);
+
+	inline static int getNonEmptyCells(){return nonEmptyCells;};
 
 	// FILE I/O
 	void saveBoard(std::string filename);

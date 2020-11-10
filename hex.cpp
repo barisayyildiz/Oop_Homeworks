@@ -11,6 +11,8 @@ using namespace std;
 Hex::Cell::Cell(cell s):status(s)
 {/*left empty*/}
 
+int Hex::nonEmptyCells = 0;
+
 Hex::Hex() : size(0), turn(0), counter(0)
 {
 	playGame();
@@ -96,6 +98,8 @@ void Hex::play(int xPos, int yPos)
 {
 	// user's turn
 	counter++;
+	nonEmptyCells++;
+
 	hexCells[xPos][yPos].setStatus(oLower);
 	
 
@@ -115,6 +119,7 @@ void Hex::play()
 	int xPos, yPos;
 	calculateBestMove(xPos, yPos);
 
+	nonEmptyCells++;
 	counter++;
 	hexCells[xPos][yPos].setStatus(xLower);
 
@@ -407,6 +412,9 @@ void Hex::loadBoard(string filename)
 	int temp;
 	int newSize;
 
+	// we need to adjust nonEmptyCells
+	nonEmptyCells -= counter;
+
 	string line;
 
 	fin.open(filename);
@@ -447,15 +455,19 @@ void Hex::loadBoard(string filename)
 					break;
 				case 1:
 					hexCells[i][j].setStatus(xLower);
+					nonEmptyCells++;
 					break;
 				case 2:
 					hexCells[i][j].setStatus(oLower);
+					nonEmptyCells++;
 					break;
 				case 3:
 					hexCells[i][j].setStatus(xCapital);
+					nonEmptyCells++;
 					break;
 				case 4:
 					hexCells[i][j].setStatus(oCapital);
+					nonEmptyCells++;
 					break;
 			}
 		}

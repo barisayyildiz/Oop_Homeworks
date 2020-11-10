@@ -21,14 +21,18 @@ int main()
 	h1.play(2,0);
 	h1.play();
 	h1.play(3,0);
-	h1.play();
-	h1.play(4,0);
-	h1.play();
-	h1.play(5,0);
+	// h1.play();
+	// h1.play(4,0);
+	// h1.play();
+	// h1.play(5,0);
+
+	cout << "non empty : " << Hex::getNonEmptyCells() << endl;
 
 	h1.drawBoard();
 
 	h1.loadBoard("board1.txt");
+
+	cout << "non empty : " << Hex::getNonEmptyCells() << endl;
 
 	// h1.play();
 	// h1.play(1,1);
