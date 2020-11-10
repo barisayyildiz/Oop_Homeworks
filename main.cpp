@@ -9,9 +9,12 @@ using namespace std;
 int main()
 {
 	Hex h1;
-	cout << h1.getCell().getStatus() << endl;
+	
+	// cell c = xLower;
+	// h1.getCell(0,0).setStatus(xLower);
 
-
+	h1.setStatus(0,0,xCapital);
+	cout << h1.getCell(0,0).getStatus() << endl;
 
 
 
