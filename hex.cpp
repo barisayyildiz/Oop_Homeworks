@@ -353,6 +353,12 @@ int Hex::isMoveable(vector<vector<int>> visited, int xPos, int yPos)
 }
 
 
+bool Hex::compare(Hex h1)
+{
+	return (getCounter() > h1.getCounter());
+}
+
+
 // ===================== FILE IO ==================== //
 
 

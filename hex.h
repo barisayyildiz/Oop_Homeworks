@@ -45,7 +45,10 @@ public:
 	void play();
 	void play(int xPos, int yPos);
 	void playGame();
-	void compare(Hex h1);
+
+	// getter
+	inline int getCounter(){return counter;};
+	bool compare(Hex h1);
 
 	inline static int getNonEmptyCells(){return nonEmptyCells;};
 

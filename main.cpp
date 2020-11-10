@@ -34,6 +34,14 @@ int main()
 
 	cout << "non empty : " << Hex::getNonEmptyCells() << endl;
 
+	Hex h2;
+	h2.play();
+	h2.play(0,0);
+	h2.play();
+	h2.play(1,0);
+
+	cout << "sonuc : " << h2.compare(h1) << endl;
+
 	// h1.play();
 	// h1.play(1,1);
 	// h1.play();
