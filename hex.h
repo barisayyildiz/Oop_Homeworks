@@ -41,6 +41,8 @@ private:
 
 	int getUserInput(std::string input, std::string &filename, int &xPos, int &yPos);
 
+	void initHexCells();
+
 	void fileIO();
 	void play();
 	void play(int xPos, int yPos);
@@ -56,6 +58,8 @@ private:
 
 public:
 	Hex();
+	Hex(int s, int gT);
+	Hex(int s, int gT, std::string &filename);
 	void gameLoop();
 
 	// getters and setters
