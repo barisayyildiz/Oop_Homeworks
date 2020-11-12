@@ -11,16 +11,108 @@ using namespace std;
 int main()
 {
 
-	bool mainLoop = true;
-
 	vector < Hex > gameVector;
 
-	cout << "Welcome to the HEX game" << endl << endl;
+	bool mainLoop = true;
+	char input;
+	unsigned index;
+	unsigned index2;
 
-	Hex h1;
 
 
-	h1.gameLoop();
+
+	cout << "Welcome to the HEX game..." << endl << endl;
+
+
+	while(mainLoop)
+	{
+		cout << "\nPress:" << endl;
+		cout << "1 : to create a new game" << endl;
+		cout << "2 : to continue an active game" << endl;
+		cout << "3 : to compare two active games" << endl;
+		cout << "q : to exit" << endl << endl;
+
+		cin >> input;
+
+
+		if(input == '1')
+		{
+			gameVector.push_back(Hex());
+
+			// if the latest game is terminated
+			if(gameVector[gameVector.size()-1].getGameStatus() == false)
+			{
+				// remove it from active games
+				gameVector.pop_back();
+			}
+
+		}else if(input == '2')
+		{
+			cout << "There are " << gameVector.size() << " active games" << endl;
+
+			if(gameVector.size() ==  0)
+			{
+				cout << "We need at least 1 game to continue, please create a game before..." << endl;
+				continue;
+			}
+
+			cout << "Which game do you want to continue, (indexing starts at 0) (ex. 0): ";
+			cin >> index;
+
+			cin.ignore(1000, '\n');
+
+			if(index >= gameVector.size())
+			{
+				cerr << "Wrong index number..." << endl;
+				continue;
+			}
+
+			gameVector[index].gameLoop();
+
+
+		}else if(input == '3')
+		{
+			cout << "There are " << gameVector.size() << " active games" << endl;
+
+			if(gameVector.size() < 2)
+			{
+				cout << "We need at least 2 games to compare, please create more..." << endl;
+				continue;
+			}
+
+			cout << "Which two games do you want to compare, (indexing starts at 0) (ex. 0 1) : ";
+			cin >> index >> index2;
+
+			cin.ignore(1000, '\n');
+
+			if(index >= gameVector.size() || index2 >= gameVector.size())
+			{
+				cerr << "Wrong index number..." << endl;
+				continue;
+			}
+
+			cout << gameVector[index].compare(gameVector[index2]);
+
+
+		}else if(input == 'q')
+		{
+			mainLoop = false;
+		}else
+		{
+			cerr << "Invalid input, try again..." << endl;
+		}
+
+	}
+
+
+
+
+	// cout << "Welcome to the HEX game" << endl << endl;
+
+	// Hex h1;
+
+
+	// h1.gameLoop();
 
 	// gameVector.push_back(Hex());
 	// gameVector.push_back(Hex());
