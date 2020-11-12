@@ -10,28 +10,35 @@ enum cell
 	oCapital = 'O'
 };
 
+
 class Hex
 {
 private:
 	class Cell
 	{
 	private:
-		cell status;
+		cell cellStatus;
 	public:
 		Cell(cell s = empty);
-		inline cell getStatus(){return status;};
-		inline void setStatus(cell s){status = s;};
+		inline cell getCellStatus(){return cellStatus;};
+		inline void setCellStatus(cell s){cellStatus = s;};
 	};
 	std::vector < std::vector <Cell> > hexCells;
 	
-	int size, gameType, turn, counter;
+	// variables
+	int size, turn, counter, gameType;
 
+	bool gameStatus;
+
+	// function prototypes
 	void calculateBestMove(int &xPos, int &yPos);
 	void centerofGravity(int *center, int totalX, int totalY, int increment);
 	int isEndOfTheGame();
 	void initVisited(std::vector<std::vector<int>> visited);
 	int didSomebodyWin(std::vector<std::vector<int>> visited, int xPos, int yPos);
 	int isMoveable(std::vector<std::vector<int>> visited, int xPos, int yPos);
+
+	int getUserInput(std::string s1, std::string s2, int &xPos, int &yPos);
 
 	static int nonEmptyCells;
 
@@ -45,10 +52,24 @@ public:
 	void play();
 	void play(int xPos, int yPos);
 	void playGame();
+	void gameLoop();
 
 	// getter
 	inline int getCounter(){return counter;};
 	bool compare(Hex h1);
+	inline bool getGameStatus(){return gameStatus;};
+	inline int getTurn(){return turn;};
+	inline int getGameType(){return gameType;};
+	inline int getSize(){return size;};
+
+	// setter
+	inline void setCounter(int c){counter = c;};
+	inline void setGameStatus(bool b){gameStatus = b;};
+	inline void setTurn(int t){turn = t;};
+	inline void setGameType(int g){gameType = g;};
+	inline void setSize(int s){size = s;};
+
+
 
 	inline static int getNonEmptyCells(){return nonEmptyCells;};
 

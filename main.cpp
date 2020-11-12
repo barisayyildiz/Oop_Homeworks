@@ -10,68 +10,73 @@ using namespace std;
 
 int main()
 {
+
 	Hex h1;
 
 
-	h1.play();
-	h1.play(0,0);
-	h1.play();
-	h1.play(1,0);
-	h1.play();
-	h1.play(2,0);
-	h1.play();
-	h1.play(3,0);
-	// h1.play();
-	// h1.play(4,0);
-	// h1.play();
-	// h1.play(5,0);
 
-	cout << "non empty : " << Hex::getNonEmptyCells() << endl;
+	// Hex h1;
 
-	h1.drawBoard();
-
-	h1.loadBoard("board1.txt");
-
-	cout << "non empty : " << Hex::getNonEmptyCells() << endl;
-
-	Hex h2;
-	h2.play();
-	h2.play(0,0);
-	h2.play();
-	h2.play(1,0);
-
-	cout << "sonuc : " << h2.compare(h1) << endl;
 
 	// h1.play();
-	// h1.play(1,1);
+	// h1.play(0,0);
 	// h1.play();
+	// h1.play(1,0);
 	// h1.play();
+	// h1.play(2,0);
 	// h1.play();
-	// h1.play();
-	// h1.play();
-	// h1.play();
-	// h1.play();
-	// h1.play();
-	// h1.play();
-	// h1.play();
-	// h1.play();
-	// h1.play();
-	// h1.play();
-	// h1.play();
-	// h1.play();
-	
+	// h1.play(3,0);
+	// // h1.play();
+	// // h1.play(4,0);
+	// // h1.play();
+	// // h1.play(5,0);
 
-	
-	// cell c = xLower;
-	// h1.getCell(0,0).setStatus(xLower);
-
-	// h1.setStatus(0,0,xCapital);
-
-	// h1.getAdress()[0][0].setStatus(xLower);
-	// cout << h1.getAdress()[0][0].getStatus() << endl;
-	// cout << h1.getAdress()[1][0].getStatus() << endl;
+	// cout << "non empty : " << Hex::getNonEmptyCells() << endl;
 
 	// h1.drawBoard();
+
+	// h1.loadBoard("board1.txt");
+
+	// cout << "non empty : " << Hex::getNonEmptyCells() << endl;
+
+	// Hex h2;
+	// h2.play();
+	// h2.play(0,0);
+	// h2.play();
+	// h2.play(1,0);
+
+	// cout << "sonuc : " << h1.compare(h2) << endl;
+
+	// // h1.play();
+	// // h1.play(1,1);
+	// // h1.play();
+	// // h1.play();
+	// // h1.play();
+	// // h1.play();
+	// // h1.play();
+	// // h1.play();
+	// // h1.play();
+	// // h1.play();
+	// // h1.play();
+	// // h1.play();
+	// // h1.play();
+	// // h1.play();
+	// // h1.play();
+	// // h1.play();
+	// // h1.play();
+	
+
+	
+	// // cell c = xLower;
+	// // h1.getCell(0,0).setStatus(xLower);
+
+	// // h1.setStatus(0,0,xCapital);
+
+	// // h1.getAdress()[0][0].setStatus(xLower);
+	// // cout << h1.getAdress()[0][0].getStatus() << endl;
+	// // cout << h1.getAdress()[1][0].getStatus() << endl;
+
+	// // h1.drawBoard();
 
 
 	return 0;
