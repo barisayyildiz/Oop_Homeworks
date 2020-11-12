@@ -11,7 +11,27 @@ using namespace std;
 int main()
 {
 
+	bool mainLoop = true;
+
+	vector < Hex > gameVector;
+
+	cout << "Welcome to the HEX game" << endl << endl;
+
 	Hex h1;
+
+
+	h1.gameLoop();
+
+	// gameVector.push_back(Hex());
+	// gameVector.push_back(Hex());
+
+	// cout << "0.index -> " << gameVector[0].getCounter() << endl;
+	// cout << "1.index -> " << gameVector[1].getCounter() << endl;
+
+
+
+
+	// Hex h1;
 
 
 

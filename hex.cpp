@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <sstream>
 
 #include "hex.h"
 
@@ -102,6 +103,8 @@ void Hex::playGame()
 		}
 	}
 
+	cin.ignore(1000, '\n');
+
 }
 
 void Hex::gameLoop()
@@ -121,6 +124,8 @@ void Hex::gameLoop()
 	/*
 	gameOver	false
 	*/
+
+	drawBoard();
 
 	while(getGameStatus() == true)
 	{
@@ -143,9 +148,11 @@ void Hex::gameLoop()
 
 			// ==================== BURADAN SONRASI DÜZELTİLECEK!!! ==================== //
 
-			cout << "Please enter your move or command (ex : A 3 or SAVE/LOAD yourfilename.txt) : ";
-			cin >> s1 >> s2;
+			cout << "Please enter your move or command (ex : A 3 or SAVE/LOAD yourfilename.txt or QUIT) : ";
+			// cin >> s1;
+			getline( cin, s1);
 
+			// input = getUserInput(s1, s2, xPos, yPos);
 			input = getUserInput(s1, s2, xPos, yPos);
 
 			if(input == 0)
@@ -165,6 +172,10 @@ void Hex::gameLoop()
 				cout << "The board information is saved to the file " << s2 << "..." << endl;
 
 				continue;
+			}else if(input == 4)
+			{
+				cout << "Leaving the game..." << endl;
+				return;
 			}
 
 			// out of border
@@ -222,45 +233,124 @@ void Hex::gameLoop()
 
 }
 
-int Hex::getUserInput(string s1, string s2, int &xPos, int &yPos)
+
+int Hex::getUserInput(string input, string &filename, int &xPos, int &yPos)
 {
 	// return values : 
-	// 0 -> invalid input, 1 -> valid position,  2 -> LOAD command, 3 -> SAVE command
+	// 0 -> invalid input, 1 -> valid position,  2 -> LOAD command, 3 -> SAVE command, 4 -> QUIT
 
-	if(s1 == "LOAD")
-		return 2;
-	else if(s1 == "SAVE")
-		return 3;
+	vector <string> tokens;
 
-	if(s1.length() == 1)
+	// sstream type
+	stringstream stream(input);
+
+	string token;
+
+
+	while(getline(stream, token, ' '))
 	{
-		//A 3
-
-		//lower case
-		if(s1[0] >= 97)
-			yPos = s1[0] - 97;
-		//upper case
-		else if(s1[0] >= 65)
-			yPos = s1[0] - 65;
-
-		xPos = s2[0] - '0';
-
-		if(s2.length() == 2)
-		{
-			xPos *= 10;
-			xPos += (s2[1] - '0');
-		}
-
-		xPos--;
-
-		return 1;
+		tokens.push_back(token);
 	}
 
+	cout << "tokens are : " << endl;
 
-	cerr << "Invalid input..." << endl;
+	for(decltype(tokens.size()) i = 0; i<tokens.size(); i++)
+	{
+		cout << tokens[i] << endl;
+	}
+
+	if(tokens.size() == 1)
+	{
+		if(tokens[0] == "QUIT")
+		{
+			return 4;
+		}
+
+	}else if(tokens.size() == 2)
+	{
+		if(tokens[0] == "SAVE")
+		{
+			filename = tokens[1];
+			return 3;
+		}else if(tokens[0] == "LOAD")
+		{
+			filename = tokens[1];
+			return 2;
+		}else if(tokens[0].length() == 1)
+		{
+			// konum almışız
+			// lower case
+			if(tokens[0][0] >= 'a')
+				yPos = tokens[0][0] - 'a';
+			
+			//upper case
+			else if(tokens[0][0] >= 'A')
+				yPos = tokens[0][0] - 'A';
+
+			if(tokens[1][0] < '0' || tokens[1].length() > 3)
+				return 0;
+
+			xPos = tokens[1][0] - '0';
+
+			if(tokens[1].length() == 2)
+			{
+				xPos *= 10;
+				xPos += (tokens[1][1] - '0');
+			}
+
+			xPos--;
+
+			return 1;
+
+		}
+
+
+	}
+
 	return 0;
-	
+
+
 }
+
+// int Hex::getUserInput(string s1, string s2, int &xPos, int &yPos)
+// {
+// 	// return values : 
+// 	// 0 -> invalid input, 1 -> valid position,  2 -> LOAD command, 3 -> SAVE command
+
+// 	if(s1 == "LOAD")
+// 		return 2;
+// 	else if(s1 == "SAVE")
+// 		return 3;
+
+// 	if(s1.length() == 1)
+// 	{
+// 		//A 3
+
+// 		//lower case
+// 		if(s1[0] >= 97)
+// 			yPos = s1[0] - 97;
+// 		//upper case
+// 		else if(s1[0] >= 65)
+// 			yPos = s1[0] - 65;
+
+// 		xPos = s2[0] - '0';
+
+// 		if(s2.length() == 2)
+// 		{
+// 			xPos *= 10;
+// 			xPos += (s2[1] - '0');
+// 		}
+
+// 		xPos--;
+
+// 		return 1;
+// 	}
+
+
+// 	cerr << "Invalid input..." << endl;
+// 	return 0;
+	
+// }
 
 
 void Hex::play(int xPos, int yPos)

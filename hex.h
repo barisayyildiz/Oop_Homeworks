@@ -38,7 +38,7 @@ private:
 	int didSomebodyWin(std::vector<std::vector<int>> visited, int xPos, int yPos);
 	int isMoveable(std::vector<std::vector<int>> visited, int xPos, int yPos);
 
-	int getUserInput(std::string s1, std::string s2, int &xPos, int &yPos);
+	int getUserInput(std::string input, std::string &filename, int &xPos, int &yPos);
 
 	static int nonEmptyCells;
 
