@@ -58,13 +58,10 @@ void Hex::drawBoard()
 		for(int j=0; j<size; j++)
 		{
 			cout << static_cast<char>( hexCells[i][j].getCellStatus() ) << " ";
-			// cout << static_cast<char>( board[i][j] ) << " ";
 		}
 		cout << "\n";
 	}
 
-
-	// cout << (hexCells[0][0].getCellStatus() == empty) << endl;
 }
 
 void Hex::playGame()
@@ -103,27 +100,23 @@ void Hex::playGame()
 		}
 	}
 
+	// clear buffer
 	cin.ignore(1000, '\n');
 
 }
 
 void Hex::gameLoop()
 {
-	// // active -> 0, terminated -> 1
-	// cout << "game status : " << getGameStatus() << endl;
+	// active -> 0, terminated -> 1
 
 	int xPos, yPos;
 	string s1, s2;
 	int input;
 
-	/*
-	gameType -> 0		2-player
-	gameType -> 1		1-player vs bot
-	*/
+	
+	// gameType -> 0		2-player
+	// gameType -> 1		1-player vs bot
 
-	/*
-	gameOver	false
-	*/
 
 	drawBoard();
 
@@ -146,13 +139,9 @@ void Hex::gameLoop()
 				cout << "\nUser-" << getTurn()+1 << "'s turn" << endl;
 			}
 
-			// ==================== BURADAN SONRASI DÜZELTİLECEK!!! ==================== //
-
 			cout << "Please enter your move or command (ex : A 3 or SAVE/LOAD yourfilename.txt or QUIT) : ";
-			// cin >> s1;
 			getline( cin, s1);
 
-			// input = getUserInput(s1, s2, xPos, yPos);
 			input = getUserInput(s1, s2, xPos, yPos);
 
 			if(input == 0)
@@ -202,12 +191,10 @@ void Hex::gameLoop()
 		}
 		else
 		{
-			// grid[xPos][yPos] = oLower;
 			hexCells[xPos][yPos].setCellStatus(oLower);
 			cout << endl << "o to " <<  static_cast<char>(yPos+65) << " " << xPos + 1 << endl << endl;
 		}
 
-		// counter++;
 		setCounter(counter+1);
 
 		if(isEndOfTheGame())
@@ -278,7 +265,6 @@ int Hex::getUserInput(string input, string &filename, int &xPos, int &yPos)
 			return 2;
 		}else if(tokens[0].length() == 1)
 		{
-			// konum almışız
 			// lower case
 			if(tokens[0][0] >= 'a')
 				yPos = tokens[0][0] - 'a';
@@ -304,53 +290,11 @@ int Hex::getUserInput(string input, string &filename, int &xPos, int &yPos)
 
 		}
 
-
 	}
 
 	return 0;
 
-
 }
-
-// int Hex::getUserInput(string s1, string s2, int &xPos, int &yPos)
-// {
-// 	// return values : 
-// 	// 0 -> invalid input, 1 -> valid position,  2 -> LOAD command, 3 -> SAVE command
-
-// 	if(s1 == "LOAD")
-// 		return 2;
-// 	else if(s1 == "SAVE")
-// 		return 3;
-
-// 	if(s1.length() == 1)
-// 	{
-// 		//A 3
-
-// 		//lower case
-// 		if(s1[0] >= 97)
-// 			yPos = s1[0] - 97;
-// 		//upper case
-// 		else if(s1[0] >= 65)
-// 			yPos = s1[0] - 65;
-
-// 		xPos = s2[0] - '0';
-
-// 		if(s2.length() == 2)
-// 		{
-// 			xPos *= 10;
-// 			xPos += (s2[1] - '0');
-// 		}
-
-// 		xPos--;
-
-// 		return 1;
-// 	}
-
-
-// 	cerr << "Invalid input..." << endl;
-// 	return 0;
-	
-// }
 
 
 void Hex::play(int xPos, int yPos)
@@ -361,9 +305,6 @@ void Hex::play(int xPos, int yPos)
 
 	hexCells[xPos][yPos].setCellStatus(oLower);
 	
-
-	cout << "turn : " << turn << endl;
-	cout << "bitti : " << isEndOfTheGame() << endl;
 
 	if(turn)
 		turn = 0;
@@ -382,9 +323,6 @@ void Hex::play()
 	counter++;
 	hexCells[xPos][yPos].setCellStatus(xLower);
 
-
-	cout << "turn : " << turn << endl;
-	cout << "bitti : " << isEndOfTheGame() << endl;
 
 	if(turn)
 		turn = 0;
@@ -456,8 +394,6 @@ void Hex::calculateBestMove(int &xPos, int &yPos)
 	xPos = center[0];
 	yPos = center[1];
 
-	// cout << "xPos : " << xPos << ", yPos : " << yPos << endl;
-
 	return;
 }
 
@@ -476,7 +412,6 @@ void Hex::centerofGravity(int *center, int totalX, int totalY, int increment)
 
 int Hex::isEndOfTheGame()
 {
-	// int visited[12][12];
 	vector<vector<int>> visited(size, vector<int> (size, 0));
 
 
@@ -650,10 +585,10 @@ void Hex::saveBoard(string filename)
 
 	fout.open(filename);
 
-	fout << size << endl;
-	fout << counter << endl;
-	fout << gameType << endl;
-	fout << turn << endl;
+	fout << getSize() << endl;
+	fout << getCounter() << endl;
+	fout << getGameType() << endl;
+	fout << getTurn() << endl;
 
 	for(int i=0; i<size; i++)
 	{
@@ -675,7 +610,7 @@ void Hex::loadBoard(string filename)
 	ifstream fin;
 
 	int temp;
-	int newSize;
+	int newSize, newCounter, newGameType, newTurn;
 
 	// we need to adjust nonEmptyCells
 	nonEmptyCells -= counter;
@@ -691,18 +626,19 @@ void Hex::loadBoard(string filename)
 	}
 
 	fin >> newSize;
-	fin >> counter;
-	fin >> gameType;
-	fin >> turn;
+	fin >> newCounter;
+	fin >> newGameType;
+	fin >> newTurn;
 
-	cout << "test!!!!!!!!!!!!!!!!!!!!" << endl;
-	// Need to resize!!!
 
 	hexCells.resize(newSize);
 	for(int i=0; i<newSize; i++)
 		hexCells[i].resize(newSize);
 
-	size = newSize;
+	setSize(newSize);
+	setCounter(counter);
+	setGameType(newGameType);
+	setTurn(newTurn);
 
 
 	for(int i=0; i<size; i++)

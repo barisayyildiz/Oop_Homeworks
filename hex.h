@@ -37,45 +37,47 @@ private:
 	void initVisited(std::vector<std::vector<int>> visited);
 	int didSomebodyWin(std::vector<std::vector<int>> visited, int xPos, int yPos);
 	int isMoveable(std::vector<std::vector<int>> visited, int xPos, int yPos);
+	void drawBoard();
 
 	int getUserInput(std::string input, std::string &filename, int &xPos, int &yPos);
+
+	void fileIO();
+	void play();
+	void play(int xPos, int yPos);
+	void playGame();
 
 	static int nonEmptyCells;
 
 	// FILE I/O
 	int orderChar(char c);
 
+	void saveBoard(std::string filename);
+	void loadBoard(std::string filename);
+
 public:
 	Hex();
-	void drawBoard();
-	void fileIO();
-	void play();
-	void play(int xPos, int yPos);
-	void playGame();
 	void gameLoop();
 
-	// getter
+	// getters and setters
 	inline int getCounter(){return counter;};
-	bool compare(Hex h1);
-	inline bool getGameStatus(){return gameStatus;};
-	inline int getTurn(){return turn;};
-	inline int getGameType(){return gameType;};
-	inline int getSize(){return size;};
-
-	// setter
 	inline void setCounter(int c){counter = c;};
+
+	inline bool getGameStatus(){return gameStatus;};
 	inline void setGameStatus(bool b){gameStatus = b;};
+
+	inline int getTurn(){return turn;};
 	inline void setTurn(int t){turn = t;};
+
+	inline int getGameType(){return gameType;};
 	inline void setGameType(int g){gameType = g;};
+
+	inline int getSize(){return size;};
 	inline void setSize(int s){size = s;};
 
-
+	bool compare(Hex h1);
 
 	inline static int getNonEmptyCells(){return nonEmptyCells;};
 
-	// FILE I/O
-	void saveBoard(std::string filename);
-	void loadBoard(std::string filename);
 
 };
 
