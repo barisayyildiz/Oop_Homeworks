@@ -16,7 +16,7 @@ int Hex::nonEmptyCells = 0;
 
 Hex::Hex() : size(0), turn(0), counter(0), gameStatus(true)
 {
-	// gets user input
+	// gets the user input
 	playGame();
 
 	initHexCells();

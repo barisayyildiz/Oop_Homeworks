@@ -65,6 +65,7 @@ int main()
 			cout << "Which game do you want to continue, (indexing starts at 0) (ex. 0): ";
 			cin >> index;
 
+			// clears buffer
 			cin.ignore(1000, '\n');
 
 			if(index >= gameVector.size())
@@ -89,6 +90,7 @@ int main()
 			cout << "Which two games do you want to compare, (indexing starts at 0) (ex. 0 1) : ";
 			cin >> index >> index2;
 
+			// clears buffer
 			cin.ignore(1000, '\n');
 
 			if(index >= gameVector.size() || index2 >= gameVector.size())
