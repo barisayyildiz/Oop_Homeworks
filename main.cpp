@@ -15,8 +15,9 @@ int main()
 
 	bool mainLoop = true;
 	char input;
-	unsigned index;
-	unsigned index2;
+	unsigned int index;
+	unsigned int index2;
+	int cmp;
 
 	string s1 = "board1.txt", s2 = "board2.txt";
 
@@ -99,7 +100,12 @@ int main()
 				continue;
 			}
 
-			cout << gameVector[index].compare(gameVector[index2]);
+			cmp = gameVector[index].compare(gameVector[index2]);
+
+			if(cmp == 1)
+				cout << "\nThe board with the index " << index << " has more marked cells for the user" << endl;
+			else
+				cout << "\nThe board with the index " << index2 << " has more marked cells for the user" << endl; 
 
 
 		}else if(input == 'q')
