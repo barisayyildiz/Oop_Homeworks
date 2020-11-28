@@ -274,8 +274,6 @@ int Hex::getUserInput(string input, string &filename, int &xPos, int &yPos)
 		// tokens.push_back(token);
 	}
 
-	cout << "tokens are : " << endl;
-
 	// for(decltype(tokens.size()) i = 0; i<tokens.size(); i++)
 	// {
 	// 	cout << tokens[i] << endl;
@@ -627,8 +625,7 @@ int Hex::isMoveable(int **visited, int xPos, int yPos)
 	return 0;
 }
 
-
-bool Hex::compare(Hex h1)
+bool Hex::operator == (Hex h1)
 {
 	int counter = 0, counter2 = 0;
 
@@ -662,9 +659,47 @@ bool Hex::compare(Hex h1)
 		}
 	}
 
-
 	return (counter > counter2);
 }
+
+
+// bool Hex::compare(Hex h1)
+// {
+// 	int counter = 0, counter2 = 0;
+
+// 	if(getGameType() == 0)
+// 	{
+// 		counter = getCounter();
+// 	}else if(getGameType() == 1)
+// 	{
+// 		for(int i=0; i<size; i++)
+// 		{
+// 			for(int j=0; j<size; j++)
+// 			{
+// 				if(hexCells[i][j].getCellStatus() == oLower)
+// 					counter++;
+// 			}
+// 		}
+// 	}
+
+// 	if(h1.getGameType() == 0)
+// 	{
+// 		counter2 = h1.getCounter();
+// 	}else if(h1.getGameType() == 1)
+// 	{
+// 		for(int i=0; i<size; i++)
+// 		{
+// 			for(int j=0; j<size; j++)
+// 			{
+// 				if(hexCells[i][j].getCellStatus() == oLower)
+// 					counter2++;
+// 			}
+// 		}
+// 	}
+
+
+// 	return (counter > counter2);
+// }
 
 
 // ===================== FILE IO ==================== //

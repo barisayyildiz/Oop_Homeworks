@@ -15,20 +15,7 @@ enum cell
 class Hex
 {
 private:
-	class Cell
-	{
-	private:
-		cell cellStatus;
-	public:
-		Cell(cell s = empty);
 
-		// getter and setter functions for cellStatus
-		inline cell getCellStatus(){return cellStatus;};
-		inline void setCellStatus(cell s){cellStatus = s;};
-	};
-
-	// 2d vector that contains hexCells
-	Cell **hexCells;
 	
 	// variables
 	int size, turn, counter, gameType;
@@ -50,7 +37,7 @@ private:
 	// int didSomebodyWin(std::vector<std::vector<int>> visited, int xPos, int yPos);
 	// int isMoveable(std::vector<std::vector<int>> visited, int xPos, int yPos);
 
-	// draws the board
+	// // draws the board
 	void drawBoard();
 
 	// gets the raw user input and tokenizes
@@ -82,6 +69,23 @@ private:
 	void loadBoard(std::string filename);
 
 public:
+
+	class Cell
+	{
+	private:
+		cell cellStatus;
+	public:
+		Cell(cell s = empty);
+
+		// getter and setter functions for cellStatus
+		inline cell getCellStatus(){return cellStatus;};
+		inline void setCellStatus(cell s){cellStatus = s;};
+	};
+
+	// 2d vector that contains hexCells
+	Cell **hexCells;
+
+
 	// constructor functions
 	Hex();
 
@@ -109,8 +113,11 @@ public:
 	inline int getSize(){return size;};
 	inline void setSize(int s){size = s;};
 
+	// // compares two objects by the user cells
+	// bool compare(Hex h1);
+
 	// compares two objects by the user cells
-	bool compare(Hex h1);
+	bool operator ==(Hex h1);
 
 	// gets the non empty cells for all objects
 	inline static int getNonEmptyCells(){return nonEmptyCells;};

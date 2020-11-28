@@ -100,7 +100,9 @@ int main()
 				continue;
 			}
 
-			cmp = gameVector[index].compare(gameVector[index2]);
+			// cmp = gameVector[index].compare(gameVector[index2]);
+
+			cmp = gameVector[index] == gameVector[index2];
 
 			if(cmp == 1)
 				cout << "\nThe board with the index " << index << " has more marked cells for the user" << endl;
