@@ -167,6 +167,8 @@ void Hex::gameLoop()
 
 	while(getGameStatus() == true)
 	{
+		cout << "counter : " << getCounter() << endl;
+
 		if(getGameType() == 1 && getTurn() == 0)
 		{
 			cout << "\nComputer's turn" << endl;
@@ -223,6 +225,11 @@ void Hex::gameLoop()
 				}
 
 				--(*this);
+				// human vs ai
+				if(getGameType() == 1 && getCounter() != 0)
+				{
+					--(*this);
+				}
 
 				// also can be done with
 				// (*this)--;
