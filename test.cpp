@@ -10,14 +10,18 @@ using namespace std;
 
 int main()
 {
-	Hex h1;
+	cell c1 = empty;
 
-	Hex h2;
+	cout << static_cast<int>(c1) << endl;
+
+	// Hex h1;
+
+	// Hex h2;
 
 
-	h2 = h1;
+	// h2 = h1;
 
-	cout << h2.getSize() << endl;
+	// cout << h2.getSize() << endl;
 	
 
 	return 0;
