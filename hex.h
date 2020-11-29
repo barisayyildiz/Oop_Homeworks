@@ -142,6 +142,13 @@ public:
 		return *this;
 	}
 
+	Hex operator --(int)
+	{
+		Hex temp = *this;
+		--(*this);
+		return temp;
+	}
+
 
 };
 

@@ -221,6 +221,9 @@ void Hex::gameLoop()
 				}
 
 				--(*this);
+
+				// also can be done with
+				// (*this)--;
 				cout << "Board, after undoing : " << endl << endl;
 
 				drawBoard();
