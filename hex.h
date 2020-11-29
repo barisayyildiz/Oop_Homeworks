@@ -149,6 +149,35 @@ public:
 		return temp;
 	}
 
+	friend std::ostream& operator << (std::ostream& out, Hex &h1)
+	{
+		// header
+		out << "  ";
+		for(int i=0; i<h1.getSize(); i++)
+		{
+			out << static_cast<char>(97 + i) << " ";
+		}
+		out << "\n";
+
+		for(int i=0; i<h1.getSize(); i++)
+		{
+			// numbers
+			out << i+1 << " ";
+
+			// indentation
+			for(int indent=0; indent<=i; indent++)
+				out << " ";
+
+			for(int j=0; j<h1.getSize(); j++)
+			{
+				out << static_cast<char>( h1.hexCells[i][j].getCellStatus() ) << " ";
+			}
+			out << "\n";
+		}
+
+
+		return out;
+	}
 
 };
 

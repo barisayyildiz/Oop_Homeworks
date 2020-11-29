@@ -162,7 +162,8 @@ void Hex::gameLoop()
 	string s1, s2;
 	int input;
 
-	drawBoard();
+	// drawBoard();
+	cout << *this << endl;
 
 	while(getGameStatus() == true)
 	{
@@ -198,7 +199,8 @@ void Hex::gameLoop()
 				loadBoard(s2);
 				
 				cout << "The new board is : " << endl;
-				drawBoard();
+				// drawBoard();
+				cout << *this << endl;
 
 				continue;
 			}else if(input == 3)
@@ -226,7 +228,8 @@ void Hex::gameLoop()
 				// (*this)--;
 				cout << "Board, after undoing : " << endl << endl;
 
-				drawBoard();
+				// drawBoard();
+				cout << *this << endl;
 				continue;
 			}
 
@@ -266,126 +269,10 @@ void Hex::gameLoop()
 		else
 			turn = 1;
 
-		drawBoard();
+		// drawBoard();
+		cout << *this << endl;
 	}
 }
-
-
-
-// void Hex::gameLoop()
-// {
-// 	// active -> 0, terminated -> 1
-
-// 	int xPos, yPos;
-// 	string s1, s2;
-// 	int input;
-
-	
-// 	// gameType -> 0		2-player
-// 	// gameType -> 1		1-player vs bot
-
-
-// 	drawBoard();
-
-// 	while(getGameStatus() == true)
-// 	{
-// 		if(getGameType() == 1 && getTurn() == 0)
-// 		{
-// 			cout << "\nComputer's turn" << endl;
-
-// 			calculateBestMove(xPos, yPos);
-
-// 		}else
-// 		{
-// 			if(gameType == 1)
-// 			{
-// 				// user vs bot
-// 				cout << "\nUser's turn" << endl;
-// 			}else
-// 			{
-// 				cout << "\nUser-" << getTurn()+1 << "'s turn" << endl;
-// 			}
-
-// 			cout << "Please enter your move or command (ex : A 3 or SAVE/LOAD yourfilename.txt or QUIT) : ";
-// 			getline( cin, s1);
-
-// 			input = getUserInput(s1, s2, xPos, yPos);
-
-// 			if(input == 0)
-// 			{
-// 				continue;
-// 			}else if(input == 2)
-// 			{
-// 				loadBoard(s2);
-				
-// 				cout << "The new board is : " << endl;
-// 				drawBoard();
-
-// 				continue;
-// 			}else if(input == 3)
-// 			{
-// 				saveBoard(s2);
-// 				cout << "The board information is saved to the file " << s2 << "..." << endl;
-
-// 				continue;
-// 			}else if(input == 4)
-// 			{
-// 				cout << "Leaving the game..." << endl;
-// 				return;
-// 			}
-
-// 			// out of border
-// 			if(xPos < 0 || xPos >= size || yPos < 0 || yPos >= size)
-// 			{
-// 				cerr << "Out of border..." << endl;
-// 				continue;
-// 			}
-
-// 			if(hexCells[xPos][yPos].getCellStatus() != empty)
-// 			{
-// 				cerr << "Position is not empty" << endl;
-// 				continue;
-// 			}
-
-// 		}
-
-// 		// place x's and o's
-// 		if(getTurn() == 0)
-// 		{
-// 			// grid[xPos][yPos] = xLower;
-// 			hexCells[xPos][yPos].setCellStatus(xLower);
-// 			cout << endl << "x to " <<  static_cast<char>(yPos+65) << " " << xPos + 1 << endl << endl;
-// 		}
-// 		else
-// 		{
-// 			hexCells[xPos][yPos].setCellStatus(oLower);
-// 			cout << endl << "o to " <<  static_cast<char>(yPos+65) << " " << xPos + 1 << endl << endl;
-// 		}
-
-// 		setCounter(counter+1);
-
-// 		if(isEndOfTheGame())
-// 		{
-// 			if(getGameType() == 1 && getTurn() == 0)
-// 				cout << "\nComputer wins" << endl;
-// 			else if(getGameType() == 1 && getTurn() == 1)
-// 				cout << "\nUser wins" << endl;
-// 			else
-// 				cout << "\nUser-" << turn+1 << " wins" << endl;
-
-// 			setGameStatus(false);
-// 		}
-
-// 		drawBoard();
-
-// 		if(getTurn() == 0)
-// 			setTurn(1);
-// 		else
-// 			setTurn(0);
-
-// 	}
-
-// }
 
 
 int Hex::getUserInput(string input, string &filename, int &xPos, int &yPos)
@@ -1036,7 +923,8 @@ void Hex::loadBoard(string filename)
 		}
 	}
 
-	drawBoard();
+	// drawBoard();
+	cout << *this << endl;
 
 }
 

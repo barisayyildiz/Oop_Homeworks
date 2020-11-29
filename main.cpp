@@ -121,5 +121,8 @@ int main()
 	}
 
 
+	cout << gameVector[0] << endl;
+
+
 	return 0;
 }
