@@ -135,163 +135,16 @@ public:
 	// some helper function to get char type of an enum number
 	int orderChar(char c);
 
-
-	friend std::ofstream& operator << (std::ofstream& fout, Hex &h1)
-	{
-		char temp;
-
-		fout << h1.getSize() << std::endl;
-		fout << h1.getCounter() << std::endl;
-		fout << h1.getGameType() << std::endl;
-		fout << h1.getTurn() << std::endl;
-
-		for(int i=0; i<h1.getSize(); i++)
-		{
-			for(int  j=0; j<h1.getSize(); j++)
-			{
-				temp = static_cast<char>( h1.hexCells[i][j].getCellStatus() );
-
-				fout << h1.orderChar(temp);
-			}
-			fout << std::endl;
-		}
-
-		return fout;
-	}
-
-	friend std::ifstream& operator >> (std::ifstream& fin, Hex &h1)
-	{
-		int temp;
-		int newSize, newCounter, newGameType, newTurn;
-
-		// we need to adjust nonEmptyCells
-		nonEmptyCells -= h1.counter;
-
-		std::string line;
-
-
-		if(!fin)
-		{
-			std::cerr << "No such file exists...\n\n";
-			return fin;
-		}
+	friend std::ofstream& operator << (std::ofstream& fout, Hex &h1);
+	friend std::ifstream& operator >> (std::ifstream& fin, Hex &h1);
+	Hex& operator -- ();
+	Hex operator --(int);
+	friend std::ostream& operator << (std::ostream& out, Hex &h1);
 
 
 
-		fin >> newSize;
-		fin >> newCounter;
-		fin >> newGameType;
-		fin >> newTurn;
 
-
-		for(int i=0; i<h1.getSize(); i++)
-		{
-			delete[] h1.hexCells[i];
-		}
-		delete[] h1.hexCells;
-
-		h1.hexCells = new Cell*[newSize];
-		for(int i=0; i<newSize; i++)
-			h1.hexCells[i] = new Cell[newSize];
-
-
-		h1.setSize(newSize);
-		h1.setCounter(newCounter);
-		h1.setGameType(newGameType);
-		h1.setTurn(newTurn);
-
-
-		for(int i=0; i<h1.getSize(); i++)
-		{
-			fin >> line;
-			for(int j=0; j<h1.getSize(); j++)
-			{
-				temp = line[j] - '0';
-				h1.hexCells[i][j] = static_cast<cell>(temp);
-
-				switch(temp)
-				{
-					case 0:
-						h1.hexCells[i][j].setCellStatus(empty);
-						break;
-					case 1:
-						h1.hexCells[i][j].setCellStatus(xLower);
-						nonEmptyCells++;
-						break;
-					case 2:
-						h1.hexCells[i][j].setCellStatus(oLower);
-						nonEmptyCells++;
-						break;
-					case 3:
-						h1.hexCells[i][j].setCellStatus(xCapital);
-						nonEmptyCells++;
-						break;
-					case 4:
-						h1.hexCells[i][j].setCellStatus(oCapital);
-						nonEmptyCells++;
-						break;
-				}
-			}
-		}
-
-
-		// drawBoard();
-		std::cout << h1 << std::endl;
-
-		return fin;
-
-	}
-
-
-	Hex& operator -- ()
-	{
-		counter--;
-		hexCells[previousMoves[counter][0]][previousMoves[counter][1]] = empty;
-
-		if(turn == 0)
-			turn = 1;
-		else
-			turn = 0;
-
-		return *this;
-	}
-
-	Hex operator --(int)
-	{
-		Hex temp = *this;
-		--(*this);
-		return temp;
-	}
-
-	friend std::ostream& operator << (std::ostream& out, Hex &h1)
-	{
-		// header
-		out << "  ";
-		for(int i=0; i<h1.getSize(); i++)
-		{
-			out << static_cast<char>(97 + i) << " ";
-		}
-		out << "\n";
-
-		for(int i=0; i<h1.getSize(); i++)
-		{
-			// numbers
-			out << i+1 << " ";
-
-			// indentation
-			for(int indent=0; indent<=i; indent++)
-				out << " ";
-
-			for(int j=0; j<h1.getSize(); j++)
-			{
-				out << static_cast<char>( h1.hexCells[i][j].getCellStatus() ) << " ";
-			}
-			out << "\n";
-		}
-
-
-		return out;
-	}
+	
 
 };
 

@@ -946,4 +946,170 @@ void Hex::loadBoard(string filename)
 
 }
 
+// ============================ OPERATOR OVERLOADINGS ============================= //
+// ================================================================================ //
+// ================================================================================ //
+// ================================================================================ //
+// ================================================================================ //
+// ================================================================================ //
+
+
+
+ofstream& operator << (ofstream& fout, Hex &h1)
+{
+	char temp;
+
+	fout << h1.getSize() << endl;
+	fout << h1.getCounter() << endl;
+	fout << h1.getGameType() << endl;
+	fout << h1.getTurn() << endl;
+
+	for(int i=0; i<h1.getSize(); i++)
+	{
+		for(int  j=0; j<h1.getSize(); j++)
+		{
+			temp = static_cast<char>( h1.hexCells[i][j].getCellStatus() );
+
+			fout << h1.orderChar(temp);
+		}
+		fout << endl;
+	}
+
+	return fout;
+}
+
+ifstream& operator >> (ifstream& fin, Hex &h1)
+{
+	int temp;
+	int newSize, newCounter, newGameType, newTurn;
+
+	// we need to adjust nonEmptyCells
+	Hex::nonEmptyCells -= h1.counter;
+
+	string line;
+
+
+	if(!fin)
+	{
+		cerr << "No such file exists...\n\n";
+		return fin;
+	}
+
+
+
+	fin >> newSize;
+	fin >> newCounter;
+	fin >> newGameType;
+	fin >> newTurn;
+
+
+	for(int i=0; i<h1.getSize(); i++)
+	{
+		delete[] h1.hexCells[i];
+	}
+	delete[] h1.hexCells;
+
+	h1.hexCells = new Hex::Cell*[newSize];
+	for(int i=0; i<newSize; i++)
+		h1.hexCells[i] = new Hex::Cell[newSize];
+
+
+	h1.setSize(newSize);
+	h1.setCounter(newCounter);
+	h1.setGameType(newGameType);
+	h1.setTurn(newTurn);
+
+
+	for(int i=0; i<h1.getSize(); i++)
+	{
+		fin >> line;
+		for(int j=0; j<h1.getSize(); j++)
+		{
+			temp = line[j] - '0';
+			h1.hexCells[i][j] = static_cast<cell>(temp);
+
+			switch(temp)
+			{
+				case 0:
+					h1.hexCells[i][j].setCellStatus(empty);
+					break;
+				case 1:
+					h1.hexCells[i][j].setCellStatus(xLower);
+					Hex::nonEmptyCells++;
+					break;
+				case 2:
+					h1.hexCells[i][j].setCellStatus(oLower);
+					Hex::nonEmptyCells++;
+					break;
+				case 3:
+					h1.hexCells[i][j].setCellStatus(xCapital);
+					Hex::nonEmptyCells++;
+					break;
+				case 4:
+					h1.hexCells[i][j].setCellStatus(oCapital);
+					Hex::nonEmptyCells++;
+					break;
+			}
+		}
+	}
+
+
+	// drawBoard();
+	cout << h1 << endl;
+
+	return fin;
+
+}
+
+
+Hex& Hex::operator -- ()
+{
+	counter--;
+	hexCells[previousMoves[counter][0]][previousMoves[counter][1]] = empty;
+
+	if(turn == 0)
+		turn = 1;
+	else
+		turn = 0;
+
+	return *this;
+}
+
+Hex Hex::operator --(int)
+{
+	Hex temp = *this;
+	--(*this);
+	return temp;
+}
+
+ostream& operator << (ostream& out, Hex &h1)
+{
+	// header
+	out << "  ";
+	for(int i=0; i<h1.getSize(); i++)
+	{
+		out << static_cast<char>(97 + i) << " ";
+	}
+	out << "\n";
+
+	for(int i=0; i<h1.getSize(); i++)
+	{
+		// numbers
+		out << i+1 << " ";
+
+		// indentation
+		for(int indent=0; indent<=i; indent++)
+			out << " ";
+
+		for(int j=0; j<h1.getSize(); j++)
+		{
+			out << static_cast<char>( h1.hexCells[i][j].getCellStatus() ) << " ";
+		}
+		out << "\n";
+	}
+
+
+	return out;
+}
+
 
