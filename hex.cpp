@@ -13,28 +13,28 @@ Hex::Cell::Cell(cell s):cellStatus(s)
 
 int Hex::nonEmptyCells = 0;
 
-Hex::Hex() : size(0), turn(0), counter(0), gameStatus(true), hexCells(nullptr), cap(10)
+Hex::Hex() : size(0), turn(0), counter(0), gameStatus(true), hexCells(nullptr), cap(10), previousMoves(nullptr)
 {
 	// gets the user input
 	playGame();
 
 	initHexCells();
 
+	previousMoves = initPreviousMoves();
+
 	// main game loop
 	gameLoop();
 
-	previousMoves = initPreviousMoves();
-
 }
 
-Hex::Hex(int s, int gT) : size(s), turn(0), counter(0), gameType(gT), gameStatus(true), hexCells(nullptr), cap(10)
+Hex::Hex(int s, int gT) : size(s), turn(0), counter(0), gameType(gT), gameStatus(true), hexCells(nullptr), cap(10), previousMoves(nullptr)
 {
 	initHexCells();
 
 	previousMoves = initPreviousMoves();
 }
 
-Hex::Hex(int s, int gT, string &filename) : size(s), turn(0), counter(0), gameType(gT), gameStatus(true), hexCells(nullptr), cap(10)
+Hex::Hex(int s, int gT, string &filename) : size(s), turn(0), counter(0), gameType(gT), gameStatus(true), hexCells(nullptr), cap(10), previousMoves(nullptr)
 {
 	initHexCells();
 
