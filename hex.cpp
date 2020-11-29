@@ -184,13 +184,14 @@ void Hex::gameLoop()
 				cout << "\nUser-" << getTurn()+1 << "'s turn" << endl;
 			}
 
-			cout << "Please enter your move or command (ex : A 3 or SAVE/LOAD yourfilename.txt or QUIT) : ";
+			cout << "Please enter your move or command (ex : A 3 or SAVE/LOAD yourfilename.txt or QUIT or PREV) : ";
 			getline( cin, s1);
 
 			input = getUserInput(s1, s2, xPos, yPos);
 
 			if(input == 0)
 			{
+				cerr << "Invalid input..." << endl;
 				continue;
 			}else if(input == 2)
 			{
@@ -210,6 +211,20 @@ void Hex::gameLoop()
 			{
 				cout << "Leaving the game..." << endl;
 				return;
+
+			}else if(input == 5)
+			{
+				if(getCounter() <= 0)
+				{
+					cout << "Cannot undo..." << endl << endl;
+					continue;
+				}
+
+				--(*this);
+				cout << "Board, after undoing : " << endl << endl;
+
+				drawBoard();
+				continue;
 			}
 
 			// out of border
@@ -224,9 +239,6 @@ void Hex::gameLoop()
 				cerr << "Position is not empty" << endl;
 				continue;
 			}
-
-
-			cout << "-------------hamle alındı---------------------" << endl;
 
 
 			// makes move, increases the counter
@@ -376,7 +388,7 @@ void Hex::gameLoop()
 int Hex::getUserInput(string input, string &filename, int &xPos, int &yPos)
 {
 	// return values : 
-	// 0 -> invalid input, 1 -> valid position,  2 -> LOAD command, 3 -> SAVE command, 4 -> QUIT
+	// 0 -> invalid input, 1 -> valid position,  2 -> LOAD command, 3 -> SAVE command, 4 -> QUIT, 5 -> PREV
 
 	// vector <string> tokens;
 	string tokens[5];
@@ -411,7 +423,23 @@ int Hex::getUserInput(string input, string &filename, int &xPos, int &yPos)
 		if(tokens[0] == "QUIT")
 		{
 			return 4;
+		}else if(tokens[0] == "PREV")
+		{
+			return 5;
 		}
+		// else if(tokens[0] == "PREV")
+		// {
+		// 	if(getCounter() <= 0)
+		// 	{
+		// 		cout << "Cannot undo..." << endl << endl;
+		// 	}else
+		// 	{
+		// 		--(*this);
+
+		// 		cout << "Board, after undoing : " << endl << endl;
+		// 		drawBoard();
+		// 	}
+		// }
 
 	}else if(counter == 2)
 	{

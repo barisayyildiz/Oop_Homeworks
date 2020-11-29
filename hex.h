@@ -128,6 +128,21 @@ public:
 	// gets the non empty cells for all objects
 	inline static int getNonEmptyCells(){return nonEmptyCells;};
 
+
+	Hex& operator -- ()
+	{
+		counter--;
+		hexCells[previousMoves[counter][0]][previousMoves[counter][1]] = empty;
+
+		if(turn == 0)
+			turn = 1;
+		else
+			turn = 0;
+
+		return *this;
+	}
+
+
 };
 
 #endif
