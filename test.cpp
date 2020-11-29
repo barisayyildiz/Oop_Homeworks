@@ -3,26 +3,46 @@
 #include <vector>
 #include <fstream>
 
-#include "hex.h"
-
 using namespace std;
+
+class A
+{
+private:
+	int x, y;
+	string fileName;
+public:
+	A(int a, int b) : x(a), y(b)
+	{/*left empty*/}
+
+	inline int getX(){return x;};
+	inline int getY(){return y;};
+	inline string getFileName(){return fileName;};
+	inline void setFileName(string s){fileName = s;};
+
+	friend ofstream& operator << (std::ofstream &fout, A &a1);
+
+};
+
+ofstream& operator << (std::ofstream &fout, A &a1)
+{
+	fout << "x : " << a1.getX() << ", y : " << a1.getY();
+
+
+	return fout;
+}
 
 
 int main()
 {
-	cell c1 = empty;
+	A obj(4564,12312412);
 
-	cout << static_cast<int>(c1) << endl;
+	ofstream fout;
 
-	// Hex h1;
+	fout.open("board1.txt");
 
-	// Hex h2;
+	fout << obj << endl;
 
-
-	// h2 = h1;
-
-	// cout << h2.getSize() << endl;
-	
+	fout.close();
 
 	return 0;
 }

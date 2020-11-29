@@ -198,7 +198,12 @@ void Hex::gameLoop()
 				continue;
 			}else if(input == 2)
 			{
-				loadBoard(s2);
+				// loadBoard(s2);
+
+				ifstream fin;
+				fin.open(s2);
+				fin >> (*this);
+				fin.close();
 				
 				cout << "The new board is : " << endl;
 				// drawBoard();
@@ -207,7 +212,13 @@ void Hex::gameLoop()
 				continue;
 			}else if(input == 3)
 			{
-				saveBoard(s2);
+				// saveBoard(s2);
+
+				ofstream fout;
+				fout.open(s2);
+				fout << (*this);
+				fout.close();
+
 				cout << "The board information is saved to the file " << s2 << "..." << endl;
 
 				continue;
