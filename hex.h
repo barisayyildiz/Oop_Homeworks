@@ -72,6 +72,13 @@ private:
 	// loads the board from the file
 	void loadBoard(std::string filename);
 
+
+	// for calculating score
+	int calculateScore();
+	int scoreHelper(int** visited, int xPos, int yPos, cell c);
+
+
+
 public:
 
 	class Cell

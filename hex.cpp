@@ -187,7 +187,7 @@ void Hex::gameLoop()
 				cout << "\nUser-" << getTurn()+1 << "'s turn" << endl;
 			}
 
-			cout << "Please enter your move or command (ex : A 3 or SAVE/LOAD yourfilename.txt or QUIT or PREV) : ";
+			cout << "Please enter your move or command (ex : A 3 or SAVE/LOAD yourfilename.txt or QUIT or PREV or SCORE) : ";
 			getline( cin, s1);
 
 			input = getUserInput(s1, s2, xPos, yPos);
@@ -249,6 +249,10 @@ void Hex::gameLoop()
 				// drawBoard();
 				cout << *this << endl;
 				continue;
+			}else if(input == 6)
+			{
+				cout << "Active user's score is : " << calculateScore() << endl;
+				continue;
 			}
 
 			// out of border
@@ -296,7 +300,7 @@ void Hex::gameLoop()
 int Hex::getUserInput(string input, string &filename, int &xPos, int &yPos)
 {
 	// return values : 
-	// 0 -> invalid input, 1 -> valid position,  2 -> LOAD command, 3 -> SAVE command, 4 -> QUIT, 5 -> PREV
+	// 0 -> invalid input, 1 -> valid position,  2 -> LOAD command, 3 -> SAVE command, 4 -> QUIT, 5 -> PREV, 6 -> SCORE
 
 	// vector <string> tokens;
 	string tokens[5];
@@ -334,6 +338,9 @@ int Hex::getUserInput(string input, string &filename, int &xPos, int &yPos)
 		}else if(tokens[0] == "PREV")
 		{
 			return 5;
+		}else if(tokens[0] == "SCORE")
+		{
+			return 6;
 		}
 		// else if(tokens[0] == "PREV")
 		// {
@@ -1112,4 +1119,150 @@ ostream& operator << (ostream& out, Hex &h1)
 	return out;
 }
 
+// ============================= FOR CALCULATING SCORE ========================= //
+// ============================================================================= //
+// ============================================================================= //
+// ============================================================================= //
+// ============================================================================= //
 
+int Hex::calculateScore()
+{
+	int **visited = nullptr;
+	int value;
+	int score = -1000;
+	// visited = initVisited(visited);
+
+	int turn = getTurn();
+
+	if(turn == 0)
+	{
+		// x
+		for(int i=0; i<getSize(); i++)
+		{
+			for(int j=0; j<getSize(); j++)
+			{
+				if(hexCells[i][j].getCellStatus() == xLower)
+				{
+					visited = initVisited(visited);
+					value = scoreHelper(visited, i, j, xLower);
+					if(value > score)
+						score = value;
+				}
+
+			}
+		}
+
+	}else
+	{
+		// o
+		for(int i=0; i<getSize(); i++)
+		{
+			for(int j=0; j<getSize(); j++)
+			{
+				if(hexCells[i][j].getCellStatus() == oLower)
+				{
+					visited = initVisited(visited);
+					value = scoreHelper(visited, i, j, oLower);
+					if(value > score)
+						score = value;
+				}
+			}
+		}
+	}
+
+	return score;
+
+}
+
+int Hex::scoreHelper(int** visited, int xPos, int yPos, cell c)
+{
+	if(xPos >= getSize() || xPos < 0 || yPos >= getSize() || yPos < 0)
+		return 0;
+
+	int temp_x, temp_y;
+	int total = 0;
+
+	int maximum = 0;
+
+	if(c == xLower)
+	{
+		// first two is +2, last two is +1
+		int directionX[4][2] = {{0,1}, {-1,1}, {-1,0}, {1,0}};
+		for(int i=0; i<4; i++)
+		{
+			total = 0;
+
+			temp_x = xPos + directionX[i][0];
+			temp_y = yPos + directionX[i][1];
+			if(temp_x >= getSize() || temp_x < 0 || temp_y >= getSize() || temp_y < 0 || visited[temp_x][temp_y] == 1)
+				continue;
+
+
+			if(i == 0 || i == 1)
+			{
+				// +2 points
+				if(hexCells[temp_x][temp_y].getCellStatus() == c)
+				{
+					visited[temp_x][temp_y] = 1;
+					total = 2 + scoreHelper(visited, temp_x, temp_y, c);
+					if(total > maximum)
+						maximum = total;
+				}
+			}else
+			{
+				// +1 points
+				if(hexCells[temp_x][temp_y].getCellStatus() == c)
+				{
+					visited[temp_x][temp_y] = 1;
+					total = 1 + scoreHelper(visited, temp_x, temp_y, c);
+					if(total > maximum)
+						maximum = total;
+				}
+			}
+
+		}
+
+
+	}else
+	{
+		// first two is +2, last two is +1
+		int directionO[4][2] = {{1,0}, {1,-1}, {0,-1}, {0,1}};
+		for(int i=0; i<4; i++)
+		{
+			total = 0;
+
+			temp_x = xPos + directionO[i][0];
+			temp_y = yPos + directionO[i][1];
+			if(temp_x >= getSize() || temp_x < 0 || temp_y >= getSize() || temp_y < 0 || visited[temp_x][temp_y] == 1)
+				continue;
+
+
+			if(i == 0 || i == 1)
+			{
+				// +2 points
+				if(hexCells[temp_x][temp_y].getCellStatus() == c)
+				{
+					visited[temp_x][temp_y] = 1;
+					total = 2 + scoreHelper(visited, temp_x, temp_y, c);
+					if(total > maximum)
+						maximum = total;
+				}
+			}else
+			{
+				// +1 points
+				if(hexCells[temp_x][temp_y].getCellStatus() == c)
+				{
+					visited[temp_x][temp_y] = 1;
+					total = 1 + scoreHelper(visited, temp_x, temp_y, c);
+					if(total > maximum)
+						maximum = total;
+				}
+			}
+
+		}
+
+	}
+
+
+	return maximum;
+}
