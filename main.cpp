@@ -83,6 +83,16 @@ int main()
 
 			gameVector[index].gameLoop();
 
+			if(gameVector[index].getGameStatus() == false)
+			{
+				// if the current game is over
+				for(unsigned int i=index; i<gameVector.size() - 1; i++)
+				{
+					gameVector[index] = gameVector[index+1];
+				}
+				gameVector.resize(gameVector.size() - 1);
+			}
+
 
 		}else if(input == '3')
 		{

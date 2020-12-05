@@ -81,49 +81,66 @@ A::~A()
 
 int main()
 {
-	int counter = 0;
-	A* ptr = new A[2];
+	vector <int> arr;
 
-	cout << "----------------" << endl;
+	arr.push_back(3);
+	arr.push_back(4);
+	arr.push_back(5);
+	arr.push_back(6);
 
-	ptr[counter++] = A();
-	ptr[counter++] = A(8);
+	arr.resize(3);
 
-	cout << "----------------" << endl;	
+	cout << "size : " << arr.size() << endl;
 
-	cout << "0th element : " << endl;
-	ptr[0].printArr();
+	for(unsigned int i=0; i<arr.size(); i++)
+	{
+		cout << arr[i] << " ";
+	}
 	cout << endl;
 
-	cout << "1st element : " << endl;
-	ptr[1].printArr();
-	cout << endl;
+	// int counter = 0;
+	// A* ptr = new A[2];
 
-	cout << "----------------" << endl;
+	// cout << "----------------" << endl;
 
-	A* temp = new A[3];
+	// ptr[counter++] = A();
+	// ptr[counter++] = A(8);
 
-	for(int i=0; i<counter; i++)
-	{
-		// assignment operator
-		temp[counter] = ptr[counter];
-	}
+	// cout << "----------------" << endl;	
 
-	temp[counter++] = A(9);
+	// cout << "0th element : " << endl;
+	// ptr[0].printArr();
+	// cout << endl;
 
-	delete[] ptr;
-	ptr = nullptr;
+	// cout << "1st element : " << endl;
+	// ptr[1].printArr();
+	// cout << endl;
 
-	ptr = temp;
+	// cout << "----------------" << endl;
 
-	temp = nullptr;
+	// A* temp = new A[3];
 
-	cout << "----------------" << endl;
-	for(int i=0; i<counter; i++)
-	{
-		ptr[i].printArr();
-		cout << endl;
-	}
+	// for(int i=0; i<counter; i++)
+	// {
+	// 	// assignment operator
+	// 	temp[counter] = ptr[counter];
+	// }
+
+	// temp[counter++] = A(9);
+
+	// delete[] ptr;
+	// ptr = nullptr;
+
+	// ptr = temp;
+
+	// temp = nullptr;
+
+	// cout << "----------------" << endl;
+	// for(int i=0; i<counter; i++)
+	// {
+	// 	ptr[i].printArr();
+	// 	cout << endl;
+	// }
 
 
 
