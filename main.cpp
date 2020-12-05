@@ -21,8 +21,8 @@ int main()
 
 	string s1 = "board1.txt", s2 = "board2.txt";
 
-	gameVector.push_back(Hex(6, 0));
-	gameVector.push_back(Hex(8, 0));
+	gameVector.push_back(Hex(6, 1));
+	gameVector.push_back(Hex(8));
 	gameVector.push_back(Hex(10, 0));
 	gameVector.push_back(Hex(12, 0, s1));
 	gameVector.push_back(Hex(6, 0, s2));

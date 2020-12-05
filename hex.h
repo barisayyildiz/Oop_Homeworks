@@ -100,6 +100,8 @@ public:
 	// constructor functions
 	Hex();
 
+	explicit Hex(int s);
+
 	// gets the size and game type
 	Hex(int s, int gT);
 

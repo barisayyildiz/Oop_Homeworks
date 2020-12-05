@@ -1,29 +1,18 @@
 
+play fonksiyonu -> Cell return edicek!!!
+explicit -> conversion constructor oluştur!!!
+Big3 -> eklenecek!!!
+
+
+---------------------------------------------------------------------------
 
 
  You will change your play functions. Your new class will have two functions named play that
 plays the game for a single step. First function does not take a parameter and it plays the
 computer and it returns the Cell where it made a change. The second function takes a Cell
 position and it plays the user.
-
-
-
-
- Write a function that returns a score for the user. The score will be higher if the board is better
-for the user. It is highest if the user wins and it is zero at the beginning of the game. You may
-choose to count the number of connected cells in the correct direction.
- Overload operator== for comparing two Hex games like you did in HW3.
-
-
  
 
 You will use all the object oriented techniques that we learned in the class including nullptr,
 explicit keywords.
-
-
-
-Destructor fonksiyonu eklenecek
-
-
-
 
