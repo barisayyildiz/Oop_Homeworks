@@ -110,6 +110,9 @@ public:
 	// copy constructor
 	Hex(const Hex& h1);
 
+	// destructor
+	~Hex();
+
 
 
 	// gets the size and game type

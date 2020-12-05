@@ -142,6 +142,29 @@ Hex::Hex(const Hex& h1)
 }
 
 
+// destructor
+Hex::~Hex()
+{
+	if(previousMoves != nullptr)
+	{
+		for(int i=0; i<cap; i++)
+		{
+			delete[] previousMoves[i];
+		}
+		delete[] previousMoves;
+	}
+
+	if(hexCells != nullptr)
+	{
+		for(int i=0; i<size; i++)
+		{
+			delete[] hexCells[i];
+		}
+		delete[] hexCells;
+	}
+
+}
+
 
 
 
