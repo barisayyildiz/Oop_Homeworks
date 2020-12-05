@@ -8,41 +8,136 @@ using namespace std;
 class A
 {
 private:
-	int x, y;
-	string fileName;
+	int x;
+	int *arr;
 public:
-	A(int a, int b) : x(a), y(b)
-	{/*left empty*/}
+	A();
+	A(int s);
+	A(const A& a1);
+	A& operator = (const A& a1);
+	~A();
 
-	inline int getX(){return x;};
-	inline int getY(){return y;};
-	inline string getFileName(){return fileName;};
-	inline void setFileName(string s){fileName = s;};
 
-	friend ofstream& operator << (std::ofstream &fout, A &a1);
-
+	inline int getX()const{return x;};
+	
+	void printArr()const
+	{
+		for(int i=0; i<x; i++)
+			cout << arr[i] << " ";
+		cout << endl;
+	}
 };
 
-ofstream& operator << (std::ofstream &fout, A &a1)
+A::A() : x(5), arr(nullptr)
 {
-	fout << "x : " << a1.getX() << ", y : " << a1.getY();
+	cout << "default constructor çalıştı" << endl;
+	arr = new int[x];
+	for(int i=0; i<x; i++)
+		arr[i] = i * 10;
+}
 
+A::A(int s) : x(s), arr(nullptr)
+{
+	cout << "conversion constructor çalıştı" << endl;
+	arr = new int[x];
+	for(int i=0; i<x; i++)
+		arr[i] = i * 10;
+}
 
-	return fout;
+A::A(const A& a1)
+{
+	cout << "copy constructor çalıştı" << endl;
+	x = a1.getX();
+
+	arr = new int[x];
+	for(int i=0; i<x; i++)
+		arr[i] = i * 10;
+}
+
+A& A::operator = (const A& a1)
+{
+	cout << "assignment operatorü çalıştı" << endl;
+	if(arr != nullptr)
+	{
+		delete[] arr;
+	}
+
+	x = a1.getX();
+
+	arr = new int[x];
+	for(int i=0; i<x; i++)
+		arr[i] = i * 10;
+
+	return *this;
+}
+
+A::~A()
+{
+	cout << "destructor çalıştı" << endl;
+	if(arr != nullptr)
+		delete[] arr;
 }
 
 
 int main()
 {
-	A obj(4564,12312412);
+	int counter = 0;
+	A* ptr = new A[2];
 
-	ofstream fout;
+	cout << "----------------" << endl;
 
-	fout.open("board1.txt");
+	ptr[counter++] = A();
+	ptr[counter++] = A(8);
 
-	fout << obj << endl;
+	cout << "----------------" << endl;	
 
-	fout.close();
+	cout << "0th element : " << endl;
+	ptr[0].printArr();
+	cout << endl;
+
+	cout << "1st element : " << endl;
+	ptr[1].printArr();
+	cout << endl;
+
+	cout << "----------------" << endl;
+
+	A* temp = new A[3];
+
+	for(int i=0; i<counter; i++)
+	{
+		// assignment operator
+		temp[counter] = ptr[counter];
+	}
+
+	temp[counter++] = A(9);
+
+	delete[] ptr;
+	ptr = nullptr;
+
+	ptr = temp;
+
+	temp = nullptr;
+
+	cout << "----------------" << endl;
+	for(int i=0; i<counter; i++)
+	{
+		ptr[i].printArr();
+		cout << endl;
+	}
+
+
+
+	// vector <A> myVec;
+
+	// myVec.push_back(A());
+	// cout << "-------------" << endl;
+	// myVec.push_back(A());
+	// cout << "-------------" << endl;
+
+	// // myVec.pop_back();
+
+	// cout << "size : " << myVec.size() << endl;
+
 
 	return 0;
 }
