@@ -64,7 +64,7 @@ Hex::Hex(int s, int gT, string &filename) : size(s), turn(0), counter(0), gameTy
 // assignment operator
 Hex& Hex::operator = (const Hex& h1)
 {
-	cout << "assignment operatorü çalıştı" << endl;
+	// cout << "assignment operatorü çalıştı" << endl;
 	if(previousMoves != nullptr)
 	{
 		for(int i=0; i<cap; i++)
@@ -119,7 +119,7 @@ Hex& Hex::operator = (const Hex& h1)
 // copy constructor
 Hex::Hex(const Hex& h1)
 {
-	cout << "copy constructor çalıştı" << endl;
+	// cout << "copy constructor çalıştı" << endl;
 	
 	size = h1.getSize();
 	turn = h1.getTurn();
@@ -205,17 +205,6 @@ void Hex::initHexCells()
 		}
 	}
 
-	// hexCells.resize(size);
-	// for(int i=0; i<size; i++)
-	// 	hexCells[i].resize(size);
-
-	// for(int i=0; i<size; i++)
-	// {
-	// 	for(int j=0; j<size; j++)
-	// 	{
-	// 		hexCells[i][j].setCellStatus(empty);
-	// 	}
-	// }
 }
 
 void Hex::drawBoard()
@@ -298,8 +287,6 @@ void Hex::gameLoop()
 
 	while(getGameStatus() == true)
 	{
-		cout << "counter : " << getCounter() << endl;
-
 		if(getGameType() == 1 && getTurn() == 0)
 		{
 			cout << "\nComputer's turn" << endl;
@@ -329,22 +316,19 @@ void Hex::gameLoop()
 				continue;
 			}else if(input == 2)
 			{
-				// loadBoard(s2);
-
+				// load the board
 				ifstream fin;
 				fin.open(s2);
 				fin >> (*this);
 				fin.close();
 				
 				cout << "The new board is : " << endl;
-				// drawBoard();
 				cout << *this << endl;
 
 				continue;
 			}else if(input == 3)
 			{
-				// saveBoard(s2);
-
+				// save the board
 				ofstream fout;
 				fout.open(s2);
 				fout << (*this);
@@ -377,7 +361,7 @@ void Hex::gameLoop()
 				// (*this)--;
 				cout << "Board, after undoing : " << endl << endl;
 
-				// drawBoard();
+				// draw the board
 				cout << *this << endl;
 				continue;
 			}else if(input == 6)
@@ -418,12 +402,13 @@ void Hex::gameLoop()
 
 		}
 
+		// toggle the turn
 		if(turn)
 			turn = 0;
 		else
 			turn = 1;
 
-		// drawBoard();
+		// draw the board
 		cout << *this << endl;
 	}
 }
@@ -434,7 +419,6 @@ int Hex::getUserInput(string input, string &filename, int &xPos, int &yPos)
 	// return values : 
 	// 0 -> invalid input, 1 -> valid position,  2 -> LOAD command, 3 -> SAVE command, 4 -> QUIT, 5 -> PREV, 6 -> SCORE
 
-	// vector <string> tokens;
 	string tokens[5];
 	int counter = 0;
 
@@ -447,20 +431,14 @@ int Hex::getUserInput(string input, string &filename, int &xPos, int &yPos)
 	while(getline(stream, token, ' '))
 	{
 		tokens[counter++] = token;
-		// tokens.push_back(token);
 	}
 
-	// for(decltype(tokens.size()) i = 0; i<tokens.size(); i++)
-	// {
-	// 	cout << tokens[i] << endl;
-	// }
 
 	for(int i=0; i<counter; i++)
 	{
 		cout << tokens[i] << endl;
 	}
 
-	// token.size() -> counter
 
 	if(counter == 1)
 	{
@@ -474,19 +452,6 @@ int Hex::getUserInput(string input, string &filename, int &xPos, int &yPos)
 		{
 			return 6;
 		}
-		// else if(tokens[0] == "PREV")
-		// {
-		// 	if(getCounter() <= 0)
-		// 	{
-		// 		cout << "Cannot undo..." << endl << endl;
-		// 	}else
-		// 	{
-		// 		--(*this);
-
-		// 		cout << "Board, after undoing : " << endl << endl;
-		// 		drawBoard();
-		// 	}
-		// }
 
 	}else if(counter == 2)
 	{
@@ -577,7 +542,7 @@ void Hex::play(int xPos, int yPos)
 
 void Hex::play()
 {
-	// ai's turn
+	// bot's turn
 	if(counter == cap)
 	{
 		cap += 10;
@@ -698,7 +663,6 @@ void Hex::centerofGravity(int *center, int totalX, int totalY, int increment)
 
 int Hex::isEndOfTheGame()
 {
-	// vector<vector<int>> visited(size, vector<int> (size, 0));
 	int **visited = nullptr;
 	visited = initVisited(visited);
 
@@ -762,17 +726,6 @@ int** Hex::initVisited(int **visited)
 	return temp;
 
 }
-
-// void Hex::initVisited(vector<vector<int>> visited)
-// {
-// 	for(int i=0; i<size; i++)
-// 	{
-// 		for(int j=0; j<size; j++)
-// 		{
-// 			visited[i][j] = 0;
-// 		}
-// 	}
-// }
 
 
 int Hex::didSomebodyWin(int **visited, int xPos, int yPos)
@@ -901,82 +854,11 @@ bool Hex::operator == (Hex h1)
 
 	return (markedCellsForTheUser() > h1.markedCellsForTheUser());
 
-	// if(getGameType() == 0)
-	// {
-	// 	counter = getCounter();
-	// }else if(getGameType() == 1)
-	// {
-	// 	for(int i=0; i<size; i++)
-	// 	{
-	// 		for(int j=0; j<size; j++)
-	// 		{
-	// 			if(hexCells[i][j].getCellStatus() == oLower)
-	// 				counter++;
-	// 		}
-	// 	}
-	// }
-
-	// if(h1.getGameType() == 0)
-	// {
-	// 	counter2 = h1.getCounter();
-	// }else if(h1.getGameType() == 1)
-	// {
-	// 	for(int i=0; i<size; i++)
-	// 	{
-	// 		for(int j=0; j<size; j++)
-	// 		{
-	// 			if(hexCells[i][j].getCellStatus() == oLower)
-	// 				counter2++;
-	// 		}
-	// 	}
-	// }
-
-	// return (counter > counter2);
 }
 
 
-// bool Hex::compare(Hex h1)
-// {
-// 	int counter = 0, counter2 = 0;
 
-// 	if(getGameType() == 0)
-// 	{
-// 		counter = getCounter();
-// 	}else if(getGameType() == 1)
-// 	{
-// 		for(int i=0; i<size; i++)
-// 		{
-// 			for(int j=0; j<size; j++)
-// 			{
-// 				if(hexCells[i][j].getCellStatus() == oLower)
-// 					counter++;
-// 			}
-// 		}
-// 	}
-
-// 	if(h1.getGameType() == 0)
-// 	{
-// 		counter2 = h1.getCounter();
-// 	}else if(h1.getGameType() == 1)
-// 	{
-// 		for(int i=0; i<size; i++)
-// 		{
-// 			for(int j=0; j<size; j++)
-// 			{
-// 				if(hexCells[i][j].getCellStatus() == oLower)
-// 					counter2++;
-// 			}
-// 		}
-// 	}
-
-
-// 	return (counter > counter2);
-// }
-
-
-// ===================== FILE IO ==================== //
-
-
+// helper function for file input output
 int Hex::orderChar(char c)
 {
 	if(c == '.')
@@ -998,127 +880,10 @@ int Hex::orderChar(char c)
 
 }
 
-void Hex::saveBoard(string filename)
-{
-	ofstream fout;
-
-	char temp;
-
-	fout.open(filename);
-
-	fout << getSize() << endl;
-	fout << getCounter() << endl;
-	fout << getGameType() << endl;
-	fout << getTurn() << endl;
-
-	for(int i=0; i<size; i++)
-	{
-		for(int  j=0; j<size; j++)
-		{
-			temp = static_cast<char>( hexCells[i][j].getCellStatus() );
-
-			fout << orderChar(temp);
-		}
-		fout << endl;
-	}
-
-
-	fout.close();
-}
-
-void Hex::loadBoard(string filename)
-{
-	ifstream fin;
-
-	int temp;
-	int newSize, newCounter, newGameType, newTurn;
-
-	// we need to adjust nonEmptyCells
-	nonEmptyCells -= counter;
-
-	string line;
-
-	fin.open(filename);
-
-	if(!fin)
-	{
-		cerr << "No such file exists...\n\n";
-		return;
-	}
-
-	fin >> newSize;
-	fin >> newCounter;
-	fin >> newGameType;
-	fin >> newTurn;
-
-
-	// hexCells.resize(newSize);
-	// for(int i=0; i<newSize; i++)
-	// 	hexCells[i].resize(newSize);
-
-	for(int i=0; i<size; i++)
-	{
-		delete[] hexCells[i];
-	}
-	delete[] hexCells;
-
-	hexCells = new Cell*[newSize];
-	for(int i=0; i<newSize; i++)
-		hexCells[i] = new Cell[newSize];
-
-
-	setSize(newSize);
-	setCounter(counter);
-	setGameType(newGameType);
-	setTurn(newTurn);
-
-
-	for(int i=0; i<size; i++)
-	{
-		fin >> line;
-		for(int j=0; j<size; j++)
-		{
-			temp = line[j] - '0';
-			hexCells[i][j] = static_cast<cell>(temp);
-
-			switch(temp)
-			{
-				case 0:
-					hexCells[i][j].setCellStatus(empty);
-					break;
-				case 1:
-					hexCells[i][j].setCellStatus(xLower);
-					nonEmptyCells++;
-					break;
-				case 2:
-					hexCells[i][j].setCellStatus(oLower);
-					nonEmptyCells++;
-					break;
-				case 3:
-					hexCells[i][j].setCellStatus(xCapital);
-					nonEmptyCells++;
-					break;
-				case 4:
-					hexCells[i][j].setCellStatus(oCapital);
-					nonEmptyCells++;
-					break;
-			}
-		}
-	}
-
-	// drawBoard();
-	cout << *this << endl;
-
-}
 
 // ============================ OPERATOR OVERLOADINGS ============================= //
-// ================================================================================ //
-// ================================================================================ //
-// ================================================================================ //
-// ================================================================================ //
-// ================================================================================ //
 
-
+// =========================== FILE I/0 ============================= //
 
 ofstream& operator << (ofstream& fout, Hex &h1)
 {
@@ -1219,13 +984,15 @@ ifstream& operator >> (ifstream& fin, Hex &h1)
 	}
 
 
-	// drawBoard();
+	// draw the board
 	cout << h1 << endl;
 
 	return fin;
 
 }
 
+
+// ===================== UNDO OPERATIONS ================== //
 
 Hex& Hex::operator -- ()
 {
@@ -1246,6 +1013,8 @@ Hex Hex::operator --(int)
 	--(*this);
 	return temp;
 }
+
+// =========================== DRAWING BOARD =============================== //
 
 ostream& operator << (ostream& out, Hex &h1)
 {
@@ -1278,10 +1047,6 @@ ostream& operator << (ostream& out, Hex &h1)
 }
 
 // ============================= FOR CALCULATING SCORE ========================= //
-// ============================================================================= //
-// ============================================================================= //
-// ============================================================================= //
-// ============================================================================= //
 
 int Hex::calculateScore()
 {

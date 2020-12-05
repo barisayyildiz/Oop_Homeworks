@@ -64,13 +64,6 @@ private:
 	// holds the non empty cells for all objects
 	static int nonEmptyCells;
 
-	// FILE I/O
-
-	// saves the board to the file
-	void saveBoard(std::string filename);
-
-	// loads the board from the file
-	void loadBoard(std::string filename);
 
 
 	// for calculating score

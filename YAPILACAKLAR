@@ -12,11 +12,11 @@ Non Empty Cells -> oyun bitince silme işlemi yap
 --------------------------------- YAPILACAKLAR --------------------------------
 
 hexCells -> getter fonksiyonu ata, belki private olabilir
+play fonksiyonu -> Cell return edicek
+(bu ikisi aynı sayılır)
 
-gereksiz setter fonksiyonları kaldır
+gereksiz setter fonksiyonları kaldır(???)
 
 score fonksiyonu geliştirilebilir
-
-play fonksiyonu -> Cell return edicek
 
 ---------------------------------------------------------------------------
