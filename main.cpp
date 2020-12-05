@@ -54,7 +54,6 @@ int main()
 			if(gameVector[gameVector.size()-1].getGameStatus() == false)
 			{
 				// remove it from active games
-				cout << "Vektörden silinecek..." << endl;
 				gameVector.pop_back();
 			}
 
