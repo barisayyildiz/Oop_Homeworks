@@ -81,6 +81,18 @@ private:
 	// marked cells for the user
 	int markedCellsForTheUser();
 
+	// FILE INPUT/OUTPUT
+
+	// some helper function to get char type of an enum number
+	int orderChar(char c);
+
+	friend std::ofstream& operator << (std::ofstream& fout, Hex &h1);
+	friend std::ifstream& operator >> (std::ifstream& fin, Hex &h1);
+	Hex& operator -- ();
+	Hex operator --(int);
+	friend std::ostream& operator << (std::ostream& out, Hex &h1);
+
+
 
 
 public:
@@ -153,22 +165,6 @@ public:
 
 	// gets the non empty cells for all objects
 	inline static int getNonEmptyCells(){return nonEmptyCells;};
-
-
-
-
-
-	// FILE INPUT/OUTPUT
-
-	// some helper function to get char type of an enum number
-	int orderChar(char c);
-
-	friend std::ofstream& operator << (std::ofstream& fout, Hex &h1);
-	friend std::ifstream& operator >> (std::ifstream& fin, Hex &h1);
-	Hex& operator -- ();
-	Hex operator --(int);
-	friend std::ostream& operator << (std::ostream& out, Hex &h1);
-
 
 
 
