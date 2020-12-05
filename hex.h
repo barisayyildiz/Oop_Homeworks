@@ -125,21 +125,16 @@ public:
 	// Main game loop operations are handled in this function
 	void gameLoop();
 
-	// getters and setters
+	// getter functions
 	inline int getCounter() const{return counter;};
-	inline void setCounter(int c){counter = c;};
 
 	inline bool getGameStatus() const{return gameStatus;};
-	inline void setGameStatus(bool b){gameStatus = b;};
 
 	inline int getTurn() const{return turn;};
-	inline void setTurn(int t){turn = t;};
 
 	inline int getGameType() const{return gameType;};
-	inline void setGameType(int g){gameType = g;};
 
 	inline int getSize() const{return size;};
-	inline void setSize(int s){size = s;};
 
 	inline int getCap() const{return cap;};
 

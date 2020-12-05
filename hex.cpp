@@ -215,7 +215,7 @@ void Hex::playGame()
 			cerr << "Invalid input..." << endl;
 		}else
 		{
-			setSize(tempSize);
+			size = tempSize;
 			break;
 		}
 	}
@@ -228,7 +228,7 @@ void Hex::playGame()
 
 		if(tempType == 0 || tempType == 1)
 		{
-			setGameType(tempType);
+			gameType = tempType;
 			break;
 		}else
 		{
@@ -362,7 +362,7 @@ void Hex::gameLoop()
 				else
 					cout << "\nUser-" << turn+1 << " wins" << endl;
 
-				setGameStatus(false);
+				gameStatus = false;
 				nonEmptyCells -= getCounter(); // remove counter from non empty cells
 			}
 
@@ -908,12 +908,11 @@ ifstream& operator >> (ifstream& fin, Hex &h1)
 	for(int i=0; i<newSize; i++)
 		h1.hexCells[i] = new Hex::Cell[newSize];
 
-
-	h1.setSize(newSize);
-	h1.setCounter(newCounter);
-	h1.setGameType(newGameType);
-	h1.setTurn(newTurn);
-
+	h1.size = newSize;
+	h1.counter = newCounter;
+	h1.gameType = newGameType;
+	h1.turn = newTurn;
+	
 
 	for(int i=0; i<h1.getSize(); i++)
 	{
