@@ -51,6 +51,100 @@ Hex::Hex(int s, int gT, string &filename) : size(s), turn(0), counter(0), gameTy
 
 }
 
+
+// BIG 3
+
+// assignment operator
+Hex& Hex::operator = (const Hex& h1)
+{
+	cout << "assignment operatorü çalıştı" << endl;
+	if(previousMoves != nullptr)
+	{
+		for(int i=0; i<cap; i++)
+		{
+			delete[] previousMoves[i];
+		}
+
+		delete[] previousMoves;
+	}
+	previousMoves = nullptr;
+
+	if(hexCells != nullptr)
+	{
+		for(int i=0; i<size; i++)
+		{
+			delete[] hexCells[i];
+		}
+		delete[] hexCells;
+	}
+	hexCells = nullptr;
+
+
+	size = h1.getSize();
+	turn = h1.getTurn();
+	counter = h1.getCounter();
+	gameType = h1.getGameType();
+	gameStatus = h1.getGameStatus();
+	cap = h1.getCap();
+
+
+	previousMoves = initPreviousMoves();
+	initHexCells();
+
+	for(int i=0; i<size; i++)
+	{
+		for(int j=0; j<size; j++)
+		{
+			hexCells[i][j] = h1.hexCells[i][j];
+		}
+	}
+
+	for(int i=0; i<counter; i++)
+	{
+		previousMoves[i][0] = h1.previousMoves[i][0];
+		previousMoves[i][1] = h1.previousMoves[i][1];
+	}
+
+
+	return *this;
+}
+
+// copy constructor
+Hex::Hex(const Hex& h1)
+{
+	cout << "copy constructor çalıştı" << endl;
+	
+	size = h1.getSize();
+	turn = h1.getTurn();
+	counter = h1.getCounter();
+	gameType = h1.getGameType();
+	gameStatus = h1.getGameStatus();
+	cap = h1.getCap();
+
+
+	previousMoves = initPreviousMoves();
+	initHexCells();
+
+	for(int i=0; i<size; i++)
+	{
+		for(int j=0; j<size; j++)
+		{
+			hexCells[i][j] = h1.hexCells[i][j];
+		}
+	}
+
+	for(int i=0; i<counter; i++)
+	{
+		previousMoves[i][0] = h1.previousMoves[i][0];
+		previousMoves[i][1] = h1.previousMoves[i][1];
+	}
+
+}
+
+
+
+
+
 int** Hex::initPreviousMoves()
 {
 	int **temp = nullptr;

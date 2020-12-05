@@ -102,6 +102,16 @@ public:
 
 	explicit Hex(int s);
 
+	// BIG 3
+
+	// assignment operator
+	Hex& operator = (const Hex& h1);
+
+	// copy constructor
+	Hex(const Hex& h1);
+
+
+
 	// gets the size and game type
 	Hex(int s, int gT);
 
