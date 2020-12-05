@@ -173,8 +173,6 @@ Hex::~Hex()
 }
 
 
-
-
 int** Hex::initPreviousMoves()
 {
 	int **temp = nullptr;
@@ -207,33 +205,6 @@ void Hex::initHexCells()
 
 }
 
-void Hex::drawBoard()
-{
-	// header
-	cout << "  ";
-	for(int i=0; i<size; i++)
-	{
-		cout << static_cast<char>(97 + i) << " ";
-	}
-	cout << "\n";
-
-	for(int i=0; i<size; i++)
-	{
-		// numbers
-		cout << i+1 << " ";
-
-		// indentation
-		for(int indent=0; indent<=i; indent++)
-			cout << " ";
-
-		for(int j=0; j<size; j++)
-		{
-			cout << static_cast<char>( hexCells[i][j].getCellStatus() ) << " ";
-		}
-		cout << "\n";
-	}
-
-}
 
 void Hex::playGame()
 {
@@ -282,7 +253,7 @@ void Hex::gameLoop()
 	string s1, s2;
 	int input;
 
-	// drawBoard();
+	// draw the board
 	cout << *this << endl;
 
 	while(getGameStatus() == true)
@@ -760,7 +731,6 @@ int Hex::didSomebodyWin(int **visited, int xPos, int yPos)
 				if(didSomebodyWin(visited, tempX, tempY))
 				{
 					// capitalize
-					// grid[xPos][yPos] -= 32;
 					hexCells[xPos][yPos].setCellStatus(xCapital);
 					return 1;
 				}
@@ -1052,8 +1022,7 @@ int Hex::calculateScore()
 {
 	int **visited = nullptr;
 	int value;
-	int score = -1000;
-	// visited = initVisited(visited);
+	int score = 0;
 
 	int turn = getTurn();
 

@@ -15,13 +15,15 @@ enum cell
 class Hex
 {
 private:
-
 	
 	// variables
 	int size, turn, counter, gameType;
 	bool gameStatus;
 
+	// saves the previous moves for making undo operation
 	int **previousMoves;
+
+	// capacity of the previous moves array
 	int cap;
 
 	// init previous moves
@@ -35,16 +37,12 @@ private:
 	// checks the end of the game
 	int isEndOfTheGame();
 
+	// visited array is a helper array
 	int** initVisited(int** visited);
+
+	// these two functions are used for detecting end of the game
 	int didSomebodyWin(int** visited, int xPos, int yPos);
 	int isMoveable(int** visited, int xPos, int yPos);
-
-	// void initVisited(std::vector<std::vector<int>> visited);
-	// int didSomebodyWin(std::vector<std::vector<int>> visited, int xPos, int yPos);
-	// int isMoveable(std::vector<std::vector<int>> visited, int xPos, int yPos);
-
-	// // draws the board
-	void drawBoard();
 
 	// gets the raw user input and tokenizes
 	int getUserInput(std::string input, std::string &filename, int &xPos, int &yPos);
@@ -64,21 +62,17 @@ private:
 	// holds the non empty cells for all objects
 	static int nonEmptyCells;
 
-
-
 	// for calculating score
 	int calculateScore();
 	int scoreHelper(int** visited, int xPos, int yPos, cell c);
 
-
 	// marked cells for the user
 	int markedCellsForTheUser();
-
-	// FILE INPUT/OUTPUT
 
 	// some helper function to get char type of an enum number
 	int orderChar(char c);
 
+	// Operator Overloadings
 	friend std::ofstream& operator << (std::ofstream& fout, Hex &h1);
 	friend std::ifstream& operator >> (std::ifstream& fin, Hex &h1);
 	Hex& operator -- ();
@@ -86,10 +80,9 @@ private:
 	friend std::ostream& operator << (std::ostream& out, Hex &h1);
 
 
-
-
 public:
 
+	// Cell class, that contains a cell status with the enum type 'cell'
 	class Cell
 	{
 	private:
@@ -105,14 +98,13 @@ public:
 	// 2d vector that contains hexCells
 	Cell **hexCells;
 
-
 	// constructor functions
 	Hex();
 
+	// conversion constructor
 	explicit Hex(int s);
 
 	// BIG 3
-
 	// assignment operator
 	Hex& operator = (const Hex& h1);
 
@@ -122,14 +114,15 @@ public:
 	// destructor
 	~Hex();
 
-
-
 	// gets the size and game type
 	Hex(int s, int gT);
 
 	// gets the size, game type and filename
 	// and saves the game to the file
 	Hex(int s, int gT, std::string &filename);
+	
+
+	// Main game loop operations are handled in this function
 	void gameLoop();
 
 	// getters and setters
@@ -150,17 +143,11 @@ public:
 
 	inline int getCap() const{return cap;};
 
-	// // compares two objects by the user cells
-	// bool compare(Hex h1);
-
 	// compares two objects by the user cells
 	bool operator ==(Hex h1);
 
 	// gets the non empty cells for all objects
 	inline static int getNonEmptyCells(){return nonEmptyCells;};
-
-
-
 	
 
 };

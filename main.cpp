@@ -45,10 +45,8 @@ int main()
 
 		if(input == '1')
 		{
-			// Hex temp;
-			// cout << "counter : " << temp.getCounter() << endl;
 			gameVector.push_back(Hex());
-			// gameVector.push_back(temp);
+
 			cout << "counter : " << gameVector[gameVector.size() - 1].getCounter() << endl;
 			cout << "GameStatus : " << gameVector[gameVector.size() - 1].getGameStatus() << endl;
 
@@ -84,6 +82,7 @@ int main()
 
 			gameVector[index].gameLoop();
 
+			// if the game is terminated
 			if(gameVector[index].getGameStatus() == false)
 			{
 				// if the current game is over
@@ -117,7 +116,6 @@ int main()
 				continue;
 			}
 
-			// cmp = gameVector[index].compare(gameVector[index2]);
 
 			cmp = (gameVector[index] == gameVector[index2]);
 
@@ -140,8 +138,6 @@ int main()
 		}
 
 	}
-
-
 
 	return 0;
 }
