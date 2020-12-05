@@ -47,8 +47,6 @@ Hex::Hex(int s, int gT, string &filename) : size(s), turn(0), counter(0), gameTy
 
 	previousMoves = initPreviousMoves();
 
-	// saveBoard(filename);
-
 	ofstream fout;
 
 	fout.open(filename);
@@ -64,7 +62,6 @@ Hex::Hex(int s, int gT, string &filename) : size(s), turn(0), counter(0), gameTy
 // assignment operator
 Hex& Hex::operator = (const Hex& h1)
 {
-	// cout << "assignment operatorü çalıştı" << endl;
 	if(previousMoves != nullptr)
 	{
 		for(int i=0; i<cap; i++)
@@ -118,9 +115,7 @@ Hex& Hex::operator = (const Hex& h1)
 
 // copy constructor
 Hex::Hex(const Hex& h1)
-{
-	// cout << "copy constructor çalıştı" << endl;
-	
+{	
 	size = h1.getSize();
 	turn = h1.getTurn();
 	counter = h1.getCounter();
