@@ -8,15 +8,15 @@ Check Non Empty Cells -> düzenle -> compare function -> kullanıcıya deneme ş
 
 Non Empty Cells -> oyun bitince silme işlemi yap
 
+
+--------------------------------- YAPILACAKLAR --------------------------------
+
+hexCells -> getter fonksiyonu ata, belki private olabilir
+
+gereksiz setter fonksiyonları kaldır
+
+score fonksiyonu geliştirilebilir
+
+play fonksiyonu -> Cell return edicek
+
 ---------------------------------------------------------------------------
-
-
- You will change your play functions. Your new class will have two functions named play that
-plays the game for a single step. First function does not take a parameter and it plays the
-computer and it returns the Cell where it made a change. The second function takes a Cell
-position and it plays the user.
- 
-
-You will use all the object oriented techniques that we learned in the class including nullptr,
-explicit keywords.
-
