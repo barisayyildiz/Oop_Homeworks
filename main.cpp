@@ -37,6 +37,7 @@ int main()
 		cout << "1 : to create a new game" << endl;
 		cout << "2 : to continue an active game" << endl;
 		cout << "3 : to compare two active games" << endl;
+		cout << "4 : to get non empty cells for all the games" << endl;
 		cout << "q : to exit" << endl << endl;
 
 		cin >> input;
@@ -125,6 +126,10 @@ int main()
 			else
 				cout << "\nThe board with the index " << index2 << " has more marked cells for the user" << endl; 
 
+
+		}else if(input == '4')
+		{
+			cout << "Total of non empty cells : " << Hex::getNonEmptyCells() << endl << endl;
 
 		}else if(input == 'q')
 		{

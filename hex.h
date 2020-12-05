@@ -78,6 +78,10 @@ private:
 	int scoreHelper(int** visited, int xPos, int yPos, cell c);
 
 
+	// marked cells for the user
+	int markedCellsForTheUser();
+
+
 
 public:
 

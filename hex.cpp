@@ -47,7 +47,14 @@ Hex::Hex(int s, int gT, string &filename) : size(s), turn(0), counter(0), gameTy
 
 	previousMoves = initPreviousMoves();
 
-	saveBoard(filename);
+	// saveBoard(filename);
+
+	ofstream fout;
+
+	fout.open(filename);
+	fout << (*this);
+
+	fout.close();
 
 }
 
@@ -406,6 +413,7 @@ void Hex::gameLoop()
 					cout << "\nUser-" << turn+1 << " wins" << endl;
 
 				setGameStatus(false);
+				nonEmptyCells -= getCounter(); // remove counter from non empty cells
 			}
 
 		}
@@ -863,41 +871,67 @@ int Hex::isMoveable(int **visited, int xPos, int yPos)
 	return 0;
 }
 
-bool Hex::operator == (Hex h1)
+int Hex::markedCellsForTheUser()
 {
-	int counter = 0, counter2 = 0;
-
+	int temp = 0;
 	if(getGameType() == 0)
 	{
-		counter = getCounter();
+		// user vs user
+		// get all the cells
+		temp = getCounter();
 	}else if(getGameType() == 1)
 	{
-		for(int i=0; i<size; i++)
+		// user vs bot
+		// get the cells for the user
+		for(int i=0; i<getSize(); i++)
 		{
-			for(int j=0; j<size; j++)
+			for(int j=0; j<getSize(); j++)
 			{
 				if(hexCells[i][j].getCellStatus() == oLower)
-					counter++;
+					temp++;
 			}
 		}
 	}
 
-	if(h1.getGameType() == 0)
-	{
-		counter2 = h1.getCounter();
-	}else if(h1.getGameType() == 1)
-	{
-		for(int i=0; i<size; i++)
-		{
-			for(int j=0; j<size; j++)
-			{
-				if(hexCells[i][j].getCellStatus() == oLower)
-					counter2++;
-			}
-		}
-	}
+	return temp;
+}
 
-	return (counter > counter2);
+bool Hex::operator == (Hex h1)
+{
+
+	return (markedCellsForTheUser() > h1.markedCellsForTheUser());
+
+	// if(getGameType() == 0)
+	// {
+	// 	counter = getCounter();
+	// }else if(getGameType() == 1)
+	// {
+	// 	for(int i=0; i<size; i++)
+	// 	{
+	// 		for(int j=0; j<size; j++)
+	// 		{
+	// 			if(hexCells[i][j].getCellStatus() == oLower)
+	// 				counter++;
+	// 		}
+	// 	}
+	// }
+
+	// if(h1.getGameType() == 0)
+	// {
+	// 	counter2 = h1.getCounter();
+	// }else if(h1.getGameType() == 1)
+	// {
+	// 	for(int i=0; i<size; i++)
+	// 	{
+	// 		for(int j=0; j<size; j++)
+	// 		{
+	// 			if(hexCells[i][j].getCellStatus() == oLower)
+	// 				counter2++;
+	// 		}
+	// 	}
+	// }
+
+	// return (counter > counter2);
 }
 
 
