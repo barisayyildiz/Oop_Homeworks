@@ -22,10 +22,10 @@ int main()
 	string s1 = "board1.txt", s2 = "board2.txt";
 
 	gameVector.push_back(Hex(15, 1));
-	// gameVector.push_back(Hex(8));
-	// gameVector.push_back(Hex(10, 0));
-	// gameVector.push_back(Hex(12, 0, s1));
-	// gameVector.push_back(Hex(6, 0, s2));
+	gameVector.push_back(Hex(8));
+	gameVector.push_back(Hex(10, 0));
+	gameVector.push_back(Hex(12, 0, s1));
+	gameVector.push_back(Hex(6, 0, s2));
 
 
 	cout << "Welcome to the HEX game..." << endl << endl;
@@ -44,10 +44,10 @@ int main()
 
 		if(input == '1')
 		{
-			Hex temp;
-			cout << "counter : " << temp.getCounter() << endl;
-			// gameVector.push_back(Hex());
-			gameVector.push_back(temp);
+			// Hex temp;
+			// cout << "counter : " << temp.getCounter() << endl;
+			gameVector.push_back(Hex());
+			// gameVector.push_back(temp);
 			cout << "counter : " << gameVector[gameVector.size() - 1].getCounter() << endl;
 			cout << "GameStatus : " << gameVector[gameVector.size() - 1].getGameStatus() << endl;
 
@@ -135,15 +135,6 @@ int main()
 		}
 
 	}
-
-
-	Hex temp(21);
-
-	temp = gameVector[0];
-
-
-	cout << temp << endl;
-
 
 
 
