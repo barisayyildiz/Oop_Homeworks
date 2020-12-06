@@ -271,7 +271,7 @@ void Hex::gameLoop()
 				cout << "\nUser-" << getTurn()+1 << "'s turn" << endl;
 			}
 
-			cout << "Please enter your move or command (ex : A 3 or SAVE/LOAD yourfilename.txt or QUIT or PREV or SCORE) : ";
+			cout << "Please enter your move or command (ex : A 3 or SAVE/LOAD yourfilename.txt or QUIT or UNDO or SCORE) : ";
 			getline( cin, s1);
 
 			input = getUserInput(s1, s2, xPos, yPos);
@@ -317,7 +317,8 @@ void Hex::gameLoop()
 				}
 
 				--(*this);
-				// human vs ai
+				// human vs bot
+				// if the user is playing against the computer, take two step back
 				if(getGameType() == 1 && getCounter() != 0)
 				{
 					--(*this);
@@ -383,7 +384,7 @@ void Hex::gameLoop()
 int Hex::getUserInput(string input, string &filename, int &xPos, int &yPos)
 {
 	// return values : 
-	// 0 -> invalid input, 1 -> valid position,  2 -> LOAD command, 3 -> SAVE command, 4 -> QUIT, 5 -> PREV, 6 -> SCORE
+	// 0 -> invalid input, 1 -> valid position,  2 -> LOAD command, 3 -> SAVE command, 4 -> QUIT, 5 -> UNDO, 6 -> SCORE
 
 	string tokens[5];
 	int counter = 0;
@@ -411,7 +412,7 @@ int Hex::getUserInput(string input, string &filename, int &xPos, int &yPos)
 		if(tokens[0] == "QUIT")
 		{
 			return 4;
-		}else if(tokens[0] == "PREV")
+		}else if(tokens[0] == "UNDO")
 		{
 			return 5;
 		}else if(tokens[0] == "SCORE")
@@ -870,13 +871,23 @@ ofstream& operator << (ofstream& fout, Hex &h1)
 		fout << endl;
 	}
 
+	// save cap
+	fout << h1.getCap() << endl;
+
+	// save previous moves
+	for(int i=0; i<h1.getCounter(); i++)
+	{
+		fout << h1.previousMoves[i][0];
+		fout << h1.previousMoves[i][1] << endl;
+	}
+
 	return fout;
 }
 
 ifstream& operator >> (ifstream& fin, Hex &h1)
 {
 	int temp;
-	int newSize, newCounter, newGameType, newTurn;
+	int newSize, newCounter, newGameType, newTurn, newCap;
 
 	// we need to adjust nonEmptyCells
 	Hex::nonEmptyCells -= h1.counter;
@@ -945,6 +956,28 @@ ifstream& operator >> (ifstream& fin, Hex &h1)
 					break;
 			}
 		}
+	}
+
+	// delete previous moves array
+	for(int i=0; i<h1.cap; i++)
+	{
+		delete[] h1.previousMoves[i];
+	}
+	delete[] h1.previousMoves;
+	h1.previousMoves = nullptr;
+
+	// load cap
+	fin >> newCap;
+	h1.cap = newCap;
+
+	// load the new previousMoves
+	h1.previousMoves = h1.initPreviousMoves();
+
+	for(int i=0; i<h1.getCounter(); i++)
+	{
+		fin >> line;
+		h1.previousMoves[i][0] = line[0] - '0';
+		h1.previousMoves[i][1] = line[1] - '0';
 	}
 
 

@@ -19,4 +19,6 @@ gereksiz setter fonksiyonları kaldır(???)
 
 score fonksiyonu geliştirilebilir
 
+save/load durumlarında undo işlemleri
+
 ---------------------------------------------------------------------------
