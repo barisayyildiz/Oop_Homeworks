@@ -464,7 +464,7 @@ int Hex::getUserInput(string input, string &filename, int &xPos, int &yPos)
 }
 
 
-void Hex::play(int xPos, int yPos)
+Hex::Cell Hex::play(int xPos, int yPos)
 {
 	// user's turn
 	if(counter == cap)
@@ -505,9 +505,11 @@ void Hex::play(int xPos, int yPos)
 	else
 		hexCells[xPos][yPos].setCellStatus(oLower);
 
+	return hexCells[xPos][yPos];
+
 }
 
-void Hex::play()
+Hex::Cell Hex::play()
 {
 	// bot's turn
 	if(counter == cap)
@@ -547,7 +549,7 @@ void Hex::play()
 	counter++;
 	hexCells[xPos][yPos].setCellStatus(xLower);
 
-
+	return hexCells[xPos][yPos];
 }
 
 void Hex::calculateBestMove(int &xPos, int &yPos)

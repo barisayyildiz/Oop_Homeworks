@@ -50,12 +50,6 @@ private:
 	// initilizes hex cells by the size of the board
 	void initHexCells();
 
-	// play functions play the game for single step
-	// play(int, int)	-> for user
-	// play()					-> for bot
-	void play();
-	void play(int xPos, int yPos);
-
 	// gets the user input -> size of the board and game type
 	void playGame();
 
@@ -120,6 +114,15 @@ public:
 	// gets the size, game type and filename
 	// and saves the game to the file
 	Hex(int s, int gT, std::string &filename);
+
+	// play functions play the game for single step
+	// play(int, int)	-> for user
+	// play()					-> for bot
+
+	// put them in public part, to be able to return Cell type
+	Cell play();
+	Cell play(int xPos, int yPos);
+
 	
 
 	// Main game loop operations are handled in this function
