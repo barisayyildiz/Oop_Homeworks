@@ -7,6 +7,8 @@
 
 using namespace std;
 
+namespace hex
+{
 
 Hex::Cell::Cell(cell s):cellStatus(s)
 {/*left empty*/}
@@ -29,6 +31,9 @@ Hex::Hex() : size(0), turn(0), counter(0), gameStatus(true), previousMoves(nullp
 
 Hex::Hex(int s) : size(s), turn(0), counter(0), gameType(0), gameStatus(true), previousMoves(nullptr), cap(10), hexCells(nullptr)
 {
+	// error handling
+	if(size < 6)
+		size = 6;
 	initHexCells();
 
 	previousMoves = initPreviousMoves();
@@ -36,6 +41,11 @@ Hex::Hex(int s) : size(s), turn(0), counter(0), gameType(0), gameStatus(true), p
 
 Hex::Hex(int s, int gT) : size(s), turn(0), counter(0), gameType(gT), gameStatus(true), previousMoves(nullptr), cap(10), hexCells(nullptr)
 {
+	// error handling
+	if(size < 6)
+		size = 6;
+	if(gameType != 0 && gameType != 1)
+		gameType = 0;
 	initHexCells();
 
 	previousMoves = initPreviousMoves();
@@ -43,6 +53,12 @@ Hex::Hex(int s, int gT) : size(s), turn(0), counter(0), gameType(gT), gameStatus
 
 Hex::Hex(int s, int gT, string &filename) : size(s), turn(0), counter(0), gameType(gT), gameStatus(true), previousMoves(nullptr), cap(10), hexCells(nullptr)
 {
+	// error handling
+	if(size < 6)
+		size = 6;
+	if(gameType != 0 && gameType != 1)
+		gameType = 0;
+
 	initHexCells();
 
 	previousMoves = initPreviousMoves();
@@ -247,6 +263,7 @@ void Hex::gameLoop()
 	int xPos, yPos;
 	string s1, s2;
 	int input;
+	Cell temp;
 
 	// draw the board
 	cout << *this << endl;
@@ -352,7 +369,10 @@ void Hex::gameLoop()
 
 
 			// makes move, increases the counter
-			play(xPos, yPos);
+			// play(xPos, yPos);
+			temp.setX(xPos);
+			temp.setY(yPos);
+			play(temp);
 
 			if(isEndOfTheGame())
 			{
@@ -398,12 +418,6 @@ int Hex::getUserInput(string input, string &filename, int &xPos, int &yPos)
 	while(getline(stream, token, ' '))
 	{
 		tokens[counter++] = token;
-	}
-
-
-	for(int i=0; i<counter; i++)
-	{
-		cout << tokens[i] << endl;
 	}
 
 
@@ -463,8 +477,7 @@ int Hex::getUserInput(string input, string &filename, int &xPos, int &yPos)
 
 }
 
-
-Hex::Cell Hex::play(int xPos, int yPos)
+Hex::Cell Hex::play(Cell c1)
 {
 	// user's turn
 	if(counter == cap)
@@ -494,18 +507,18 @@ Hex::Cell Hex::play(int xPos, int yPos)
 		previousMoves = temp;
 	}
 
-	previousMoves[counter][0] = xPos;
-	previousMoves[counter][1] = yPos;
+	previousMoves[counter][0] = c1.getX();
+	previousMoves[counter][1] = c1.getY();
 
 	counter++;
 	nonEmptyCells++;
 
 	if(getTurn() == 0)
-		hexCells[xPos][yPos].setCellStatus(xLower);
+		hexCells[c1.getX()][c1.getY()].setCellStatus(xLower);
 	else
-		hexCells[xPos][yPos].setCellStatus(oLower);
+		hexCells[c1.getX()][c1.getY()].setCellStatus(oLower);
 
-	return hexCells[xPos][yPos];
+	return hexCells[c1.getX()][c1.getY()];
 
 }
 
@@ -792,7 +805,7 @@ int Hex::isMoveable(int **visited, int xPos, int yPos)
 	return 0;
 }
 
-int Hex::markedCellsForTheUser()
+int Hex::markedCellsForTheUser()const
 {
 	int temp = 0;
 	if(getGameType() == 0)
@@ -817,7 +830,7 @@ int Hex::markedCellsForTheUser()
 	return temp;
 }
 
-bool Hex::operator == (Hex h1)
+bool Hex::operator == (const Hex h1)
 {
 
 	return (markedCellsForTheUser() > h1.markedCellsForTheUser());
@@ -1015,7 +1028,7 @@ Hex Hex::operator --(int)
 
 // =========================== DRAWING BOARD =============================== //
 
-ostream& operator << (ostream& out, Hex &h1)
+ostream& operator << (ostream& out, const Hex &h1)
 {
 	// header
 	out << "  ";
@@ -1186,4 +1199,7 @@ int Hex::scoreHelper(int** visited, int xPos, int yPos, cell c)
 
 
 	return maximum;
+}
+
+
 }

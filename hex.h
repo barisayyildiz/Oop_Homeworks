@@ -1,7 +1,9 @@
 #ifndef LIB
 #define LIB
 
-// cell status
+namespace hex
+{
+	// cell status
 enum cell
 {
 	empty = '.',
@@ -14,6 +16,85 @@ enum cell
 
 class Hex
 {
+public:
+
+	// Cell class, that contains a cell status with the enum type 'cell'
+	class Cell
+	{
+	private:
+		cell cellStatus;
+		int x,y;
+
+	public:
+		Cell(cell s = empty);
+
+		// getters and setters
+		inline cell getCellStatus(){return cellStatus;};
+		inline void setCellStatus(cell s){cellStatus = s;};
+
+		inline int getX(){return x;};
+		inline int getY(){return y;};
+		inline void setX(int _x){x = _x;};
+		inline void setY(int _y){y = _y;};
+
+	};
+
+	// constructor functions
+	Hex();
+
+	// conversion constructor
+	explicit Hex(int s);
+
+	// BIG 3
+	// assignment operator
+	Hex& operator = (const Hex& h1);
+
+	// copy constructor
+	Hex(const Hex& h1);
+
+	// destructor
+	~Hex();
+
+	// gets the size and game type
+	Hex(int s, int gT);
+
+	// gets the size, game type and filename
+	// and saves the game to the file
+	Hex(int s, int gT, std::string &filename);
+
+	// play functions play the game for single step
+	// play(int, int)	-> for user
+	// play()					-> for bot
+
+	// put them in public part, to be able to return Cell type
+	Cell play();
+	Cell play(Cell c1);
+
+	
+
+	// Main game loop operations are handled in this function
+	void gameLoop();
+
+	// getter functions
+	inline int getCounter() const{return counter;};
+
+	inline bool getGameStatus() const{return gameStatus;};
+
+	inline int getTurn() const{return turn;};
+
+	inline int getGameType() const{return gameType;};
+
+	inline int getSize() const{return size;};
+
+	inline int getCap() const{return cap;};
+
+	// compares two objects by the user cells
+	bool operator ==(const Hex h1);
+
+	// gets the non empty cells for all objects
+	inline static int getNonEmptyCells(){return nonEmptyCells;};
+
+
 private:
 	
 	// variables
@@ -61,7 +142,7 @@ private:
 	int scoreHelper(int** visited, int xPos, int yPos, cell c);
 
 	// marked cells for the user
-	int markedCellsForTheUser();
+	int markedCellsForTheUser()const;
 
 	// some helper function to get char type of an enum number
 	int orderChar(char c);
@@ -71,83 +152,14 @@ private:
 	friend std::ifstream& operator >> (std::ifstream& fin, Hex &h1);
 	Hex& operator -- ();
 	Hex operator --(int);
-	friend std::ostream& operator << (std::ostream& out, Hex &h1);
-
-
-public:
-
-	// Cell class, that contains a cell status with the enum type 'cell'
-	class Cell
-	{
-	private:
-		cell cellStatus;
-	public:
-		Cell(cell s = empty);
-
-		// getter and setter functions for cellStatus
-		inline cell getCellStatus(){return cellStatus;};
-		inline void setCellStatus(cell s){cellStatus = s;};
-	};
-
+	friend std::ostream& operator << (std::ostream& out, const Hex &h1);
+	
 	// 2d vector that contains hexCells
 	Cell **hexCells;
 
-	// constructor functions
-	Hex();
-
-	// conversion constructor
-	explicit Hex(int s);
-
-	// BIG 3
-	// assignment operator
-	Hex& operator = (const Hex& h1);
-
-	// copy constructor
-	Hex(const Hex& h1);
-
-	// destructor
-	~Hex();
-
-	// gets the size and game type
-	Hex(int s, int gT);
-
-	// gets the size, game type and filename
-	// and saves the game to the file
-	Hex(int s, int gT, std::string &filename);
-
-	// play functions play the game for single step
-	// play(int, int)	-> for user
-	// play()					-> for bot
-
-	// put them in public part, to be able to return Cell type
-	Cell play();
-	Cell play(int xPos, int yPos);
-
-	
-
-	// Main game loop operations are handled in this function
-	void gameLoop();
-
-	// getter functions
-	inline int getCounter() const{return counter;};
-
-	inline bool getGameStatus() const{return gameStatus;};
-
-	inline int getTurn() const{return turn;};
-
-	inline int getGameType() const{return gameType;};
-
-	inline int getSize() const{return size;};
-
-	inline int getCap() const{return cap;};
-
-	// compares two objects by the user cells
-	bool operator ==(Hex h1);
-
-	// gets the non empty cells for all objects
-	inline static int getNonEmptyCells(){return nonEmptyCells;};
-	
 
 };
+
+}
 
 #endif

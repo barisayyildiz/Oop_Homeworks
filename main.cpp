@@ -6,6 +6,7 @@
 #include "hex.h"
 
 using namespace std;
+using namespace hex;
 
 
 int main()
@@ -46,9 +47,6 @@ int main()
 		if(input == '1')
 		{
 			gameVector.push_back(Hex());
-
-			cout << "counter : " << gameVector[gameVector.size() - 1].getCounter() << endl;
-			cout << "GameStatus : " << gameVector[gameVector.size() - 1].getGameStatus() << endl;
 
 			// if the latest game is terminated
 			if(gameVector[gameVector.size()-1].getGameStatus() == false)
