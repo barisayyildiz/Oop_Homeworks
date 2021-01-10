@@ -1025,9 +1025,11 @@ namespace myNamespace{
 
 	AbstractHex::Cell HexArray1D::lastMove()
 	{
-		AbstractHex::Cell temp;
-		return temp;
+		// ERROR HANDLING!!!
+		if(counter == 0)
+			exit(1);
 
+		return hexCells[counter-1];
 	}
 
 	int HexArray1D::numberOfMoves()const
