@@ -9,6 +9,8 @@ int main()
 {
 	HexArray1D h1;
 
+	h1.print();
+
 	cout << h1.getGameStatus() << endl;
 	cout << h1.getSize() << endl;
 	cout << h1.getCap() << endl;

@@ -98,10 +98,11 @@ namespace myNamespace
 
 			inline int getCap() const{return cap;};
 
+			// private'a al sonra
+			void print()const;
 
 		private:
 
-			void print()const;
 			void readFromFile();
 			void writeToFile()const;
 			void reset();
@@ -125,8 +126,8 @@ namespace myNamespace
 			// init previous moves
 			int **initPreviousMoves();
 
-			// checks the end of the game
-			int isEndOfTheGame();
+			// // checks the end of the game
+			// int isEndOfTheGame();
 
 			// visited array is a helper array
 			int** initVisited(int** visited);

@@ -26,6 +26,7 @@ namespace myNamespace{
 
 	}	
 
+
 	void HexArray1D::playGame()
 	{
 		// ERROR HANDLING YAP!!!!
@@ -80,28 +81,43 @@ namespace myNamespace{
 
 	void HexArray1D::initHexCells()
 	{
-		hexCells = (AbstractHex::Cell*)malloc(sizeof(AbstractHex::Cell) * size);
+		hexCells = (AbstractHex::Cell*)malloc(sizeof(AbstractHex::Cell) * size * size);
 
-		for(int i=0; i<size; i++)
+		for(int i=0; i<size*size; i++)
 		{
 			hexCells[i].setCellStatus(empty);
 		}
 
-		// hexCells = new Cell*[size];
+	}
 
-		// for(int i=0; i<size; i++)
-		// {
-		// 	hexCells[i] = new Cell[size];
-		// }
+	void HexArray1D::print() const
+	{
+		// header
+		cout << "  ";
+		for(int i=0; i<getSize(); i++)
+		{
+			cout << static_cast<char>(97 + i) << " ";
+		}
+		cout << "\n";
 
-		// for(int i=0; i<size; i++)
-		// {
-		// 	for(int j=0; j<size; j++)
-		// 	{
-		// 		hexCells[i][j].setCellStatus(empty);
-		// 	}
-		// }
+		int iter = 0;
 
+		for(int i=0; i<getSize(); i++)
+		{
+			// numbers
+			cout << i+1 << " ";
+
+			// indentation
+			for(int indent=0; indent<=i; indent++)
+				cout << " ";
+
+			while(iter/getSize() == i)
+			{
+				cout << static_cast<char>(hexCells[iter++].getCellStatus() ) << " ";
+			}
+
+			cout << "\n";
+		}
 	}
 
 
@@ -119,11 +135,6 @@ namespace myNamespace{
 	// destructor
 	HexArray1D::~HexArray1D(){
 		cout << "destructor" << endl;
-	}
-
-	void HexArray1D::print()const
-	{
-		cout << "print function" << endl;
 	}
 
 	void HexArray1D::readFromFile()
