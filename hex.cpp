@@ -14,7 +14,7 @@ namespace myNamespace{
 
 	int AbstractHex::nonEmptyCells = 0;
 
-	HexArray1D::HexArray1D() : size(0), turn(0), counter(0), gameStatus(true), previousMoves(nullptr), cap(10), hexCells(nullptr)
+	HexArray1D::HexArray1D() : AbstractHex() , previousMoves(nullptr)
 	{
 		// gets user input
 		playGame();
@@ -439,7 +439,7 @@ namespace myNamespace{
 	}
 
 
-	int HexArray1D::getUserInput(string input, string &filename, int &xPos, int &yPos)
+	int AbstractHex::getUserInput(string input, string &filename, int &xPos, int &yPos)
 	{
 		// return values : 
 		// 0 -> invalid input, 1 -> valid position,  2 -> LOAD command, 3 -> SAVE command, 4 -> QUIT, 5 -> UNDO, 6 -> SCORE
@@ -515,7 +515,7 @@ namespace myNamespace{
 
 	}
 
-	void HexArray1D::gameLoop()
+	void AbstractHex::gameLoop()
 	{
 		int xPos, yPos;
 		string s1, s2;

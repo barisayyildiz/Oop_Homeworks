@@ -44,10 +44,42 @@ namespace myNamespace
 			virtual bool operator==(const AbstractHex &aHex)const = 0;
 			virtual Cell lastMove() = 0;
 			virtual int numberOfMoves()const = 0;
+
+			// constructor
+			AbstractHex() : size(0), turn(0), counter(0), gameStatus(true), cap(10), hexCells(nullptr)
+			{/*left empty*/}
+
+			static int getNonEmptyCells(){
+				return nonEmptyCells;
+			}
+			
+			// Main game loop operations are handled in this function
+			void gameLoop();
+			inline bool getGameStatus() const{return gameStatus;};
 		
+			// getter functions
+			inline int getCounter() const{return counter;};
+
+			inline int getTurn() const{return turn;};
+
+			inline int getGameType() const{return gameType;};
+
+			inline int getSize() const{return size;};
+
+			inline int getCap() const{return cap;};
+
 		protected:
 			// holds the non empty cells for all objects
 			static int nonEmptyCells;
+		
+			int size, turn, counter, gameType;
+			bool gameStatus;
+			int cap;
+
+			// gets the raw user input and tokenizes
+			int getUserInput(std::string input, std::string &filename, int &xPos, int &yPos);
+
+			Cell *hexCells;
 
 	};
 
@@ -78,25 +110,6 @@ namespace myNamespace
 			// destructor
 			~HexArray1D();
 
-			static int getNonEmptyCells(){
-				return nonEmptyCells;
-			}
-
-			// Main game loop operations are handled in this function
-			void gameLoop();
-
-			// getter functions
-			inline int getCounter() const{return counter;};
-
-			inline bool getGameStatus() const{return gameStatus;};
-
-			inline int getTurn() const{return turn;};
-
-			inline int getGameType() const{return gameType;};
-
-			inline int getSize() const{return size;};
-
-			inline int getCap() const{return cap;};
 
 			// private'a al sonra
 			void print()const;
@@ -115,13 +128,10 @@ namespace myNamespace
 			Cell lastMove();
 			int numberOfMoves()const;
 
-			int size, turn, counter, gameType;
-			bool gameStatus;
 
 			// saves the previous moves for making undo operation
 			int **previousMoves;
 
-			int cap;
 
 			// init previous moves
 			int **initPreviousMoves();
@@ -136,8 +146,6 @@ namespace myNamespace
 			int didSomebodyWin(int** visited, int xPos, int yPos);
 			int isMoveable(int** visited, int xPos, int yPos);
 
-			// gets the raw user input and tokenizes
-			int getUserInput(std::string input, std::string &filename, int &xPos, int &yPos);
 
 			// initilizes hex cells by the size of the board
 			void initHexCells();
@@ -158,7 +166,6 @@ namespace myNamespace
 
 
 
-			Cell *hexCells;
 
 	};
 
