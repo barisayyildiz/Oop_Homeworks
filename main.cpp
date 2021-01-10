@@ -15,6 +15,7 @@ int main()
 	cout << h1.getSize() << endl;
 	cout << h1.getCap() << endl;
 	cout << h1.getCounter() << endl;	
+	cout << h1.isEnd() << endl;
 	
 
 

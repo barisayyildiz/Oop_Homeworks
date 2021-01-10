@@ -39,7 +39,7 @@ namespace myNamespace
 			virtual void setSize() = 0;
 			virtual Cell play() = 0;
 			virtual Cell play(Cell c1) = 0;
-			virtual bool isEnd()const = 0;
+			virtual bool isEnd() = 0;
 			virtual Cell operator()(int x, int y)const = 0;
 			virtual bool operator==(const AbstractHex &aHex)const = 0;
 			virtual Cell lastMove() = 0;
@@ -100,6 +100,7 @@ namespace myNamespace
 
 			// private'a al sonra
 			void print()const;
+			bool isEnd();
 
 		private:
 
@@ -109,7 +110,6 @@ namespace myNamespace
 			void setSize();
 			Cell play();
 			Cell play(Cell c1);
-			bool isEnd()const;
 			Cell operator()(int x, int y)const;
 			bool operator==(const AbstractHex &aHex)const;
 			Cell lastMove();
