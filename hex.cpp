@@ -871,13 +871,83 @@ namespace myNamespace{
 
 	// assignment operator
 	HexArray1D& HexArray1D::operator = (const HexArray1D& h1){
-		cout << "assignment operator" << endl;
+
+		if(previousMoves != nullptr)
+		{
+			for(int i=0; i<cap; i++)
+			{
+				delete[] previousMoves[i];
+			}
+
+			delete[] previousMoves;
+		}
+		previousMoves = nullptr;
+		
+		if(hexCells != nullptr)
+		{
+			free(hexCells);
+		}
+
+		size = h1.getSize();
+		turn = h1.getTurn();
+		counter = h1.getCounter();
+		gameType = h1.getGameType();
+		gameStatus = h1.getGameStatus();
+		cap = h1.getCap();
+		
+		previousMoves = initPreviousMoves();
+		initHexCells();
+
+		for(int i=0; i<size; i++)
+		{
+			for(int j=0; j<size; j++)
+			{
+				hexCells[i * size + j] = h1.hexCells[i * size + j];
+			}
+		}
+
+		for(int i=0; i<counter; i++)
+		{
+			previousMoves[i][0] = h1.previousMoves[i][0];
+			previousMoves[i][1] = h1.previousMoves[i][1];
+		}
+
 		return *this;
 	}
 
+
+
+
+
+
+
 	// copy constructor
 	HexArray1D::HexArray1D(const HexArray1D& h1){
-		cout << "copy constructor" << endl;
+
+		size = h1.getSize();
+		turn = h1.getTurn();
+		counter = h1.getCounter();
+		gameType = h1.getGameType();
+		gameStatus = h1.getGameStatus();
+		cap = h1.getCap();
+
+		previousMoves = initPreviousMoves();
+		initHexCells();
+
+		for(int i=0; i<size; i++)
+		{
+			for(int j=0; j<size; j++)
+			{
+				hexCells[i * size + j] = h1.hexCells[i * size + j];
+			}
+		}
+
+		for(int i=0; i<counter; i++)
+		{
+			previousMoves[i][0] = h1.previousMoves[i][0];
+			previousMoves[i][1] = h1.previousMoves[i][1];
+		}
+
 	}
 
 	// destructor
@@ -898,6 +968,10 @@ namespace myNamespace{
 			free(hexCells);
 
 	}
+
+
+
+	
 
 
 	void HexArray1D::reset()
