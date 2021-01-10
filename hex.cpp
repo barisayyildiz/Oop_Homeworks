@@ -743,9 +743,125 @@ namespace myNamespace{
 
 	}
 
+	// for AI
+	AbstractHex::Cell HexArray1D::play()
+	{
+		if(counter == cap)
+		{
+			cap += 10;
+
+			int **temp = nullptr;
+
+			temp = initPreviousMoves();
+
+			for(int i=0; i<counter; i++)
+			{
+				temp[i][0] = previousMoves[i][0];
+				temp[i][1] = previousMoves[i][1];
+			}
+
+			// delete and resize previousMoves
+			for(int i=0; i<cap-10; i++)
+			{
+				delete[] previousMoves[i];
+			}
+			delete[] previousMoves;
+
+			previousMoves = nullptr;
+
+			previousMoves = temp;
+		}
+
+		int xPos, yPos;
+		calculateBestMove(xPos, yPos);
+
+		previousMoves[counter][0] = xPos;
+		previousMoves[counter][1] = yPos;
+
+		nonEmptyCells++;
+		counter++;
+		hexCells[xPos * size + yPos].setCellStatus(xLower);
+
+		return hexCells[xPos * size + yPos];
+
+	}
+
+	void HexArray1D::calculateBestMove(int &xPos, int &yPos)
+	{
+		// if the computer is making the first move
+		if(counter == 0)
+		{
+			xPos = size/2;
+			yPos = size/2;
+			return;
+		}
+		int increment = 0;
+
+		int totalX = 0, totalY = 0;
+		int center[2];
+
+		for(int i=0; i<size; i++)
+		{
+			for(int j=0; j<size; j++)
+			{
+				if(hexCells[i * size + j].getCellStatus() == oLower)
+				{
+					totalX += i;
+					totalY += j;
+					increment++;
+				}
+			}
+		}
+
+		//calculate the center of gravity
+		centerofGravity(center, totalX, totalY, increment);
+
+		center[0] = totalX / increment;
+		center[1] = totalY / increment;
+
+		// if the cell is empty, set xPos and yPos
+		if(hexCells[center[0] * size + center[1]].getCellStatus() == empty)
+		{
+			xPos = center[0];
+			yPos = center[1];
+			return;
+		}
+
+		// if it is not, try to find the closest point
+		int direction[4][2] = {{0,1}, {1,0}, {0,-1}, {-1,0}};
+		int turn = 0;
+
+		while(hexCells[center[0] * size + center[1]].getCellStatus() != empty)
+		{
+			if(center[0] + direction[turn][0] >= size || center[0] + direction[turn][0] < 0 || center[1] + direction[turn][1] >= size || center[1] + direction[turn][1] < 0)
+			{
+				turn++;
+				turn %= 4;
+				continue;
+			}
+
+			center[0] += direction[turn][0];
+			center[1] += direction[turn][1];
+
+		}
+
+		xPos = center[0];
+		yPos = center[1];
+
+		return;
+	}
 
 
+	void HexArray1D::centerofGravity(int *center, int totalX, int totalY, int increment)
+	{
+		int x = totalX / increment;
+		int y = totalY / increment;
 
+		center[0] = x;
+		center[1] = y;
+
+		return;
+	}
 
 
 
@@ -792,12 +908,6 @@ namespace myNamespace{
 	void HexArray1D::setSize()
 	{
 		cout << "setSize function" << endl;
-	}
-
-	AbstractHex::Cell HexArray1D::play()
-	{
-		AbstractHex::Cell temp;
-		return temp;
 	}
 
 	// AbstractHex::Cell HexArray1D::play(AbstractHex::Cell c1)

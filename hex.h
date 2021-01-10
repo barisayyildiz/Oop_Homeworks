@@ -151,6 +151,11 @@ namespace myNamespace
 			// some helper function to get char type of an enum number
 			int orderChar(char c);
 
+			// for AI
+			void calculateBestMove(int &xPos, int &yPos);
+
+			void centerofGravity(int *center, int totalX, int totalY, int increment);
+
 
 
 			Cell *hexCells;
