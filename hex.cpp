@@ -23,6 +23,8 @@ namespace myNamespace{
 
 		previousMoves = initPreviousMoves();
 
+		// main game loop
+		gameLoop();
 
 	}	
 
@@ -235,7 +237,7 @@ namespace myNamespace{
 			{
 				// capitalize
 				// hexCells[xPos][yPos] = oCapital;
-				hexCells[size * xPos + yPos].setCellStatus(xCapital);
+				hexCells[size * xPos + yPos].setCellStatus(oCapital);
 				return 1;
 			}
 
@@ -259,7 +261,7 @@ namespace myNamespace{
 					{
 						// capitalize
 						// hexCells[xPos][yPos].setCellStatus(oCapital);
-						hexCells[size * xPos + yPos].setCellStatus(xCapital);
+						hexCells[size * xPos + yPos].setCellStatus(oCapital);
 						return 1;
 					}
 				}
@@ -287,6 +289,292 @@ namespace myNamespace{
 
 		return 0;
 	}
+
+
+	AbstractHex::Cell HexArray1D::play(AbstractHex::Cell c1)
+	{
+		// user's turn
+		if(counter == cap)
+		{
+
+			cap += 10;
+			int **temp = nullptr;
+
+			temp = initPreviousMoves();
+
+			for(int i=0; i<counter; i++)
+			{
+				temp[i][0] = previousMoves[i][0];
+				temp[i][1] = previousMoves[i][1];
+				temp[i][2] = previousMoves[i][2];
+			}
+
+			// delete and resize previousMoves
+			for(int i=0; i<cap-10; i++)
+			{
+				delete[] previousMoves[i];
+			}
+			delete[] previousMoves;
+
+			previousMoves = nullptr;
+
+			previousMoves = temp;
+		}
+
+		previousMoves[counter][0] = c1.getX();
+		previousMoves[counter][1] = c1.getY();
+
+		counter++;
+		nonEmptyCells++;
+
+		if(getTurn() == 0)
+		{
+			// hexCells[c1.getX()][c1.getY()].setCellStatus(xLower);
+			hexCells[c1.getX() * size + c1.getY()].setCellStatus(xLower);
+		}
+		else
+		{
+			// hexCells[c1.getX()][c1.getY()].setCellStatus(oLower);
+			hexCells[c1.getX() * size + c1.getY()].setCellStatus(oLower);
+		}
+
+		return hexCells[c1.getX() * size + c1.getY()];
+
+	}
+
+
+	int HexArray1D::getUserInput(string input, string &filename, int &xPos, int &yPos)
+	{
+		// return values : 
+		// 0 -> invalid input, 1 -> valid position,  2 -> LOAD command, 3 -> SAVE command, 4 -> QUIT, 5 -> UNDO, 6 -> SCORE
+
+		string tokens[5];
+		int counter = 0;
+
+		// sstream type
+		stringstream stream(input);
+
+		string token;
+
+
+		while(getline(stream, token, ' '))
+		{
+			tokens[counter++] = token;
+		}
+
+
+		if(counter == 1)
+		{
+			if(tokens[0] == "QUIT")
+			{
+				return 4;
+			}else if(tokens[0] == "UNDO")
+			{
+				return 5;
+			}else if(tokens[0] == "SCORE")
+			{
+				return 6;
+			}
+
+		}else if(counter == 2)
+		{
+			if(tokens[0] == "SAVE")
+			{
+				filename = tokens[1];
+				return 3;
+			}else if(tokens[0] == "LOAD")
+			{
+				filename = tokens[1];
+				return 2;
+			}else if(tokens[0].length() == 1)
+			{
+				// lower case
+				if(tokens[0][0] >= 'a')
+					yPos = tokens[0][0] - 'a';
+				
+				//upper case
+				else if(tokens[0][0] >= 'A')
+					yPos = tokens[0][0] - 'A';
+
+				if(tokens[1][0] < '0' || tokens[1].length() > 3)
+					return 0;
+
+				xPos = tokens[1][0] - '0';
+
+				if(tokens[1].length() == 2)
+				{
+					xPos *= 10;
+					xPos += (tokens[1][1] - '0');
+				}
+
+				xPos--;
+
+				return 1;
+
+			}
+
+		}
+
+		return 0;
+
+	}
+
+	void HexArray1D::gameLoop()
+	{
+		int xPos, yPos;
+		string s1, s2;
+		int input;
+		Cell temp;
+
+		// draw the board
+		// cout << *this << endl;
+		print();
+
+		while(getGameStatus() == true)
+		{
+			if(getGameType() == 1 && getTurn() == 0)
+			{
+				cout << "\nComputer's turn" << endl;
+
+				play();
+
+			}else
+			{
+				if(gameType == 1)
+				{
+					// user vs bot
+					cout << "\nUser's turn" << endl;
+				}
+				else
+				{
+					cout << "\nUser-" << getTurn()+1 << "'s turn" << endl;
+				}
+
+				cout << "Please enter your move or command (ex : A 3 or SAVE/LOAD yourfilename.txt or QUIT or UNDO or SCORE) : ";
+				getline( cin, s1);
+
+				input = getUserInput(s1, s2, xPos, yPos);
+
+				if(input == 0)
+				{
+					cerr << "Invalid input..." << endl;
+					continue;
+				}else if(input == 2)
+				{
+					// // load the board
+					// ifstream fin;
+					// fin.open(s2);
+					// fin >> (*this);
+					// fin.close();
+					
+					// cout << "The new board is : " << endl;
+					// cout << *this << endl;
+
+					continue;
+				}else if(input == 3)
+				{
+					// // save the board
+					// ofstream fout;
+					// fout.open(s2);
+					// fout << (*this);
+					// fout.close();
+
+					// cout << "The board information is saved to the file " << s2 << "..." << endl;
+
+					continue;
+				}else if(input == 4)
+				{
+					cout << "Leaving the game..." << endl;
+					return;
+
+				}else if(input == 5)
+				{
+					// if(getCounter() <= 0)
+					// {
+					// 	cout << "Cannot undo..." << endl << endl;
+					// 	continue;
+					// }
+
+					// --(*this);
+					// // human vs bot
+					// // if the user is playing against the computer, take two step back
+					// if(getGameType() == 1 && getCounter() != 0)
+					// {
+					// 	--(*this);
+					// }
+
+					// // also can be done with
+					// // (*this)--;
+					// cout << "Board, after undoing : " << endl << endl;
+
+					// // draw the board
+					// cout << *this << endl;
+					
+					continue;
+				}else if(input == 6)
+				{
+					// cout << "Active user's score is : " << calculateScore() << endl;
+					continue;
+				}
+
+				// out of border
+				if(xPos < 0 || xPos >= size || yPos < 0 || yPos >= size)
+				{
+					cerr << "Out of border..." << endl;
+					continue;
+				}
+
+				if(hexCells[xPos * size + yPos].getCellStatus() != empty)
+				{
+					cerr << "Position is not empty" << endl;
+					continue;
+				}
+
+				// if(hexCells[xPos][yPos].getCellStatus() != empty)
+				// {
+				// 	cerr << "Position is not empty" << endl;
+				// 	continue;
+				// }
+
+
+				// makes move, increases the counter
+				// play(xPos, yPos);
+				temp.setX(xPos);
+				temp.setY(yPos);
+				play(temp);
+
+				if(isEnd())
+				{
+					if(getGameType() == 1 && getTurn() == 0)
+						cout << "\nComputer wins" << endl;
+					else if(getGameType() == 1 && getTurn() == 1)
+						cout << "\nUser wins" << endl;
+					else
+						cout << "\nUser-" << turn+1 << " wins" << endl;
+
+					gameStatus = false;
+					nonEmptyCells -= getCounter(); // remove counter from non empty cells
+				}
+
+			}
+
+			// toggle the turn
+			if(turn)
+				turn = 0;
+			else
+				turn = 1;
+
+			// draw the board
+			// cout << *this << endl;
+			print();
+		}
+	}
+
+
+
+
+
+
 
 
 
@@ -335,10 +623,10 @@ namespace myNamespace{
 		return temp;
 	}
 
-	AbstractHex::Cell HexArray1D::play(AbstractHex::Cell c1)
-	{
-		return c1;
-	}
+	// AbstractHex::Cell HexArray1D::play(AbstractHex::Cell c1)
+	// {
+	// 	return c1;
+	// }
 
 	// bool isEnd()const;
 	// Cell operator()(int x, int y)const;
