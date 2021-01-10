@@ -101,16 +101,16 @@ namespace myNamespace
 			// private'a al sonra
 			void print()const;
 			bool isEnd();
+			void reset();
+			Cell operator()(int x, int y)const;
 
 		private:
 
 			void readFromFile(const std::string &filename);
 			void writeToFile(const std::string &filename);
-			void reset();
 			void setSize();
 			Cell play();
 			Cell play(Cell c1);
-			Cell operator()(int x, int y)const;
 			bool operator==(const AbstractHex &aHex)const;
 			Cell lastMove();
 			int numberOfMoves()const;

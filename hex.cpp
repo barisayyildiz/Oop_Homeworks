@@ -28,6 +28,102 @@ namespace myNamespace{
 
 	}	
 
+	// assignment operator
+	HexArray1D& HexArray1D::operator = (const HexArray1D& h1){
+
+		if(previousMoves != nullptr)
+		{
+			for(int i=0; i<cap; i++)
+			{
+				delete[] previousMoves[i];
+			}
+
+			delete[] previousMoves;
+		}
+		previousMoves = nullptr;
+		
+		if(hexCells != nullptr)
+		{
+			free(hexCells);
+		}
+
+		size = h1.getSize();
+		turn = h1.getTurn();
+		counter = h1.getCounter();
+		gameType = h1.getGameType();
+		gameStatus = h1.getGameStatus();
+		cap = h1.getCap();
+		
+		previousMoves = initPreviousMoves();
+		initHexCells();
+
+		for(int i=0; i<size; i++)
+		{
+			for(int j=0; j<size; j++)
+			{
+				hexCells[i * size + j] = h1.hexCells[i * size + j];
+			}
+		}
+
+		for(int i=0; i<counter; i++)
+		{
+			previousMoves[i][0] = h1.previousMoves[i][0];
+			previousMoves[i][1] = h1.previousMoves[i][1];
+		}
+
+		return *this;
+	}
+
+
+	// copy constructor
+	HexArray1D::HexArray1D(const HexArray1D& h1){
+
+		size = h1.getSize();
+		turn = h1.getTurn();
+		counter = h1.getCounter();
+		gameType = h1.getGameType();
+		gameStatus = h1.getGameStatus();
+		cap = h1.getCap();
+
+		previousMoves = initPreviousMoves();
+		initHexCells();
+
+		for(int i=0; i<size; i++)
+		{
+			for(int j=0; j<size; j++)
+			{
+				hexCells[i * size + j] = h1.hexCells[i * size + j];
+			}
+		}
+
+		for(int i=0; i<counter; i++)
+		{
+			previousMoves[i][0] = h1.previousMoves[i][0];
+			previousMoves[i][1] = h1.previousMoves[i][1];
+		}
+
+	}
+
+	// destructor
+	HexArray1D::~HexArray1D(){
+		cout << "~destructor" << endl;
+
+		if(previousMoves != nullptr)
+		{
+			for(int i=0; i<cap; i++)
+			{
+				delete[] previousMoves[i];
+			}
+			delete[] previousMoves;
+		}
+
+		// I have used malloc and free, because we were told to use one dimensional dynamic 'C array' for the hexCells
+		if(hexCells != nullptr)
+			free(hexCells);
+
+	}
+
+
 
 	void HexArray1D::playGame()
 	{
@@ -864,13 +960,9 @@ namespace myNamespace{
 	}
 
 
-
-
-
-
-
-	// assignment operator
-	HexArray1D& HexArray1D::operator = (const HexArray1D& h1){
+	void HexArray1D::reset()
+	{
+		// cout << "reset function" << endl;
 
 		if(previousMoves != nullptr)
 		{
@@ -878,106 +970,26 @@ namespace myNamespace{
 			{
 				delete[] previousMoves[i];
 			}
-
 			delete[] previousMoves;
 		}
 		previousMoves = nullptr;
-		
-		if(hexCells != nullptr)
-		{
-			free(hexCells);
-		}
-
-		size = h1.getSize();
-		turn = h1.getTurn();
-		counter = h1.getCounter();
-		gameType = h1.getGameType();
-		gameStatus = h1.getGameStatus();
-		cap = h1.getCap();
+		cap = 10;
 		
 		previousMoves = initPreviousMoves();
-		initHexCells();
 
-		for(int i=0; i<size; i++)
-		{
-			for(int j=0; j<size; j++)
-			{
-				hexCells[i * size + j] = h1.hexCells[i * size + j];
-			}
-		}
-
-		for(int i=0; i<counter; i++)
-		{
-			previousMoves[i][0] = h1.previousMoves[i][0];
-			previousMoves[i][1] = h1.previousMoves[i][1];
-		}
-
-		return *this;
-	}
-
-
-
-
-
-
-
-	// copy constructor
-	HexArray1D::HexArray1D(const HexArray1D& h1){
-
-		size = h1.getSize();
-		turn = h1.getTurn();
-		counter = h1.getCounter();
-		gameType = h1.getGameType();
-		gameStatus = h1.getGameStatus();
-		cap = h1.getCap();
-
-		previousMoves = initPreviousMoves();
-		initHexCells();
-
-		for(int i=0; i<size; i++)
-		{
-			for(int j=0; j<size; j++)
-			{
-				hexCells[i * size + j] = h1.hexCells[i * size + j];
-			}
-		}
-
-		for(int i=0; i<counter; i++)
-		{
-			previousMoves[i][0] = h1.previousMoves[i][0];
-			previousMoves[i][1] = h1.previousMoves[i][1];
-		}
-
-	}
-
-	// destructor
-	HexArray1D::~HexArray1D(){
-		cout << "~destructor" << endl;
-
-		if(previousMoves != nullptr)
-		{
-			for(int i=0; i<cap; i++)
-			{
-				delete[] previousMoves[i];
-			}
-			delete[] previousMoves;
-		}
-
-		// I have used malloc and free, because we were told to use one dimensional dynamic 'C array' for the hexCells
 		if(hexCells != nullptr)
 			free(hexCells);
-
-	}
-
-
-
 	
+		initHexCells();
 
+		turn = 0;
+		counter = 0;
 
-	void HexArray1D::reset()
-	{
-		cout << "reset function" << endl;
 	}
+
+
+
+
 
 	void HexArray1D::setSize()
 	{
@@ -994,8 +1006,16 @@ namespace myNamespace{
 
 	AbstractHex::Cell HexArray1D::operator()(int x, int y)const
 	{
-		AbstractHex::Cell temp;
-		return temp;
+		// ERROR HANDLING YAPILACAK
+
+		if(x < 0 || x >= getSize() || y < 0 || y >= getSize())
+		{
+			cout << "out of border" << endl;
+			exit(1);
+		}
+
+		return hexCells[x * getSize() + y];
+
 	}
 
 	bool HexArray1D::operator==(const AbstractHex &aHex)const
@@ -1012,7 +1032,7 @@ namespace myNamespace{
 
 	int HexArray1D::numberOfMoves()const
 	{
-		return 0;
+		return getCounter();
 	}
 
 }

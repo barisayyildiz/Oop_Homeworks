@@ -11,6 +11,9 @@ int main()
 
 	h1.print();
 
+	// h1.reset();
+	cout << static_cast<char>(h1(0,5).getCellStatus()) << endl;
+
 	cout << h1.getGameStatus() << endl;
 	cout << h1.getSize() << endl;
 	cout << h1.getCap() << endl;
