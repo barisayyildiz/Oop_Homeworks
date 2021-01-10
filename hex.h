@@ -33,8 +33,8 @@ namespace myNamespace
 			};
 
 			virtual void print()const = 0;
-			virtual void readFromFile() = 0;
-			virtual void writeToFile()const = 0;
+			virtual void readFromFile(const std::string &filename) = 0;
+			virtual void writeToFile(const std::string &filename) = 0;
 			virtual void reset() = 0;
 			virtual void setSize() = 0;
 			virtual Cell play() = 0;
@@ -104,8 +104,8 @@ namespace myNamespace
 
 		private:
 
-			void readFromFile();
-			void writeToFile()const;
+			void readFromFile(const std::string &filename);
+			void writeToFile(const std::string &filename);
 			void reset();
 			void setSize();
 			Cell play();

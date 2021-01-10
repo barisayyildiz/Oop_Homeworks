@@ -462,6 +462,12 @@ namespace myNamespace{
 				}else if(input == 2)
 				{
 					// // load the board
+
+					readFromFile(s2);
+
+					cout << "Here is the new board : " << endl;
+					print();
+
 					// ifstream fin;
 					// fin.open(s2);
 					// fin >> (*this);
@@ -474,6 +480,10 @@ namespace myNamespace{
 				}else if(input == 3)
 				{
 					// // save the board
+
+					writeToFile(s2);
+					cout << "The board information is saved to the file " << s2 << "..." << endl;
+
 					// ofstream fout;
 					// fout.open(s2);
 					// fout << (*this);
@@ -481,6 +491,7 @@ namespace myNamespace{
 
 					// cout << "The board information is saved to the file " << s2 << "..." << endl;
 
+					cout << "qweqweqe" << endl;
 					continue;
 				}else if(input == 4)
 				{
@@ -570,6 +581,167 @@ namespace myNamespace{
 		}
 	}
 
+	// helper function for file input output
+	int HexArray1D::orderChar(char c)
+	{
+		if(c == '.')
+		{
+			return 0;
+		}else if(c == 'x')
+		{
+			return 1;
+		}else if(c == 'o')
+		{
+			return 2;
+		}else if(c == 'X')
+		{
+			return 3;
+		}else	// 'O'
+		{
+			return 4;
+		}
+
+	}
+
+
+	void HexArray1D::writeToFile(const string &filename)
+	{
+		char temp;
+
+		ofstream fout;
+
+		fout.open(filename);
+
+		fout << getSize() << endl;
+		fout << getCounter() << endl;
+		fout << getGameType() << endl;
+		fout << getTurn() << endl;
+
+		int iter = 0;
+
+		for(int i=0; i<getSize(); i++)
+		{
+
+			while(iter/getSize() == i)
+			{
+				temp = static_cast<char>(hexCells[iter++].getCellStatus() );
+				fout << orderChar(temp);
+			}
+
+			fout << endl;			
+		}
+
+		// save cap
+		fout << getCap() << endl;
+
+		// save previous moves
+		for(int i=0; i<getCounter(); i++)
+		{
+			fout << previousMoves[i][0];
+			fout << previousMoves[i][1] << endl;
+		}
+
+		fout.close();
+
+	}
+
+	void HexArray1D::readFromFile(const string &filename)
+	{
+		int temp;
+		int newSize, newCounter, newGameType, newTurn, newCap;
+
+		// we need to adjust nonEmptyCells
+		HexArray1D::nonEmptyCells -= getCounter();
+
+		string line;
+
+		ifstream fin;
+		fin.open(filename);
+
+		if(!fin)
+		{
+			cerr << "No such file exists...\n\n";
+			return;
+		}
+
+		fin >> newSize;
+		fin >> newCounter;
+		fin >> newGameType;
+		fin >> newTurn;
+
+		// free hexCells
+		free(hexCells);
+
+		// for(int i=0; i<h1.getSize(); i++)
+		// {
+		// 	delete[] h1.hexCells[i];
+		// }
+		// delete[] h1.hexCells;
+
+		size = newSize;
+		counter = newCounter;
+		gameType = newGameType;
+		turn = newTurn;
+
+		// hexCells = (AbstractHex::Cell*)malloc(sizeof(AbstractHex::Cell) * newSize * newSize);
+		initHexCells();
+
+		for(int i=0; i<getSize(); i++)
+		{
+			fin >> line;
+			for(int j=0; j<getSize(); j++)
+			{
+				temp = line[j] - '0';
+				hexCells[i * size + j] = static_cast<cell>(temp);
+
+				switch(temp)
+				{
+					case 0:
+						hexCells[i * size + j].setCellStatus(empty);
+						break;
+					case 1:
+						hexCells[i * size + j].setCellStatus(xLower);
+						HexArray1D::nonEmptyCells++;
+						break;
+					case 2:
+						hexCells[i * size + j].setCellStatus(oLower);
+						HexArray1D::nonEmptyCells++;
+						break;
+					case 3:
+						hexCells[i * size + j].setCellStatus(xCapital);
+						HexArray1D::nonEmptyCells++;
+						break;
+					case 4:
+						hexCells[i * size + j].setCellStatus(oCapital);
+						HexArray1D::nonEmptyCells++;
+						break;
+				}
+			}
+		}
+
+		// delete previous moves array
+		for(int i=0; i<cap; i++)
+		{
+			delete[] previousMoves[i];
+		}
+		delete[] previousMoves;
+		previousMoves = nullptr;
+
+		// load cap
+		fin >> newCap;
+		cap = newCap;
+
+		// load the new previousMoves
+		previousMoves = initPreviousMoves();
+
+		for(int i=0; i<getCounter(); i++)
+		{
+			fin >> line;
+			previousMoves[i][0] = line[0] - '0';
+			previousMoves[i][1] = line[1] - '0';
+		}
+
+	}
 
 
 
@@ -611,15 +783,6 @@ namespace myNamespace{
 
 	}
 
-	void HexArray1D::readFromFile()
-	{
-		cout << "readFromFile function" << endl;
-	}
-
-	void HexArray1D::writeToFile()const
-	{
-		cout << "writeToFile function" << endl;
-	}
 
 	void HexArray1D::reset()
 	{
