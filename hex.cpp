@@ -594,7 +594,21 @@ namespace myNamespace{
 
 	// destructor
 	HexArray1D::~HexArray1D(){
-		cout << "destructor" << endl;
+		cout << "~destructor" << endl;
+
+		if(previousMoves != nullptr)
+		{
+			for(int i=0; i<cap; i++)
+			{
+				delete[] previousMoves[i];
+			}
+			delete[] previousMoves;
+		}
+
+		// I have used malloc and free, because we were told to use one dimensional dynamic 'C array' for the hexCells
+		if(hexCells != nullptr)
+			free(hexCells);
+
 	}
 
 	void HexArray1D::readFromFile()
