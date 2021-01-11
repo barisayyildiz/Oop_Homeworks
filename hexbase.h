@@ -90,6 +90,9 @@ namespace hex
 			virtual int calculateScore() = 0;
 			virtual int scoreHelper(int** visited, int xPos, int yPos, cell c) = 0;
 
+			// gets the user input -> size of the board and game type
+			virtual void playGame();
+
 
 
 	};

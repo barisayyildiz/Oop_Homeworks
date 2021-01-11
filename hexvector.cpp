@@ -183,42 +183,6 @@ namespace hex{
 
 	}
 
-
-
-	void HexVector::playGame()
-	{
-		// ERROR HANDLING YAP!!!!
-		int tempSize, tempType;
-
-		cout << "Size of grid (min 6) : ";
-		cin >> tempSize;
-
-		if(tempSize < 6)
-		{
-			// cerr << "Invalid input..." << endl;
-			throw InvalidSize();
-
-		}else
-		{
-			size = tempSize;
-		}
-
-		cout << "Please enter 0 for 2-player and 1 for 1 player mod" << endl;
-		cin >> tempType;
-
-		if(tempType == 0 || tempType == 1)
-		{
-			gameType = tempType;
-		}else
-		{
-			// cout << "Invalid input..." << endl;
-			throw InvalidInput();
-		}
-
-		// clear buffer
-		cin.ignore(1000, '\n');
-	}
-
 	int** HexVector::initPreviousMoves()
 	{
 		int **temp = nullptr;

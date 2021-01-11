@@ -22,7 +22,7 @@ int main()
 
 	string s1 = "board1.txt", s2 = "board2.txt";
 
-	// Error handling
+	// For testing
 	try
 	{
 		gameVector.push_back(new HexArray1D(15, 1));

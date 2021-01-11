@@ -70,9 +70,6 @@ namespace hex
 			// initilizes hex cells by the size of the board
 			void initHexCells();
 
-			// gets the user input -> size of the board and game type
-			void playGame();
-
 			// marked cells for the user
 			int markedCellsForTheUser()const;
 
