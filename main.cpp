@@ -3,6 +3,7 @@
 #include <exception>
 #include "hexbase.h"
 #include "hexarray.h"
+#include "hexvector.h"
 #include "exception.h"
 
 using namespace std;
@@ -38,6 +39,8 @@ int main()
 	{
 		cerr << err.what() << endl;
 	}
+
+	gameVector.push_back(new HexVector());
 
 
 	cout << "Welcome to the HEX game..." << endl << endl;

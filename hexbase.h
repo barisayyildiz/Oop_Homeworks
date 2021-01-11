@@ -32,7 +32,7 @@ namespace hex
 					int x,y;
 			};
 
-			virtual void print()const = 0;
+			virtual void print() = 0;
 			virtual void readFromFile(const std::string &filename) = 0;
 			virtual void writeToFile(const std::string &filename) = 0;
 			virtual void reset() = 0;

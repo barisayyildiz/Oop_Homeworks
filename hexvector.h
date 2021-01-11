@@ -1,33 +1,33 @@
-#ifndef HEX
-#define	HEX
+#ifndef VEC
+#define VEC
 
 namespace hex
 {
-	class HexArray1D : public AbstractHex
+	class HexVector : public AbstractHex
 	{
 		public:
 			// default constructor
-			HexArray1D();
+			HexVector();
 
 			// conversion constructor
-			explicit HexArray1D(int s);
+			explicit HexVector(int s);
 
 			// BIG 3
 			// assignment operator
-			HexArray1D& operator = (const HexArray1D& h1);
+			HexVector& operator = (const HexVector& h1);
 
 			// copy constructor
-			HexArray1D(const HexArray1D& h1);
+			HexVector(const HexVector& h1);
 
 			// gets the size and game type
-			HexArray1D(int s, int gT);
+			HexVector(int s, int gT);
 
 			// gets the size, game type and filename
 			// and saves the game to the file
-			HexArray1D(int s, int gT, std::string &filename);
+			HexVector(int s, int gT, std::string &filename);
 
 			// destructor
-			~HexArray1D();
+			~HexVector();
 
 			void gameLoop();
 
@@ -90,14 +90,14 @@ namespace hex
 			int calculateScore();
 			int scoreHelper(int** visited, int xPos, int yPos, cell c);
 
-			Cell *hexCells;
-
+			std::vector< std::vector<Cell> > hexCells;
 
 
 	};
 
 
 }
+
 
 
 #endif
