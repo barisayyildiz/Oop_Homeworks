@@ -17,11 +17,11 @@ int main()
 
 	string s1 = "board1.txt", s2 = "board2.txt";
 
-	// gameVector.push_back(Hex(15, 1));
-	// gameVector.push_back(Hex(8));
-	// gameVector.push_back(Hex(10, 0));
-	// gameVector.push_back(Hex(12, 0, s1));
-	// gameVector.push_back(Hex(6, 0, s2));
+	gameVector.push_back(new HexArray1D(15, 1));
+	gameVector.push_back(new HexArray1D(8));
+	gameVector.push_back(new HexArray1D(10, 0));
+	gameVector.push_back(new HexArray1D(12, 0, s1));
+	gameVector.push_back(new HexArray1D(6, 0, s2));
 
 
 	cout << "Welcome to the HEX game..." << endl << endl;

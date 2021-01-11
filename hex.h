@@ -94,8 +94,8 @@ namespace myNamespace
 			// default constructor
 			HexArray1D();
 
-			// // conversion constructor
-			// explicit HexArray1D(int s);
+			// conversion constructor
+			explicit HexArray1D(int s);
 
 			// BIG 3
 			// assignment operator
@@ -104,12 +104,12 @@ namespace myNamespace
 			// copy constructor
 			HexArray1D(const HexArray1D& h1);
 
-			// // gets the size and game type
-			// Hex(int s, int gT);
+			// gets the size and game type
+			HexArray1D(int s, int gT);
 
-			// // gets the size, game type and filename
-			// // and saves the game to the file
-			// Hex(int s, int gT, std::string &filename);
+			// gets the size, game type and filename
+			// and saves the game to the file
+			HexArray1D(int s, int gT, std::string &filename);
 
 			// destructor
 			~HexArray1D();

@@ -9,12 +9,7 @@ using namespace std;
 
 namespace myNamespace{
 
-	AbstractHex::Cell::Cell(cell c) : cellStatus(c)
-	{/*left empty*/}
-
-	int AbstractHex::nonEmptyCells = 0;
-
-	HexArray1D::HexArray1D() : AbstractHex() , hexCells(nullptr), previousMoves(nullptr)
+	HexArray1D::HexArray1D() : AbstractHex() , previousMoves(nullptr), hexCells(nullptr)
 	{
 		// gets user input
 		playGame();
@@ -27,6 +22,56 @@ namespace myNamespace{
 		gameLoop();
 
 	}	
+
+	HexArray1D::HexArray1D(int s) : AbstractHex(), previousMoves(nullptr), hexCells(nullptr)
+	{
+		// ERROR HANDLING
+		if(s < 6)
+			exit(1);
+
+		size = s;
+		
+		initHexCells();
+
+		previousMoves = initPreviousMoves();
+	}
+
+	HexArray1D::HexArray1D(int s, int gT) : AbstractHex(), previousMoves(nullptr), hexCells(nullptr)
+	{
+		// error handling
+		if(s < 6)
+			exit(1);
+		if(gT != 0 && gT != 1)
+			exit(1);
+		
+		size = s;
+		gameType = gT;
+
+
+		initHexCells();
+
+		previousMoves = initPreviousMoves();
+	}
+
+	HexArray1D::HexArray1D(int s, int gT, string &filename) : AbstractHex(), hexCells(nullptr), previousMoves(nullptr)
+	{
+		// error handling
+		if(s < 6)
+			exit(1);
+		if(gT != 0 && gT != 1)
+			exit(1);
+
+		size = s;
+		gameType = gT;
+
+		initHexCells();
+
+		previousMoves = initPreviousMoves();
+
+		// error handling
+		writeToFile(filename);
+
+	}
 
 	// assignment operator
 	HexArray1D& HexArray1D::operator = (const HexArray1D& h1){
