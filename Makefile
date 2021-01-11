@@ -6,7 +6,7 @@ run:
 
 
 dev:
-	g++ -std=c++11 test.cpp hexbase.cpp hexvector.cpp -o test -Wall -Wextra
+	g++ -std=c++11 test.cpp hexbase.cpp hexadapter.cpp -o test -Wall -Wextra
 	./test
 	rm test
 

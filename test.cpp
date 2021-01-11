@@ -2,8 +2,9 @@
 #include <vector>
 #include <exception>
 #include "hexbase.h"
-#include "hexvector.h"
+#include "hexadapter.h"
 #include "exception.h"
+#include "hexadapter.cpp"
 
 using namespace std;
 using namespace hex;
@@ -11,13 +12,11 @@ using namespace excNamespace;
 
 int main()
 {
-	vector < AbstractHex * > gameVector;
+	// vector < AbstractHex * > gameVector;
 
-	gameVector.push_back(new HexVector());
+	// gameVector.push_back(new HexAdapter<vector>());
 
-	gameVector[0]->gameLoop();
-
-
-
+	HexAdapter<vector> h1;
+	
 
 }

@@ -172,5 +172,11 @@ int main()
 
 	}
 
+	for(auto p : gameVector)
+	{
+		delete p;
+	}
+	gameVector.clear();
+
 	return 0;
 }
