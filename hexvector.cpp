@@ -205,7 +205,7 @@ namespace hex{
 
 	}
 
-	void HexVector::print()
+	void HexVector::print()const
 	{
 		// header
 		cout << "  ";

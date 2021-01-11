@@ -208,7 +208,7 @@ namespace hex{
 
 	}
 
-	void HexArray1D::print()
+	void HexArray1D::print()const
 	{
 		// header
 		cout << "  ";

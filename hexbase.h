@@ -21,10 +21,10 @@ namespace hex
 			{
 				public:
 					Cell(cell c = empty);
-					inline cell getCellStatus(){return cellStatus;};
+					inline cell getCellStatus()const{return cellStatus;};
 					inline void setCellStatus(cell c){cellStatus = c;};
-					inline int getX(){return x;};
-					inline int getY(){return y;};
+					inline int getX()const{return x;};
+					inline int getY()const{return y;};
 					inline void setX(int _x){x = _x;};
 					inline void setY(int _y){y = _y;};
 				private:
@@ -32,7 +32,7 @@ namespace hex
 					int x,y;
 			};
 
-			virtual void print() = 0;
+			virtual void print()const = 0;
 			virtual void readFromFile(const std::string &filename) = 0;
 			virtual void writeToFile(const std::string &filename) = 0;
 			virtual void reset() = 0;

@@ -215,7 +215,7 @@ namespace hex{
 	}
 
 	template<template<typename...> class T>
-	void HexAdapter<T>::print()
+	void HexAdapter<T>::print()const
 	{
 		// header
 		cout << "  ";

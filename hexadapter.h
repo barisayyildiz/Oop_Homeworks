@@ -32,7 +32,7 @@ namespace hex
 			~HexAdapter();
 
 			// private'a al sonra
-			void print();
+			void print()const;
 			bool isEnd();
 			void reset();
 			Cell operator()(int x, int y)const;
