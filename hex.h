@@ -41,12 +41,14 @@ namespace myNamespace
 			virtual Cell play(Cell c1) = 0;
 			virtual bool isEnd() = 0;
 			virtual Cell operator()(int x, int y)const = 0;
-			virtual bool operator==(const AbstractHex &aHex)const = 0;
+			virtual bool operator==(AbstractHex *aHex) = 0;
 			virtual Cell lastMove() = 0;
 			virtual int numberOfMoves()const = 0;
 
+			virtual void gameLoop() = 0;
+
 			// constructor
-			AbstractHex() : size(0), turn(0), counter(0), gameStatus(true), cap(10), hexCells(nullptr)
+			AbstractHex() : size(0), turn(0), counter(0), gameStatus(true), cap(10)
 			{/*left empty*/}
 
 			static int getNonEmptyCells(){
@@ -54,7 +56,6 @@ namespace myNamespace
 			}
 			
 			// Main game loop operations are handled in this function
-			void gameLoop();
 			inline bool getGameStatus() const{return gameStatus;};
 		
 			// getter functions
@@ -79,7 +80,6 @@ namespace myNamespace
 			// gets the raw user input and tokenizes
 			int getUserInput(std::string input, std::string &filename, int &xPos, int &yPos);
 
-			Cell *hexCells;
 
 	};
 
@@ -110,6 +110,7 @@ namespace myNamespace
 			// destructor
 			~HexArray1D();
 
+			void gameLoop();
 
 			// private'a al sonra
 			void print()const;
@@ -124,7 +125,7 @@ namespace myNamespace
 			void setSize(int newSize);
 			Cell play();
 			Cell play(Cell c1);
-			bool operator==(const AbstractHex &aHex)const;
+			bool operator==(AbstractHex *aHex);
 			Cell lastMove();
 			int numberOfMoves()const;
 
@@ -164,6 +165,7 @@ namespace myNamespace
 
 			void centerofGravity(int *center, int totalX, int totalY, int increment);
 
+			Cell *hexCells;
 
 
 

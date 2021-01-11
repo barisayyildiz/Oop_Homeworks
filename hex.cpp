@@ -14,7 +14,7 @@ namespace myNamespace{
 
 	int AbstractHex::nonEmptyCells = 0;
 
-	HexArray1D::HexArray1D() : AbstractHex() , previousMoves(nullptr)
+	HexArray1D::HexArray1D() : AbstractHex() , hexCells(nullptr), previousMoves(nullptr)
 	{
 		// gets user input
 		playGame();
@@ -518,7 +518,7 @@ namespace myNamespace{
 
 	}
 
-	void AbstractHex::gameLoop()
+	void HexArray1D::gameLoop()
 	{
 		int xPos, yPos;
 		string s1, s2;
@@ -1062,9 +1062,25 @@ namespace myNamespace{
 
 	}
 
-	bool HexArray1D::operator==(const AbstractHex &aHex)const
+	bool HexArray1D::operator==(AbstractHex *aHex)
 	{
+		// HexArray1D* ptr = dynamic_cast<HexArray1D*>(aHex);
+
+		// if(ptr)
+		// {
+		// 	if(size != aHex->getSize())
+		// 		return false;
+			
+		// 	for(int i=0; i<size * size; i++)
+		// 	{
+		// 		if(hexCells[i].getCellStatus() != aHex->hexCells[i].getCellStatus())
+		// 			return false;
+		// 	}
+		// }
+
 		return true;
+
+
 	}
 
 	AbstractHex::Cell HexArray1D::lastMove()
