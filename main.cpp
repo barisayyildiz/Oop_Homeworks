@@ -1,11 +1,12 @@
 #include <iostream>
 #include <vector>
 #include <exception>
-#include "hex.h"
+#include "hexbase.h"
+#include "hexarray.h"
 #include "exception.h"
 
 using namespace std;
-using namespace myNamespace;
+using namespace hex;
 using namespace excNamespace;
 
 int main()
@@ -32,7 +33,7 @@ int main()
 	}catch(const InvalidSize &err)
 	{
 		cerr << err.what() << endl;
-		
+
 	}catch(const InvalidInput &err)
 	{
 		cerr << err.what() << endl;

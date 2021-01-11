@@ -3,11 +3,12 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
-#include "hex.h"
+#include "hexbase.h"
+#include "hexarray.h"
 
 using namespace std;
 
-namespace myNamespace
+namespace hex
 {
 	
 	AbstractHex::Cell::Cell(cell c) : cellStatus(c)

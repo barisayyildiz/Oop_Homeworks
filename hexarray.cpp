@@ -3,13 +3,14 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
-#include "hex.h"
+#include "hexbase.h"
+#include "hexarray.h"
 #include "exception.h"
 
 using namespace std;
 using namespace excNamespace;
 
-namespace myNamespace{
+namespace hex{
 
 	HexArray1D::HexArray1D() : AbstractHex() , previousMoves(nullptr), hexCells(nullptr)
 	{
