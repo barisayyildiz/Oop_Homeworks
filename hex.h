@@ -36,7 +36,7 @@ namespace myNamespace
 			virtual void readFromFile(const std::string &filename) = 0;
 			virtual void writeToFile(const std::string &filename) = 0;
 			virtual void reset() = 0;
-			virtual void setSize() = 0;
+			virtual void setSize(int newSize) = 0;
 			virtual Cell play() = 0;
 			virtual Cell play(Cell c1) = 0;
 			virtual bool isEnd() = 0;
@@ -121,7 +121,7 @@ namespace myNamespace
 
 			void readFromFile(const std::string &filename);
 			void writeToFile(const std::string &filename);
-			void setSize();
+			void setSize(int newSize);
 			Cell play();
 			Cell play(Cell c1);
 			bool operator==(const AbstractHex &aHex)const;

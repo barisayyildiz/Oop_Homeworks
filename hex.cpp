@@ -470,6 +470,9 @@ namespace myNamespace{
 			}else if(tokens[0] == "SCORE")
 			{
 				return 6;
+			}else if(tokens[0] == "RESIZE")
+			{
+				return 7;
 			}
 
 		}else if(counter == 2)
@@ -546,7 +549,10 @@ namespace myNamespace{
 					cout << "\nUser-" << getTurn()+1 << "'s turn" << endl;
 				}
 
-				cout << "Please enter your move or command (ex : A 3 or SAVE/LOAD yourfilename.txt or QUIT or UNDO or SCORE) : ";
+				cout << "Please enter your move or command (ex : A 3) or \n"
+				"SAVE/LOAD yourfilename.txt or \n"
+				"QUIT or UNDO or SCORE or RESIZE : ";
+
 				getline( cin, s1);
 
 				input = getUserInput(s1, s2, xPos, yPos);
@@ -622,6 +628,23 @@ namespace myNamespace{
 				{
 					// cout << "Active user's score is : " << calculateScore() << endl;
 					continue;
+				}else if(input == 7)
+				{
+					// ERROR HANDLING
+					cout << "\nEnter the new size of the board : ";
+					cin >> input;
+
+					// clears buffer
+					cin.ignore(1000, '\n');
+
+					setSize(input);
+
+					cout << "The new board is : \n\n";
+
+					print();
+
+					continue;
+
 				}
 
 				// out of border
@@ -987,14 +1010,35 @@ namespace myNamespace{
 
 	}
 
-
-
-
-
-	void HexArray1D::setSize()
+	void HexArray1D::setSize(int newSize)
 	{
-		cout << "setSize function" << endl;
+		size = newSize;
+
+		reset();
+
+		// AbstractHex::Cell *temp = (AbstractHex::Cell*)malloc(sizeof(AbstractHex::Cell) * newSize * newSize);
+
+		// for(int i=0; i<size * size; i++)
+		// {
+		// 	temp[i] = hexCells[i];
+		// }
+
+		// for(int i=size*size; i<newSize * newSize; i++)
+		// {
+		// 	temp[i].setCellStatus(empty);
+		// }
+		
+		// free(hexCells);
+
+		// hexCells = temp;
+		// size = newSize;
+
+		// cout << "QWEQWEQWEQ" << endl;
 	}
+
+
+
+
 
 	// AbstractHex::Cell HexArray1D::play(AbstractHex::Cell c1)
 	// {
