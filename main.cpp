@@ -26,8 +26,8 @@ int main()
 	try
 	{
 		gameVector.push_back(new HexArray1D(15, 1));
-		gameVector.push_back(new HexArray1D(8));
-		gameVector.push_back(new HexArray1D(10, 0));
+		gameVector.push_back(new HexVector(8));
+		gameVector.push_back(new HexVector(10, 0));
 		gameVector.push_back(new HexArray1D(12, 0, s1));
 		gameVector.push_back(new HexArray1D(6, 0, s2));
 
@@ -39,9 +39,6 @@ int main()
 	{
 		cerr << err.what() << endl;
 	}
-
-	gameVector.push_back(new HexVector());
-
 
 	cout << "Welcome to the HEX game..." << endl << endl;
 
@@ -60,7 +57,32 @@ int main()
 
 		if(input == '1')
 		{
-			gameVector.push_back(new HexArray1D());
+			while(1)
+			{
+				cout << "1 : to create a HexArray1D object"	<< endl;
+				cout << "2 : to create a HexVector object" << endl;
+				cout << "3 : to create a HexAdapter object" << endl;
+
+				cin >> input;
+				
+				// clears buffer
+				cin.ignore(1000, '\n');
+				
+				if(input != '1' && input != '2' && input != '3')
+				{
+					cout << "Invalid input..." << endl << endl;
+					continue;
+				}
+				break;
+			}
+
+			if(input == '1')
+			{
+				gameVector.push_back(new HexArray1D());
+			}else if(input == '2')
+			{
+				gameVector.push_back(new HexVector());
+			}
 
 			// if the latest game is terminated
 			if(gameVector[gameVector.size()-1]->getGameStatus() == false)

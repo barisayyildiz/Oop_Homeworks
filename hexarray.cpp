@@ -12,7 +12,7 @@ using namespace excNamespace;
 
 namespace hex{
 
-	HexArray1D::HexArray1D() : AbstractHex() , previousMoves(nullptr), hexCells(nullptr)
+	HexArray1D::HexArray1D() : AbstractHex() , previousMoves(nullptr), hexCells(nullptr) 
 	{
 		// gets user input
 
@@ -70,7 +70,7 @@ namespace hex{
 		previousMoves = initPreviousMoves();
 	}
 
-	HexArray1D::HexArray1D(int s, int gT, string &filename) : AbstractHex(), hexCells(nullptr), previousMoves(nullptr)
+	HexArray1D::HexArray1D(int s, int gT, string &filename) : AbstractHex(), previousMoves(nullptr), hexCells(nullptr)
 	{
 		// error handling
 		if(s < 6)
@@ -529,182 +529,6 @@ namespace hex{
 
 	}
 
-
-
-	void HexArray1D::gameLoop()
-	{
-		int xPos, yPos;
-		string s1, s2;
-		int input;
-		Cell temp;
-
-		// draw the board
-		// cout << *this << endl;
-		print();
-
-		while(getGameStatus() == true)
-		{
-			if(getGameType() == 1 && getTurn() == 0)
-			{
-				cout << "\nComputer's turn" << endl;
-
-				play();
-
-			}else
-			{
-				if(gameType == 1)
-				{
-					// user vs bot
-					cout << "\nUser's turn" << endl;
-				}
-				else
-				{
-					cout << "\nUser-" << getTurn()+1 << "'s turn" << endl;
-				}
-
-				cout << "Please enter your move or command (ex : A 3) or \n"
-				"SAVE/LOAD yourfilename.txt or \n"
-				"QUIT or UNDO or SCORE or RESIZE : ";
-
-				getline( cin, s1);
-
-				input = getUserInput(s1, s2, xPos, yPos);
-				
-
-				if(input == 0)
-				{
-					cerr << "Invalid input..." << endl;
-					continue;
-				}else if(input == 2)
-				{
-					// // load the board
-
-					try
-					{
-						readFromFile(s2);
-
-						cout << "Here is the new board : " << endl;
-						print();
-
-					}catch(const FileError &err)
-					{
-						cerr << err.what() << endl;
-					}
-
-
-					continue;
-				}else if(input == 3)
-				{
-					// // save the board
-
-					writeToFile(s2);
-					cout << "The board information is saved to the file " << s2 << "..." << endl;
-
-					continue;
-				}else if(input == 4)
-				{
-					cout << "Leaving the game..." << endl;
-					return;
-
-				}else if(input == 5)
-				{
-					// ERROR HANDLING
-
-					try
-					{
-						undo();
-						if(getGameType() == 1)
-							undo();
-					}catch(const UndoError& err)
-					{
-						cerr << err.what() << endl << endl;
-					}
-
-					
-
-					cout << "Board, after undoing : " << endl << endl;
-
-					// draw the board
-					print();
-					
-					continue;
-
-
-				}else if(input == 6)
-				{
-					cout << "Active user's score is : " << calculateScore() << endl;
-					continue;
-				}else if(input == 7)
-				{
-					// ERROR HANDLING
-					cout << "\nEnter the new size of the board : ";
-					cin >> input;
-
-					// clears buffer
-					cin.ignore(1000, '\n');
-
-					try
-					{
-						setSize(input);
-						
-						cout << "The new board is : \n\n";
-						print();
-					}catch(const InvalidSize &err)
-					{
-						cerr << err.what() << endl << endl;
-					}
-
-					continue;
-
-				}
-
-
-				temp.setX(xPos);
-				temp.setY(yPos);
-
-				// Exception Handling
-				try
-				{
-					play(temp);
-				}catch(const IndexError &err)
-				{
-					cout << xPos << "," << yPos << endl;
-					cerr << "Index is out of board" << endl << endl;
-					continue;
-				}catch(const AllocatedCell &err)
-				{
-					cout << xPos << "," << yPos << endl;
-					cerr << err.what() << endl << endl;
-					continue;
-				}
-				
-
-				if(isEnd())
-				{
-					if(getGameType() == 1 && getTurn() == 0)
-						cout << "\nComputer wins" << endl;
-					else if(getGameType() == 1 && getTurn() == 1)
-						cout << "\nUser wins" << endl;
-					else
-						cout << "\nUser-" << turn+1 << " wins" << endl;
-
-					gameStatus = false;
-					nonEmptyCells -= getCounter(); // remove counter from non empty cells
-				}
-
-			}
-
-			// toggle the turn
-			if(turn)
-				turn = 0;
-			else
-				turn = 1;
-
-			// draw the board
-			// cout << *this << endl;
-			print();
-		}
-	}
 
 	// helper function for file input output
 	int HexArray1D::orderChar(char c)

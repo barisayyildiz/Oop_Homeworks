@@ -29,8 +29,6 @@ namespace hex
 			// destructor
 			~HexArray1D();
 
-			void gameLoop();
-
 			// private'a al sonra
 			void print();
 			bool isEnd();

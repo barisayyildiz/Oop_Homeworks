@@ -45,8 +45,8 @@ namespace hex
 			virtual Cell lastMove() = 0;
 			virtual int numberOfMoves()const = 0;
 
-			// game loop
-			virtual void gameLoop() = 0;
+			// // game loop
+			// virtual void gameLoop() = 0;
 
 			// undo
 			virtual void undo() = 0;
@@ -73,6 +73,8 @@ namespace hex
 
 			inline int getCap() const{return cap;};
 
+			virtual void gameLoop();
+
 		protected:
 			// holds the non empty cells for all objects
 			static int nonEmptyCells;
@@ -83,6 +85,11 @@ namespace hex
 
 			// gets the raw user input and tokenizes
 			int getUserInput(std::string input, std::string &filename, int &xPos, int &yPos);
+
+			// pure virtual functions for calculating score
+			virtual int calculateScore() = 0;
+			virtual int scoreHelper(int** visited, int xPos, int yPos, cell c) = 0;
+
 
 
 	};
