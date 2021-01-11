@@ -570,13 +570,6 @@ namespace myNamespace{
 					cout << "Here is the new board : " << endl;
 					print();
 
-					// ifstream fin;
-					// fin.open(s2);
-					// fin >> (*this);
-					// fin.close();
-					
-					// cout << "The new board is : " << endl;
-					// cout << *this << endl;
 
 					continue;
 				}else if(input == 3)
@@ -586,14 +579,6 @@ namespace myNamespace{
 					writeToFile(s2);
 					cout << "The board information is saved to the file " << s2 << "..." << endl;
 
-					// ofstream fout;
-					// fout.open(s2);
-					// fout << (*this);
-					// fout.close();
-
-					// cout << "The board information is saved to the file " << s2 << "..." << endl;
-
-					cout << "qweqweqe" << endl;
 					continue;
 				}else if(input == 4)
 				{
@@ -602,31 +587,22 @@ namespace myNamespace{
 
 				}else if(input == 5)
 				{
-					// if(getCounter() <= 0)
-					// {
-					// 	cout << "Cannot undo..." << endl << endl;
-					// 	continue;
-					// }
+					// ERROR HANDLING
+					undo();
+					if(getGameType() == 1)
+						undo();
 
-					// --(*this);
-					// // human vs bot
-					// // if the user is playing against the computer, take two step back
-					// if(getGameType() == 1 && getCounter() != 0)
-					// {
-					// 	--(*this);
-					// }
+					cout << "Board, after undoing : " << endl << endl;
 
-					// // also can be done with
-					// // (*this)--;
-					// cout << "Board, after undoing : " << endl << endl;
-
-					// // draw the board
-					// cout << *this << endl;
+					// draw the board
+					print();
 					
 					continue;
+
+
 				}else if(input == 6)
 				{
-					// cout << "Active user's score is : " << calculateScore() << endl;
+					cout << "Active user's score is : " << calculateScore() << endl;
 					continue;
 				}else if(input == 7)
 				{
@@ -1095,6 +1071,171 @@ namespace myNamespace{
 	int HexArray1D::numberOfMoves()const
 	{
 		return getCounter();
+	}
+
+	// ============================= FOR CALCULATING SCORE ========================= //
+
+	int HexArray1D::calculateScore()
+	{
+		int **visited = nullptr;
+		int value;
+		int score = 0;
+
+		int turn = getTurn();
+
+		if(turn == 0)
+		{
+			// x
+			for(int i=0; i<getSize(); i++)
+			{
+				for(int j=0; j<getSize(); j++)
+				{
+					if(hexCells[i * size + j].getCellStatus() == xLower)
+					{
+						visited = initVisited(visited);
+						value = scoreHelper(visited, i, j, xLower);
+						if(value > score)
+							score = value;
+					}
+
+				}
+			}
+
+		}else
+		{
+			// o
+			for(int i=0; i<getSize(); i++)
+			{
+				for(int j=0; j<getSize(); j++)
+				{
+					if(hexCells[i * size + j].getCellStatus() == oLower)
+					{
+						visited = initVisited(visited);
+						value = scoreHelper(visited, i, j, oLower);
+						if(value > score)
+							score = value;
+					}
+				}
+			}
+		}
+
+		return score;
+
+	}
+
+	int HexArray1D::scoreHelper(int** visited, int xPos, int yPos, cell c)
+	{
+		if(xPos >= getSize() || xPos < 0 || yPos >= getSize() || yPos < 0)
+			return 0;
+
+		int temp_x, temp_y;
+		int total = 0;
+
+		int maximum = 0;
+
+		if(c == xLower)
+		{
+			// first two is +2, last two is +1
+			int directionX[4][2] = {{0,1}, {-1,1}, {-1,0}, {1,0}};
+			for(int i=0; i<4; i++)
+			{
+				total = 0;
+
+				temp_x = xPos + directionX[i][0];
+				temp_y = yPos + directionX[i][1];
+				if(temp_x >= getSize() || temp_x < 0 || temp_y >= getSize() || temp_y < 0 || visited[temp_x][temp_y] == 1)
+					continue;
+
+
+				if(i == 0 || i == 1)
+				{
+					// +2 points
+					if(hexCells[temp_x * size + temp_y].getCellStatus() == c)
+					{
+						visited[temp_x][temp_y] = 1;
+						total = 2 + scoreHelper(visited, temp_x, temp_y, c);
+						if(total > maximum)
+							maximum = total;
+					}
+				}else
+				{
+					// +1 points
+					if(hexCells[temp_x * size + temp_y].getCellStatus() == c)
+					{
+						visited[temp_x][temp_y] = 1;
+						total = 1 + scoreHelper(visited, temp_x, temp_y, c);
+						if(total > maximum)
+							maximum = total;
+					}
+				}
+
+			}
+
+
+		}else
+		{
+			// first two is +2, last two is +1
+			int directionO[4][2] = {{1,0}, {1,-1}, {0,-1}, {0,1}};
+			for(int i=0; i<4; i++)
+			{
+				total = 0;
+
+				temp_x = xPos + directionO[i][0];
+				temp_y = yPos + directionO[i][1];
+				if(temp_x >= getSize() || temp_x < 0 || temp_y >= getSize() || temp_y < 0 || visited[temp_x][temp_y] == 1)
+					continue;
+
+
+				if(i == 0 || i == 1)
+				{
+					// +2 points
+					if(hexCells[temp_x * size + temp_y].getCellStatus() == c)
+					{
+						visited[temp_x][temp_y] = 1;
+						total = 2 + scoreHelper(visited, temp_x, temp_y, c);
+						if(total > maximum)
+							maximum = total;
+					}
+				}else
+				{
+					// +1 points
+					if(hexCells[temp_x * size + temp_y].getCellStatus() == c)
+					{
+						visited[temp_x][temp_y] = 1;
+						total = 1 + scoreHelper(visited, temp_x, temp_y, c);
+						if(total > maximum)
+							maximum = total;
+					}
+				}
+
+			}
+
+		}
+
+
+		return maximum;
+	}
+
+
+	void HexArray1D::undo()
+	{
+		// ERROR HANDLING
+		if(getCounter() == 0)
+		{
+			cout << "Cannot undo..." << endl;
+			return;
+		}
+
+		counter--;
+		
+		// make the last move empty
+		hexCells[previousMoves[counter][0] * size + previousMoves[counter][1]] = empty;
+
+		if(turn == 0)
+			turn = 1;
+		else
+			turn = 0;
+			
 	}
 
 }

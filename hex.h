@@ -45,7 +45,11 @@ namespace myNamespace
 			virtual Cell lastMove() = 0;
 			virtual int numberOfMoves()const = 0;
 
+			// game loop
 			virtual void gameLoop() = 0;
+
+			// undo
+			virtual void undo() = 0;
 
 			// constructor
 			AbstractHex() : size(0), turn(0), counter(0), gameStatus(true), cap(10)
@@ -129,6 +133,8 @@ namespace myNamespace
 			Cell lastMove();
 			int numberOfMoves()const;
 
+			void undo();
+
 
 			// saves the previous moves for making undo operation
 			int **previousMoves;
@@ -164,6 +170,10 @@ namespace myNamespace
 			void calculateBestMove(int &xPos, int &yPos);
 
 			void centerofGravity(int *center, int totalX, int totalY, int increment);
+
+			// for calculating score
+			int calculateScore();
+			int scoreHelper(int** visited, int xPos, int yPos, cell c);
 
 			Cell *hexCells;
 
