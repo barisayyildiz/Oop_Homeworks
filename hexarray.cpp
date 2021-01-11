@@ -4,15 +4,31 @@
 #include <fstream>
 #include <sstream>
 #include "hex.h"
+#include "exception.h"
 
 using namespace std;
+using namespace excNamespace;
 
 namespace myNamespace{
 
 	HexArray1D::HexArray1D() : AbstractHex() , previousMoves(nullptr), hexCells(nullptr)
 	{
 		// gets user input
-		playGame();
+
+		while(1)
+		{
+			try
+			{
+				playGame();
+				break;
+			}catch(const InvalidSize &err)
+			{
+				cerr << err.what() << endl << endl;
+			}catch(const InvalidInput &err)
+			{
+				cerr << "Input should be 0  or 1" << endl;
+			}
+		}
 		
 		initHexCells();
 
@@ -27,7 +43,7 @@ namespace myNamespace{
 	{
 		// ERROR HANDLING
 		if(s < 6)
-			exit(1);
+			throw InvalidSize();
 
 		size = s;
 		
@@ -40,9 +56,9 @@ namespace myNamespace{
 	{
 		// error handling
 		if(s < 6)
-			exit(1);
+			throw InvalidSize();
 		if(gT != 0 && gT != 1)
-			exit(1);
+			throw InvalidInput();
 		
 		size = s;
 		gameType = gT;
@@ -57,9 +73,9 @@ namespace myNamespace{
 	{
 		// error handling
 		if(s < 6)
-			exit(1);
+			throw InvalidSize();
 		if(gT != 0 && gT != 1)
-			exit(1);
+			throw InvalidInput();
 
 		size = s;
 		gameType = gT;
@@ -68,7 +84,7 @@ namespace myNamespace{
 
 		previousMoves = initPreviousMoves();
 
-		// error handling
+
 		writeToFile(filename);
 
 	}
@@ -175,36 +191,29 @@ namespace myNamespace{
 		// ERROR HANDLING YAP!!!!
 		int tempSize, tempType;
 
-		while(1)
-		{
-			cout << "Size of grid (min 6) : ";
-			cin >> tempSize;
+		cout << "Size of grid (min 6) : ";
+		cin >> tempSize;
 
-			if(tempSize < 6)
-			{
-				cerr << "Invalid input..." << endl;
-			}else
-			{
-				size = tempSize;
-				break;
-			}
+		if(tempSize < 6)
+		{
+			// cerr << "Invalid input..." << endl;
+			throw InvalidSize();
+
+		}else
+		{
+			size = tempSize;
 		}
 
+		cout << "Please enter 0 for 2-player and 1 for 1 player mod" << endl;
+		cin >> tempType;
 
-		while(1)
+		if(tempType == 0 || tempType == 1)
 		{
-			cout << "Please enter 0 for 2-player and 1 for 1 player mod" << endl;
-			cin >> tempType;
-
-			if(tempType == 0 || tempType == 1)
-			{
-				gameType = tempType;
-				break;
-			}else
-			{
-				cout << "Invalid input..." << endl;
-
-			}
+			gameType = tempType;
+		}else
+		{
+			// cout << "Invalid input..." << endl;
+			throw InvalidInput();
 		}
 
 		// clear buffer
@@ -434,6 +443,42 @@ namespace myNamespace{
 
 	AbstractHex::Cell HexArray1D::play(AbstractHex::Cell c1)
 	{
+		// // out of border
+		// if(xPos < 0 || xPos >= size || yPos < 0 || yPos >= size)
+		// {
+		// 	cerr << "Out of border..." << endl;
+		// 	continue;
+		// }
+
+		// if(hexCells[xPos * size + yPos].getCellStatus() != empty)
+		// {
+		// 	cerr << "Position is not empty" << endl;
+		// 	continue;
+		// }
+
+		// if(hexCells[xPos][yPos].getCellStatus() != empty)
+		// {
+		// 	cerr << "Position is not empty" << endl;
+		// 	continue;
+		// }
+
+		// temp.setX(xPos);
+		// temp.setY(yPos);
+
+		// c1->temp
+
+
+		if(c1.getX() < 0 || c1.getX() > size || c1.getY() < 0 || c1.getY() > size)
+		{
+			throw IndexError();
+
+		}else if(hexCells[c1.getX() * size + c1.getY()].getCellStatus() != empty)
+		{
+			throw AllocatedCell();
+
+		}
+
+
 		// user's turn
 		if(counter == cap)
 		{
@@ -601,6 +646,7 @@ namespace myNamespace{
 				getline( cin, s1);
 
 				input = getUserInput(s1, s2, xPos, yPos);
+				
 
 				if(input == 0)
 				{
@@ -610,10 +656,17 @@ namespace myNamespace{
 				{
 					// // load the board
 
-					readFromFile(s2);
+					try
+					{
+						readFromFile(s2);
 
-					cout << "Here is the new board : " << endl;
-					print();
+						cout << "Here is the new board : " << endl;
+						print();
+
+					}catch(const FileError &err)
+					{
+						cerr << err.what() << endl;
+					}
 
 
 					continue;
@@ -633,9 +686,18 @@ namespace myNamespace{
 				}else if(input == 5)
 				{
 					// ERROR HANDLING
-					undo();
-					if(getGameType() == 1)
+
+					try
+					{
 						undo();
+						if(getGameType() == 1)
+							undo();
+					}catch(const UndoError& err)
+					{
+						cerr << err.what() << endl << endl;
+					}
+
+					
 
 					cout << "Board, after undoing : " << endl << endl;
 
@@ -658,41 +720,41 @@ namespace myNamespace{
 					// clears buffer
 					cin.ignore(1000, '\n');
 
-					setSize(input);
-
-					cout << "The new board is : \n\n";
-
-					print();
+					try
+					{
+						setSize(input);
+						
+						cout << "The new board is : \n\n";
+						print();
+					}catch(const InvalidSize &err)
+					{
+						cerr << err.what() << endl << endl;
+					}
 
 					continue;
 
 				}
 
-				// out of border
-				if(xPos < 0 || xPos >= size || yPos < 0 || yPos >= size)
-				{
-					cerr << "Out of border..." << endl;
-					continue;
-				}
 
-				if(hexCells[xPos * size + yPos].getCellStatus() != empty)
-				{
-					cerr << "Position is not empty" << endl;
-					continue;
-				}
-
-				// if(hexCells[xPos][yPos].getCellStatus() != empty)
-				// {
-				// 	cerr << "Position is not empty" << endl;
-				// 	continue;
-				// }
-
-
-				// makes move, increases the counter
-				// play(xPos, yPos);
 				temp.setX(xPos);
 				temp.setY(yPos);
-				play(temp);
+
+				// Exception Handling
+				try
+				{
+					play(temp);
+				}catch(const IndexError &err)
+				{
+					cout << xPos << "," << yPos << endl;
+					cerr << "Index is out of board" << endl << endl;
+					continue;
+				}catch(const AllocatedCell &err)
+				{
+					cout << xPos << "," << yPos << endl;
+					cerr << err.what() << endl << endl;
+					continue;
+				}
+				
 
 				if(isEnd())
 				{
@@ -800,7 +862,8 @@ namespace myNamespace{
 
 		if(!fin)
 		{
-			cerr << "No such file exists...\n\n";
+			// cerr << "No such file exists...\n\n";
+			throw FileError();
 			return;
 		}
 
@@ -1033,6 +1096,11 @@ namespace myNamespace{
 
 	void HexArray1D::setSize(int newSize)
 	{
+		if(newSize < 6)
+		{
+			throw InvalidSize();
+		}
+
 		size = newSize;
 
 		reset();
@@ -1267,8 +1335,8 @@ namespace myNamespace{
 		// ERROR HANDLING
 		if(getCounter() == 0)
 		{
-			cout << "Cannot undo..." << endl;
-			return;
+			// cout << "Cannot undo..." << endl;
+			throw UndoError();
 		}
 
 		counter--;

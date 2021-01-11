@@ -1,9 +1,12 @@
 #include <iostream>
 #include <vector>
+#include <exception>
 #include "hex.h"
+#include "exception.h"
 
 using namespace std;
 using namespace myNamespace;
+using namespace excNamespace;
 
 int main()
 {
@@ -17,11 +20,23 @@ int main()
 
 	string s1 = "board1.txt", s2 = "board2.txt";
 
-	gameVector.push_back(new HexArray1D(15, 1));
-	gameVector.push_back(new HexArray1D(8));
-	gameVector.push_back(new HexArray1D(10, 0));
-	gameVector.push_back(new HexArray1D(12, 0, s1));
-	gameVector.push_back(new HexArray1D(6, 0, s2));
+	// Error handling
+	try
+	{
+		gameVector.push_back(new HexArray1D(15, 1));
+		gameVector.push_back(new HexArray1D(8));
+		gameVector.push_back(new HexArray1D(10, 0));
+		gameVector.push_back(new HexArray1D(12, 0, s1));
+		gameVector.push_back(new HexArray1D(6, 0, s2));
+
+	}catch(const InvalidSize &err)
+	{
+		cerr << err.what() << endl;
+		
+	}catch(const InvalidInput &err)
+	{
+		cerr << err.what() << endl;
+	}
 
 
 	cout << "Welcome to the HEX game..." << endl << endl;
@@ -130,17 +145,6 @@ int main()
 		}
 
 	}
-
-
-
-	// HexArray1D temp;
-
-	// games.push_back(new HexArray1D());
-	// games.push_back(new HexArray1D());
-
-	// cout << games.size() << endl;
-
-	// games[0]->gameLoop();
 
 	return 0;
 }
