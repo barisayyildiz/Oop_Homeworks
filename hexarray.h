@@ -35,6 +35,8 @@ namespace hex
 			void reset();
 			Cell operator()(int x, int y)const;
 
+			inline Cell* getHexCells(){return hexCells;};
+
 		private:
 
 			void readFromFile(const std::string &filename);

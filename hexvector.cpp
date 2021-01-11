@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include "hexbase.h"
+#include "hexarray.h"
 #include "hexvector.h"
 #include "exception.h"
 
@@ -842,9 +843,45 @@ namespace hex{
 
 	bool HexVector::operator==(AbstractHex *aHex)
 	{
-		
+		HexArray1D* ptr = dynamic_cast<HexArray1D*>(aHex);
+		HexVector* ptr2 = dynamic_cast<HexVector*>(aHex);
 
-		return true;
+		// Cell *p = ptr->getHexCells();
+
+		// if the second one is an array
+		if(ptr)
+		{
+			if(size != ptr->getSize())
+				return false;
+
+			for(int i=0; i<size; i++)
+			{
+				for(int j=0; j<size; j++)
+				{
+					if(hexCells[i][j].getCellStatus() != ptr->getHexCells()[i * size + j].getCellStatus())
+						return false;
+				}
+			}
+
+			return true;
+		}
+
+		if(ptr2)
+		{
+			if(size != ptr2->getSize())
+				return false;
+
+			for(int i=0; i<size; i++)
+			{
+				for(int j=0; j<size; j++)
+				{
+					if(hexCells[i][j].getCellStatus() != ptr2->getHexCells()[i][j].getCellStatus())
+						return false;
+				}
+			}
+
+			return true;
+		}
 
 
 	}
