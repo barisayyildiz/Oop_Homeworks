@@ -59,6 +59,16 @@ namespace excNamespace
 			}
 	};
 
+	class CounterZero : public std::exception
+	{
+		public:
+			const char *what()const throw()
+			{
+				return "Counter is 0, cannot get last move";
+			}
+
+	};
+
 
 }
 

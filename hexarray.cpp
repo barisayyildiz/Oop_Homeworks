@@ -921,11 +921,14 @@ namespace hex{
 
 	AbstractHex::Cell HexArray1D::lastMove()
 	{
-		// ERROR HANDLING!!!
+		// Exception handling
 		if(counter == 0)
-			exit(1);
+		{
+			throw CounterZero();
+		}
 
-		return hexCells[counter-1];
+		// returns the lastMove, a Cell object	
+		return hexCells[previousMoves[counter-1][0] * size + previousMoves[counter-1][1]];
 	}
 
 	int HexArray1D::numberOfMoves()const

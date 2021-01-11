@@ -887,10 +887,13 @@ namespace hex{
 
 	AbstractHex::Cell HexVector::lastMove()
 	{
-		// ERROR HANDLING!!!
+		// Exception handling
 		if(counter == 0)
-			exit(1);
+		{
+			throw CounterZero();
+		}
 
+		// returns the last move, a Cell object
 		return hexCells[previousMoves[counter-1][0]][previousMoves[counter-1][1]];
 	}
 
