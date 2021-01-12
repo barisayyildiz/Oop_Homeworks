@@ -862,11 +862,19 @@ namespace hex{
 	template<template<typename...> class T>
 	bool HexAdapter<T>::operator==(AbstractHex *aHex)
 	{
-		
+		if(getSize() != aHex->getSize())
+			return false;
+
+		for(int i=0; i<getSize(); i++)
+		{
+			for(int j=0; j<getSize(); j++)
+			{
+				if( this->operator()(i,j).getCellStatus() != aHex->operator()(i,j).getCellStatus() )
+					return false;
+			}
+		}
 
 		return true;
-
-
 	}
 
 	template<template<typename...> class T>

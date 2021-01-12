@@ -1,9 +1,12 @@
 #include <iostream>
 #include <vector>
+#include <deque>
 #include <exception>
 #include "hexbase.h"
 #include "hexarray.h"
 #include "hexvector.h"
+#include "hexadapter.h"
+#include "hexadapter.cpp"
 #include "exception.h"
 
 using namespace std;
@@ -61,7 +64,7 @@ int main()
 			{
 				cout << "1 : to create a HexArray1D object"	<< endl;
 				cout << "2 : to create a HexVector object" << endl;
-				cout << "3 : to create a HexAdapter object" << endl;
+				cout << "3 : to create a HexAdapter object (deque will be given)" << endl;
 
 				cin >> input;
 				
@@ -82,6 +85,9 @@ int main()
 			}else if(input == '2')
 			{
 				gameVector.push_back(new HexVector());
+			}else if(input == '3')
+			{
+				gameVector.push_back(new HexAdapter<deque>);
 			}
 
 			// if the latest game is terminated
@@ -129,33 +135,33 @@ int main()
 
 		}else if(input == '3')
 		{
-			// cout << "There are " << gameVector.size() << " active games" << endl;
+			cout << "There are " << gameVector.size() << " active games" << endl;
 
-			// if(gameVector.size() < 2)
-			// {
-			// 	cout << "We need at least 2 games to compare, please create more..." << endl;
-			// 	continue;
-			// }
+			if(gameVector.size() < 2)
+			{
+				cout << "We need at least 2 games to compare, please create more..." << endl;
+				continue;
+			}
 
-			// cout << "Which two games do you want to compare, (indexing starts at 0) (ex. 0 1) : ";
-			// cin >> index >> index2;
+			cout << "Which two games do you want to compare, (indexing starts at 0) (ex. 0 1) : ";
+			cin >> index >> index2;
 
-			// // clears buffer
-			// cin.ignore(1000, '\n');
+			// clears buffer
+			cin.ignore(1000, '\n');
 
-			// if(index >= gameVector.size() || index2 >= gameVector.size())
-			// {
-			// 	cerr << "Wrong index number..." << endl;
-			// 	continue;
-			// }
-
+			if(index >= gameVector.size() || index2 >= gameVector.size())
+			{
+				cerr << "Wrong index number..." << endl;
+				continue;
+			}
 
 			// cmp = (gameVector[index] == gameVector[index2]);
+			cmp = (*gameVector[index] == gameVector[index2]);
 
-			// if(cmp == 1)
-			// 	cout << "\nThe board with the index " << index << " has more marked cells for the user" << endl;
-			// else
-			// 	cout << "\nThe board with the index " << index2 << " has more marked cells for the user" << endl; 
+			if(cmp == 1)
+				cout << "\nThe games are equal..." << endl << endl;
+			else
+				cout << "\nThe games are not equal..." << endl << endl;
 
 
 		}else if(input == '4')

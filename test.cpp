@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <deque>
 #include <exception>
 #include "hexbase.h"
 #include "hexarray.h"
@@ -29,17 +30,15 @@ int main()
 
 	vector < AbstractHex * > gameVector;
 
-	gameVector.push_back(new HexVector(8));
-	gameVector.push_back(new HexArray1D(6));
-	gameVector.push_back(new HexVector(9));
 
+	gameVector.push_back(new HexAdapter<deque>(9));
+	gameVector.push_back(new HexVector(12));
+	gameVector.push_back(new HexArray1D(9));
+	
+	
 	bool val = *gameVector[0] == gameVector[2];
 
 	cout << val << endl;
-
-	gameVector.push_back(new HexAdapter<vector>(9));
-
-	test(gameVector[3]);
 
 
 }

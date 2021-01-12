@@ -865,23 +865,19 @@ namespace hex{
 
 	bool HexArray1D::operator==(AbstractHex *aHex)
 	{
-		// HexArray1D* ptr = dynamic_cast<HexArray1D*>(aHex);
+		if(getSize() != aHex->getSize())
+			return false;
 
-		// if(ptr)
-		// {
-		// 	if(size != aHex->getSize())
-		// 		return false;
-			
-		// 	for(int i=0; i<size * size; i++)
-		// 	{
-		// 		if(hexCells[i].getCellStatus() != aHex->hexCells[i].getCellStatus())
-		// 			return false;
-		// 	}
-		// }
+		for(int i=0; i<getSize(); i++)
+		{
+			for(int j=0; j<getSize(); j++)
+			{
+				if( this->operator()(i,j).getCellStatus() != aHex->operator()(i,j).getCellStatus() )
+					return false;
+			}
+		}
 
 		return true;
-
-
 	}
 
 	AbstractHex::Cell HexArray1D::lastMove()

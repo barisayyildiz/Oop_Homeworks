@@ -843,48 +843,22 @@ namespace hex{
 
 	bool HexVector::operator==(AbstractHex *aHex)
 	{
-		HexArray1D* ptr = dynamic_cast<HexArray1D*>(aHex);
-		HexVector* ptr2 = dynamic_cast<HexVector*>(aHex);
+		if(getSize() != aHex->getSize())
+			return false;
 
-		// Cell *p = ptr->getHexCells();
-
-		// if the second one is an array
-		if(ptr)
+		for(int i=0; i<getSize(); i++)
 		{
-			if(size != ptr->getSize())
-				return false;
-
-			for(int i=0; i<size; i++)
+			for(int j=0; j<getSize(); j++)
 			{
-				for(int j=0; j<size; j++)
-				{
-					if(hexCells[i][j].getCellStatus() != ptr->getHexCells()[i * size + j].getCellStatus())
-						return false;
-				}
+				if( this->operator()(i,j).getCellStatus() != aHex->operator()(i,j).getCellStatus() )
+					return false;
 			}
-
-			return true;
 		}
 
-		if(ptr2)
-		{
-			if(size != ptr2->getSize())
-				return false;
-
-			for(int i=0; i<size; i++)
-			{
-				for(int j=0; j<size; j++)
-				{
-					if(hexCells[i][j].getCellStatus() != ptr2->getHexCells()[i][j].getCellStatus())
-						return false;
-				}
-			}
-
-			return true;
-		}
-
-
+		return true;
 	}
+
+	
 
 	AbstractHex::Cell HexVector::lastMove()
 	{
