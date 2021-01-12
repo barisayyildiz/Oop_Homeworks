@@ -32,10 +32,6 @@ namespace hex
 			~HexAdapter();
 
 			// private'a al sonra
-			void print()const;
-			bool isEnd();
-			void reset();
-			Cell operator()(int x, int y)const;
 
 		private:
 
@@ -47,6 +43,10 @@ namespace hex
 			bool operator==(AbstractHex *aHex);
 			Cell lastMove();
 			int numberOfMoves()const;
+			void print()const;
+			bool isEnd();
+			void reset();
+			Cell operator()(int x, int y)const;
 
 			void undo();
 

@@ -30,10 +30,6 @@ namespace hex
 			~HexArray1D();
 
 			// private'a al sonra
-			void print()const;
-			bool isEnd();
-			void reset();
-			Cell operator()(int x, int y)const;
 
 			inline Cell* getHexCells(){return hexCells;};
 
@@ -47,6 +43,10 @@ namespace hex
 			bool operator==(AbstractHex *aHex);
 			Cell lastMove();
 			int numberOfMoves()const;
+			void print()const;
+			bool isEnd();
+			void reset();
+			Cell operator()(int x, int y)const;
 
 			void undo();
 
