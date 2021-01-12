@@ -31,8 +31,8 @@ int main()
 		gameVector.push_back(new HexArray1D(15, 1));
 		gameVector.push_back(new HexVector(8));
 		gameVector.push_back(new HexVector(10, 0));
-		gameVector.push_back(new HexArray1D(12, 0, s1));
-		gameVector.push_back(new HexArray1D(6, 0, s2));
+		gameVector.push_back(new HexAdapter<vector>(12, 0, s1));
+		gameVector.push_back(new HexAdapter<deque>(6, 0, s2));
 
 	}catch(const InvalidSize &err)
 	{
@@ -177,12 +177,6 @@ int main()
 		}
 
 	}
-
-	for(auto p : gameVector)
-	{
-		delete p;
-	}
-	gameVector.clear();
 
 	return 0;
 }
