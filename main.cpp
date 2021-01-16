@@ -18,63 +18,6 @@ using namespace hex;
 using namespace excNamespace;
 
 
-
-// bool isValidSequence(vector<AbstractHex*> arr)
-// {
-// 	if(arr.size() == 0 || arr.size() == 1)
-// 		return true;
-
-
-// 	vector<AbstractHex::Cell> moves;
-
-// 	int initSize = arr[0]->getSize();
-	
-// 	// for difference
-// 	int diffCounter = 0;
-// 	AbstractHex::Cell temp;
-
-// 	for(int i=0; i<initSize; i++)
-// 	{
-// 		for(int j=0; j<initSize; j++)
-// 		{
-// 			if(arr[0]->operator()(i,j).getCellStatus() != empty)
-// 			{
-// 				moves.push_back(AbstractHex::Cell(arr[0]->operator()(i,j).getCellStatus()));
-// 				moves[moves.size()-1].setX(i);
-// 				moves[moves.size()-1].setY(j);
-// 			}
-// 		}
-// 	}
-
-// 	for(unsigned int i=1; i<arr.size(); i++)
-// 	{
-// 		if(initSize != arr[i]->getSize() || (arr[i-1]->getCounter() != arr[i]->getCounter() - 1))
-// 			return false;
-
-// 		for(unsigned int j=0; j<moves.size(); j++)
-// 		{
-
-// 			if(arr[i]->operator()(moves[j].getX(), moves[j].getY()).getCellStatus() != moves[j].getCellStatus())
-// 			{
-// 				if(diffCounter == 1 || arr[i-1]->getCounter() == 1)
-// 					return false;
-				
-// 				diffCounter++;
-
-// 				temp.setX(moves[j].getX());
-// 				temp.setY(moves[j].getY());
-// 				temp.setCellStatus(moves[j].getCellStatus());
-// 			}
-// 		}
-
-// 		moves.push_back(temp);
-
-// 	}
-
-// 	return true;	
-
-// }
-
 int main()
 {
 	vector < AbstractHex* > gameVector;
@@ -90,8 +33,10 @@ int main()
 	// For testing
 	try
 	{
-		gameVector.push_back(new HexArray1D());
-		gameVector.push_back(new HexVector());
+		gameVector.push_back(new HexArray1D(8,0));
+		gameVector.push_back(new HexVector(7,1));
+		gameVector.push_back(new HexAdapter<deque>(10,0,s1));
+		gameVector.push_back(new HexAdapter<vector>(14,1,s2));
 
 	}catch(const InvalidSize &err)
 	{
@@ -103,7 +48,7 @@ int main()
 	}
 
 	bool val = isValidSequence(gameVector);
-	cout << "val : " << val << endl;
+	cout << "Does game vector have valid sequence : " << val << endl;
 
 
 
@@ -117,6 +62,7 @@ int main()
 		cout << "2 : to continue an active game" << endl;
 		cout << "3 : to compare two active games" << endl;
 		cout << "4 : to get non empty cells for all the games" << endl;
+		cout << "5 : to check if all the active games form a valid sequence together" << endl;
 		cout << "q : to exit" << endl << endl;
 
 		cin >> input;
@@ -232,6 +178,12 @@ int main()
 		{
 			cout << "Total of non empty cells : " << AbstractHex::getNonEmptyCells() << endl << endl;
 
+		}else if(input == '5')
+		{
+			bool val = isValidSequence(gameVector);
+
+			cout << "Does game vector have valid sequence : " << val << endl << endl;
+			
 		}else if(input == 'q')
 		{
 			mainLoop = false;

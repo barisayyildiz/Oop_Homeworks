@@ -37,7 +37,7 @@ bool isValidSequence(vector<AbstractHex*> arr)
 
 	for(unsigned int i=1; i<arr.size(); i++)
 	{
-		if(initSize != arr[i]->getSize() || (arr[i-1]->getCounter() != arr[i]->getCounter() - 1))
+		if(initSize != arr[i]->getSize() || (arr[i-1]->getCounter() != arr[i]->getCounter() - 1) || (arr[i-1]->getTurn() == arr[i]->getTurn()))
 			return false;
 
 		for(unsigned int j=0; j<moves.size(); j++)
