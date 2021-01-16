@@ -45,11 +45,6 @@ namespace hex
 			virtual Cell lastMove() = 0;
 			virtual int numberOfMoves()const = 0;
 
-			// // game loop
-			// virtual void gameLoop() = 0;
-
-			// undo
-			virtual void undo() = 0;
 
 			// constructor
 			AbstractHex() : size(0), turn(0), counter(0), gameStatus(true), cap(10)
@@ -93,6 +88,8 @@ namespace hex
 			// gets the user input -> size of the board and game type
 			virtual void playGame();
 
+			// undo
+			virtual void undo() = 0;
 
 
 	};

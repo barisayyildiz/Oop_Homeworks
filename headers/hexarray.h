@@ -29,8 +29,6 @@ namespace hex
 			// destructor
 			~HexArray1D();
 
-			// private'a al sonra
-
 			inline Cell* getHexCells(){return hexCells;};
 
 		private:

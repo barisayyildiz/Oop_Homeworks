@@ -29,8 +29,6 @@ namespace hex
 			// destructor
 			~HexVector();
 
-			// private'a al sonra
-
 			inline std::vector<std::vector<Cell>> getHexCells(){return hexCells;};
 
 		private:

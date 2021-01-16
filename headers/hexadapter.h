@@ -31,8 +31,6 @@ namespace hex
 			// destructor
 			~HexAdapter();
 
-			// private'a al sonra
-
 		private:
 
 			void readFromFile(const std::string &filename);
