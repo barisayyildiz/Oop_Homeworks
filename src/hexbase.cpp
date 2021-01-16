@@ -4,9 +4,8 @@
 #include <fstream>
 #include <sstream>
 #include <exception>
-#include "hexbase.h"
-#include "hexarray.h"
-#include "exception.h"
+#include "../headers/hexbase.h"
+#include "../headers/exception.h"
 
 using namespace std;
 using namespace excNamespace;

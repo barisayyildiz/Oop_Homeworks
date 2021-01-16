@@ -3,16 +3,18 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
-#include "hexbase.h"
-#include "hexarray.h"
-#include "exception.h"
+
+#include "../headers/hexbase.h"
+#include "../headers/hexadapter.h"
+#include "../headers/exception.h"
 
 using namespace std;
 using namespace excNamespace;
 
 namespace hex{
 
-	HexArray1D::HexArray1D() : AbstractHex() , previousMoves(nullptr), hexCells(nullptr) 
+	template<template<typename...> class T>
+	HexAdapter<T>::HexAdapter() : AbstractHex() , previousMoves(nullptr)
 	{
 		// gets user input
 
@@ -40,7 +42,8 @@ namespace hex{
 
 	}	
 
-	HexArray1D::HexArray1D(int s) : AbstractHex(), previousMoves(nullptr), hexCells(nullptr)
+	template<template<typename...> class T>
+	HexAdapter<T>::HexAdapter(int s) : AbstractHex(), previousMoves(nullptr)
 	{
 		// ERROR HANDLING
 		if(s < 6)
@@ -53,7 +56,8 @@ namespace hex{
 		previousMoves = initPreviousMoves();
 	}
 
-	HexArray1D::HexArray1D(int s, int gT) : AbstractHex(), previousMoves(nullptr), hexCells(nullptr)
+	template<template<typename...> class T>
+	HexAdapter<T>::HexAdapter(int s, int gT) : AbstractHex(), previousMoves(nullptr)
 	{
 		// error handling
 		if(s < 6)
@@ -70,7 +74,8 @@ namespace hex{
 		previousMoves = initPreviousMoves();
 	}
 
-	HexArray1D::HexArray1D(int s, int gT, string &filename) : AbstractHex(), previousMoves(nullptr), hexCells(nullptr)
+	template<template<typename...> class T>
+	HexAdapter<T>::HexAdapter(int s, int gT, string &filename) : AbstractHex(), previousMoves(nullptr)
 	{
 		// error handling
 		if(s < 6)
@@ -91,7 +96,8 @@ namespace hex{
 	}
 
 	// assignment operator
-	HexArray1D& HexArray1D::operator = (const HexArray1D& h1){
+	template<template<typename...> class T>
+	HexAdapter<T>& HexAdapter<T>::operator = (const HexAdapter<T>& h1){
 
 		if(previousMoves != nullptr)
 		{
@@ -104,10 +110,6 @@ namespace hex{
 		}
 		previousMoves = nullptr;
 		
-		if(hexCells != nullptr)
-		{
-			free(hexCells);
-		}
 
 		size = h1.getSize();
 		turn = h1.getTurn();
@@ -123,7 +125,8 @@ namespace hex{
 		{
 			for(int j=0; j<size; j++)
 			{
-				hexCells[i * size + j] = h1.hexCells[i * size + j];
+				// hexCells[i * size + j] = h1.hexCells[i * size + j];
+				hexCells[i][j] = h1.hexCells[i][j];
 			}
 		}
 
@@ -138,7 +141,8 @@ namespace hex{
 
 
 	// copy constructor
-	HexArray1D::HexArray1D(const HexArray1D& h1){
+	template<template<typename...> class T>
+	HexAdapter<T>::HexAdapter(const HexAdapter& h1){
 
 		size = h1.getSize();
 		turn = h1.getTurn();
@@ -154,7 +158,8 @@ namespace hex{
 		{
 			for(int j=0; j<size; j++)
 			{
-				hexCells[i * size + j] = h1.hexCells[i * size + j];
+				// hexCells[i * size + j] = h1.hexCells[i * size + j];
+				hexCells[i][j] = h1.hexCells[i][j];
 			}
 		}
 
@@ -167,7 +172,8 @@ namespace hex{
 	}
 
 	// destructor
-	HexArray1D::~HexArray1D(){
+	template<template<typename...> class T>
+	HexAdapter<T>::~HexAdapter(){
 		cout << "~destructor" << endl;
 
 		if(previousMoves != nullptr)
@@ -180,13 +186,13 @@ namespace hex{
 		}
 
 		// I have used malloc and free, because we were told to use one dimensional dynamic 'C array' for the hexCells
-		if(hexCells != nullptr)
-			free(hexCells);
+		// if(hexCells != nullptr)
+		// 	free(hexCells);
 
 	}
 
-
-	int** HexArray1D::initPreviousMoves()
+	template<template<typename...> class T>
+	int** HexAdapter<T>::initPreviousMoves()
 	{
 		int **temp = nullptr;
 		temp = new int*[cap];
@@ -197,18 +203,20 @@ namespace hex{
 		return temp;
 	}
 
-	void HexArray1D::initHexCells()
+	template<template<typename...> class T>
+	void HexAdapter<T>::initHexCells()
 	{
-		hexCells = (AbstractHex::Cell*)malloc(sizeof(AbstractHex::Cell) * size * size);
+		hexCells.resize(size);
 
-		for(int i=0; i<size*size; i++)
+		for(int i=0; i<size; i++)
 		{
-			hexCells[i].setCellStatus(empty);
+			hexCells[i].resize(size, Cell(empty));
 		}
 
 	}
 
-	void HexArray1D::print()const
+	template<template<typename...> class T>
+	void HexAdapter<T>::print()const
 	{
 		// header
 		cout << "  ";
@@ -217,8 +225,6 @@ namespace hex{
 			cout << static_cast<char>(97 + i) << " ";
 		}
 		cout << "\n";
-
-		int iter = 0;
 
 		for(int i=0; i<getSize(); i++)
 		{
@@ -229,16 +235,16 @@ namespace hex{
 			for(int indent=0; indent<=i; indent++)
 				cout << " ";
 
-			while(iter/getSize() == i)
+			for(int j=0; j<getSize(); j++)
 			{
-				cout << static_cast<char>(hexCells[iter++].getCellStatus() ) << " ";
+				cout << static_cast<char>( hexCells[i][j].getCellStatus() ) << " ";
 			}
-
 			cout << "\n";
 		}
 	}
 
-	bool HexArray1D::isEnd()
+	template<template<typename...> class T>
+	bool HexAdapter<T>::isEnd()
 	{
 		int **visited = nullptr;
 		visited = initVisited(visited);
@@ -249,7 +255,7 @@ namespace hex{
 			{
 				initVisited(visited);
 
-				if(hexCells[i*size].getCellStatus() == xLower && didSomebodyWin(visited, i, 0))
+				if(hexCells[i][0].getCellStatus() == xLower && didSomebodyWin(visited, i, 0))
 					return true;
 			}
 			
@@ -258,7 +264,7 @@ namespace hex{
 			for(int i=0; i<size; i++)
 			{
 				initVisited(visited);
-				if(hexCells[i+size].getCellStatus() == oLower && didSomebodyWin(visited, 0, i))
+				if(hexCells[0][i].getCellStatus() == oLower && didSomebodyWin(visited, 0, i))
 					return true;
 			}
 		}
@@ -275,7 +281,8 @@ namespace hex{
 
 	}
 
-	int** HexArray1D::initVisited(int **visited)
+	template<template<typename...> class T>
+	int** HexAdapter<T>::initVisited(int **visited)
 	{
 		if(visited != nullptr)
 		{
@@ -304,7 +311,8 @@ namespace hex{
 
 	}
 
-	int HexArray1D::didSomebodyWin(int **visited, int xPos, int yPos)
+	template<template<typename...> class T>
+	int HexAdapter<T>::didSomebodyWin(int **visited, int xPos, int yPos)
 	{
 		int tempX = xPos, tempY = yPos;
 		int moveRange[6][2] = {{-1,0}, {0,1}, {1,0}, {0,-1}, {-1,1}, {1,-1}};
@@ -314,8 +322,8 @@ namespace hex{
 			// X's turn
 			if(yPos == size-1)
 			{
-				// hexCells[xPos][yPos].setCellStatus(xCapital);
-				hexCells[size * xPos + yPos].setCellStatus(xCapital);
+				hexCells[xPos][yPos].setCellStatus(xCapital);
+				// hexCells[size * xPos + yPos].setCellStatus(xCapital);
 				return 1;
 			}
 
@@ -337,8 +345,8 @@ namespace hex{
 					if(didSomebodyWin(visited, tempX, tempY))
 					{
 						// capitalize
-						// hexCells[xPos][yPos].setCellStatus(xCapital);
-						hexCells[size * xPos + yPos].setCellStatus(xCapital);
+						hexCells[xPos][yPos].setCellStatus(xCapital);
+						// hexCells[size * xPos + yPos].setCellStatus(xCapital);
 						return 1;
 					}
 				}
@@ -352,8 +360,8 @@ namespace hex{
 			if(xPos == size-1)
 			{
 				// capitalize
-				// hexCells[xPos][yPos] = oCapital;
-				hexCells[size * xPos + yPos].setCellStatus(oCapital);
+				hexCells[xPos][yPos] = oCapital;
+				// hexCells[size * xPos + yPos].setCellStatus(oCapital);
 				return 1;
 			}
 
@@ -376,8 +384,8 @@ namespace hex{
 					if(didSomebodyWin(visited, tempX, tempY))
 					{
 						// capitalize
-						// hexCells[xPos][yPos].setCellStatus(oCapital);
-						hexCells[size * xPos + yPos].setCellStatus(oCapital);
+						hexCells[xPos][yPos].setCellStatus(oCapital);
+						// hexCells[size * xPos + yPos].setCellStatus(oCapital);
 						return 1;
 					}
 				}
@@ -387,27 +395,28 @@ namespace hex{
 
 	}
 
-	int HexArray1D::isMoveable(int **visited, int xPos, int yPos)
+	template<template<typename...> class T>
+	int HexAdapter<T>::isMoveable(int **visited, int xPos, int yPos)
 	{
 		if(turn == 0)
 		{
-			// if(hexCells[xPos][yPos].getCellStatus() == xLower && visited[xPos][yPos] == 0)
-			// 	return 1;
-			if(hexCells[xPos * size + yPos].getCellStatus() == xLower && visited[xPos][yPos] == 0)
+			if(hexCells[xPos][yPos].getCellStatus() == xLower && visited[xPos][yPos] == 0)
 				return 1;
+			// if(hexCells[xPos * size + yPos].getCellStatus() == xLower && visited[xPos][yPos] == 0)
+			// 	return 1;
 		}else
 		{
-			// if(hexCells[xPos][yPos].getCellStatus() == oLower && visited[xPos][yPos] == 0)
-			// 	return 1;
-			if(hexCells[xPos * size + yPos].getCellStatus() == oLower && visited[xPos][yPos] == 0)
+			if(hexCells[xPos][yPos].getCellStatus() == oLower && visited[xPos][yPos] == 0)
 				return 1;
+			// if(hexCells[xPos * size + yPos].getCellStatus() == oLower && visited[xPos][yPos] == 0)
+			// 	return 1;
 		}
 
 		return 0;
 	}
 
-
-	AbstractHex::Cell HexArray1D::play(AbstractHex::Cell c1)
+	template<template<typename...> class T>
+	AbstractHex::Cell HexAdapter<T>::play(AbstractHex::Cell c1)
 	{
 		// // out of border
 		// if(xPos < 0 || xPos >= size || yPos < 0 || yPos >= size)
@@ -438,7 +447,7 @@ namespace hex{
 		{
 			throw IndexError();
 
-		}else if(hexCells[c1.getX() * size + c1.getY()].getCellStatus() != empty)
+		}else if(hexCells[c1.getX()][c1.getY()].getCellStatus() != empty)
 		{
 			throw AllocatedCell();
 
@@ -481,22 +490,24 @@ namespace hex{
 
 		if(getTurn() == 0)
 		{
-			// hexCells[c1.getX()][c1.getY()].setCellStatus(xLower);
-			hexCells[c1.getX() * size + c1.getY()].setCellStatus(xLower);
+			hexCells[c1.getX()][c1.getY()].setCellStatus(xLower);
+			// hexCells[c1.getX() * size + c1.getY()].setCellStatus(xLower);
 		}
 		else
 		{
-			// hexCells[c1.getX()][c1.getY()].setCellStatus(oLower);
-			hexCells[c1.getX() * size + c1.getY()].setCellStatus(oLower);
+			hexCells[c1.getX()][c1.getY()].setCellStatus(oLower);
+			// hexCells[c1.getX() * size + c1.getY()].setCellStatus(oLower);
 		}
 
-		return hexCells[c1.getX() * size + c1.getY()];
+		// return hexCells[c1.getX() * size + c1.getY()];
+		return hexCells[c1.getX()][c1.getY()];
 
 	}
 
 
 	// helper function for file input output
-	int HexArray1D::orderChar(char c)
+	template<template<typename...> class T>
+	int HexAdapter<T>::orderChar(char c)
 	{
 		if(c == '.')
 		{
@@ -517,8 +528,8 @@ namespace hex{
 
 	}
 
-
-	void HexArray1D::writeToFile(const string &filename)
+	template<template<typename...> class T>
+	void HexAdapter<T>::writeToFile(const string &filename)
 	{
 		char temp;
 
@@ -531,18 +542,16 @@ namespace hex{
 		fout << getGameType() << endl;
 		fout << getTurn() << endl;
 
-		int iter = 0;
 
 		for(int i=0; i<getSize(); i++)
 		{
-
-			while(iter/getSize() == i)
+			for(int  j=0; j<getSize(); j++)
 			{
-				temp = static_cast<char>(hexCells[iter++].getCellStatus() );
+				temp = static_cast<char>( hexCells[i][j].getCellStatus() );
+
 				fout << orderChar(temp);
 			}
-
-			fout << endl;			
+			fout << endl;
 		}
 
 		// save cap
@@ -559,13 +568,14 @@ namespace hex{
 
 	}
 
-	void HexArray1D::readFromFile(const string &filename)
+	template<template<typename...> class T>
+	void HexAdapter<T>::readFromFile(const string &filename)
 	{
 		int temp;
 		int newSize, newCounter, newGameType, newTurn, newCap;
 
 		// we need to adjust nonEmptyCells
-		HexArray1D::nonEmptyCells -= getCounter();
+		HexAdapter::nonEmptyCells -= getCounter();
 
 		string line;
 
@@ -584,8 +594,15 @@ namespace hex{
 		fin >> newGameType;
 		fin >> newTurn;
 
-		// free hexCells
-		free(hexCells);
+		// // free hexCells
+		// free(hexCells);
+
+		for(int i=0; i<size; i++)
+		{
+			hexCells[i].erase(hexCells[i].begin(), hexCells[i].end());
+		}
+		hexCells.erase(hexCells.begin(), hexCells.end());
+
 
 		// for(int i=0; i<h1.getSize(); i++)
 		// {
@@ -607,28 +624,28 @@ namespace hex{
 			for(int j=0; j<getSize(); j++)
 			{
 				temp = line[j] - '0';
-				hexCells[i * size + j] = static_cast<cell>(temp);
+				hexCells[i][j] = static_cast<cell>(temp);
 
 				switch(temp)
 				{
 					case 0:
-						hexCells[i * size + j].setCellStatus(empty);
+						hexCells[i][j].setCellStatus(empty);
 						break;
 					case 1:
-						hexCells[i * size + j].setCellStatus(xLower);
-						HexArray1D::nonEmptyCells++;
+						hexCells[i][j].setCellStatus(xLower);
+						HexAdapter::nonEmptyCells++;
 						break;
 					case 2:
-						hexCells[i * size + j].setCellStatus(oLower);
-						HexArray1D::nonEmptyCells++;
+						hexCells[i][j].setCellStatus(oLower);
+						HexAdapter::nonEmptyCells++;
 						break;
 					case 3:
-						hexCells[i * size + j].setCellStatus(xCapital);
-						HexArray1D::nonEmptyCells++;
+						hexCells[i][j].setCellStatus(xCapital);
+						HexAdapter::nonEmptyCells++;
 						break;
 					case 4:
-						hexCells[i * size + j].setCellStatus(oCapital);
-						HexArray1D::nonEmptyCells++;
+						hexCells[i][j].setCellStatus(oCapital);
+						HexAdapter::nonEmptyCells++;
 						break;
 				}
 			}
@@ -659,7 +676,8 @@ namespace hex{
 	}
 
 	// for AI
-	AbstractHex::Cell HexArray1D::play()
+	template<template<typename...> class T>
+	AbstractHex::Cell HexAdapter<T>::play()
 	{
 		if(counter == cap)
 		{
@@ -695,13 +713,16 @@ namespace hex{
 
 		nonEmptyCells++;
 		counter++;
-		hexCells[xPos * size + yPos].setCellStatus(xLower);
+		// hexCells[xPos * size + yPos].setCellStatus(xLower);
+		hexCells[xPos][yPos].setCellStatus(xLower);
 
-		return hexCells[xPos * size + yPos];
+		// return hexCells[xPos * size + yPos];
+		return hexCells[xPos][yPos];
 
 	}
 
-	void HexArray1D::calculateBestMove(int &xPos, int &yPos)
+	template<template<typename...> class T>
+	void HexAdapter<T>::calculateBestMove(int &xPos, int &yPos)
 	{
 		// if the computer is making the first move
 		if(counter == 0)
@@ -719,7 +740,7 @@ namespace hex{
 		{
 			for(int j=0; j<size; j++)
 			{
-				if(hexCells[i * size + j].getCellStatus() == oLower)
+				if(hexCells[i][j].getCellStatus() == oLower)
 				{
 					totalX += i;
 					totalY += j;
@@ -735,7 +756,7 @@ namespace hex{
 		center[1] = totalY / increment;
 
 		// if the cell is empty, set xPos and yPos
-		if(hexCells[center[0] * size + center[1]].getCellStatus() == empty)
+		if(hexCells[center[0]][center[1]].getCellStatus() == empty)
 		{
 			xPos = center[0];
 			yPos = center[1];
@@ -746,7 +767,7 @@ namespace hex{
 		int direction[4][2] = {{0,1}, {1,0}, {0,-1}, {-1,0}};
 		int turn = 0;
 
-		while(hexCells[center[0] * size + center[1]].getCellStatus() != empty)
+		while(hexCells[center[0]][center[1]].getCellStatus() != empty)
 		{
 			if(center[0] + direction[turn][0] >= size || center[0] + direction[turn][0] < 0 || center[1] + direction[turn][1] >= size || center[1] + direction[turn][1] < 0)
 			{
@@ -766,8 +787,8 @@ namespace hex{
 		return;
 	}
 
-
-	void HexArray1D::centerofGravity(int *center, int totalX, int totalY, int increment)
+	template<template<typename...> class T>
+	void HexAdapter<T>::centerofGravity(int *center, int totalX, int totalY, int increment)
 	{
 		int x = totalX / increment;
 		int y = totalY / increment;
@@ -778,8 +799,8 @@ namespace hex{
 		return;
 	}
 
-
-	void HexArray1D::reset()
+	template<template<typename...> class T>
+	void HexAdapter<T>::reset()
 	{
 		// cout << "reset function" << endl;
 
@@ -796,9 +817,12 @@ namespace hex{
 		
 		previousMoves = initPreviousMoves();
 
-		if(hexCells != nullptr)
-			free(hexCells);
-	
+		for(int i=0; i<size; i++)
+		{
+			hexCells[i].erase(hexCells[i].begin(), hexCells[i].end());
+		}
+		hexCells.erase(hexCells.begin(), hexCells.end());
+
 		initHexCells();
 
 		turn = 0;
@@ -806,7 +830,8 @@ namespace hex{
 
 	}
 
-	void HexArray1D::setSize(int newSize)
+	template<template<typename...> class T>
+	void HexAdapter<T>::setSize(int newSize)
 	{
 		if(newSize < 6)
 		{
@@ -817,39 +842,10 @@ namespace hex{
 
 		reset();
 
-		// AbstractHex::Cell *temp = (AbstractHex::Cell*)malloc(sizeof(AbstractHex::Cell) * newSize * newSize);
-
-		// for(int i=0; i<size * size; i++)
-		// {
-		// 	temp[i] = hexCells[i];
-		// }
-
-		// for(int i=size*size; i<newSize * newSize; i++)
-		// {
-		// 	temp[i].setCellStatus(empty);
-		// }
-		
-		// free(hexCells);
-
-		// hexCells = temp;
-		// size = newSize;
-
-		// cout << "QWEQWEQWEQ" << endl;
 	}
 
-
-
-
-
-	// AbstractHex::Cell HexArray1D::play(AbstractHex::Cell c1)
-	// {
-	// 	return c1;
-	// }
-
-	// bool isEnd()const;
-	// Cell operator()(int x, int y)const;
-
-	AbstractHex::Cell HexArray1D::operator()(int x, int y)const
+	template<template<typename...> class T>
+	AbstractHex::Cell HexAdapter<T>::operator()(int x, int y)const
 	{
 		// ERROR HANDLING YAPILACAK
 
@@ -859,11 +855,13 @@ namespace hex{
 			exit(1);
 		}
 
-		return hexCells[x * getSize() + y];
+		// return hexCells[x * getSize() + y];
+		return hexCells[x][y];
 
 	}
 
-	bool HexArray1D::operator==(AbstractHex *aHex)
+	template<template<typename...> class T>
+	bool HexAdapter<T>::operator==(AbstractHex *aHex)
 	{
 		if(getSize() != aHex->getSize())
 			return false;
@@ -880,7 +878,8 @@ namespace hex{
 		return true;
 	}
 
-	AbstractHex::Cell HexArray1D::lastMove()
+	template<template<typename...> class T>
+	AbstractHex::Cell HexAdapter<T>::lastMove()
 	{
 		// Exception handling
 		if(counter == 0)
@@ -888,18 +887,20 @@ namespace hex{
 			throw CounterZero();
 		}
 
-		// returns the lastMove, a Cell object	
-		return hexCells[previousMoves[counter-1][0] * size + previousMoves[counter-1][1]];
+		// returns the last move, a Cell object
+		return hexCells[previousMoves[counter-1][0]][previousMoves[counter-1][1]];
 	}
 
-	int HexArray1D::numberOfMoves()const
+	template<template<typename...> class T>
+	int HexAdapter<T>::numberOfMoves()const
 	{
 		return getCounter();
 	}
 
 	// ============================= FOR CALCULATING SCORE ========================= //
 
-	int HexArray1D::calculateScore()
+	template<template<typename...> class T>
+	int HexAdapter<T>::calculateScore()
 	{
 		int **visited = nullptr;
 		int value;
@@ -914,7 +915,7 @@ namespace hex{
 			{
 				for(int j=0; j<getSize(); j++)
 				{
-					if(hexCells[i * size + j].getCellStatus() == xLower)
+					if(hexCells[i][j].getCellStatus() == xLower)
 					{
 						visited = initVisited(visited);
 						value = scoreHelper(visited, i, j, xLower);
@@ -932,7 +933,7 @@ namespace hex{
 			{
 				for(int j=0; j<getSize(); j++)
 				{
-					if(hexCells[i * size + j].getCellStatus() == oLower)
+					if(hexCells[i][j].getCellStatus() == oLower)
 					{
 						visited = initVisited(visited);
 						value = scoreHelper(visited, i, j, oLower);
@@ -947,7 +948,8 @@ namespace hex{
 
 	}
 
-	int HexArray1D::scoreHelper(int** visited, int xPos, int yPos, cell c)
+	template<template<typename...> class T>
+	int HexAdapter<T>::scoreHelper(int** visited, int xPos, int yPos, cell c)
 	{
 		if(xPos >= getSize() || xPos < 0 || yPos >= getSize() || yPos < 0)
 			return 0;
@@ -974,7 +976,7 @@ namespace hex{
 				if(i == 0 || i == 1)
 				{
 					// +2 points
-					if(hexCells[temp_x * size + temp_y].getCellStatus() == c)
+					if(hexCells[temp_x][temp_y].getCellStatus() == c)
 					{
 						visited[temp_x][temp_y] = 1;
 						total = 2 + scoreHelper(visited, temp_x, temp_y, c);
@@ -984,7 +986,7 @@ namespace hex{
 				}else
 				{
 					// +1 points
-					if(hexCells[temp_x * size + temp_y].getCellStatus() == c)
+					if(hexCells[temp_x][temp_y].getCellStatus() == c)
 					{
 						visited[temp_x][temp_y] = 1;
 						total = 1 + scoreHelper(visited, temp_x, temp_y, c);
@@ -1013,7 +1015,7 @@ namespace hex{
 				if(i == 0 || i == 1)
 				{
 					// +2 points
-					if(hexCells[temp_x * size + temp_y].getCellStatus() == c)
+					if(hexCells[temp_x][temp_y].getCellStatus() == c)
 					{
 						visited[temp_x][temp_y] = 1;
 						total = 2 + scoreHelper(visited, temp_x, temp_y, c);
@@ -1023,7 +1025,7 @@ namespace hex{
 				}else
 				{
 					// +1 points
-					if(hexCells[temp_x * size + temp_y].getCellStatus() == c)
+					if(hexCells[temp_x][temp_y].getCellStatus() == c)
 					{
 						visited[temp_x][temp_y] = 1;
 						total = 1 + scoreHelper(visited, temp_x, temp_y, c);
@@ -1040,8 +1042,8 @@ namespace hex{
 		return maximum;
 	}
 
-
-	void HexArray1D::undo()
+	template<template<typename...> class T>
+	void HexAdapter<T>::undo()
 	{
 		// ERROR HANDLING
 		if(getCounter() == 0)
@@ -1053,7 +1055,8 @@ namespace hex{
 		counter--;
 		
 		// make the last move empty
-		hexCells[previousMoves[counter][0] * size + previousMoves[counter][1]] = empty;
+		// hexCells[previousMoves[counter][0] * size + previousMoves[counter][1]] = empty;
+		hexCells[previousMoves[counter][0]][previousMoves[counter][1]] = empty;
 
 		if(turn == 0)
 			turn = 1;

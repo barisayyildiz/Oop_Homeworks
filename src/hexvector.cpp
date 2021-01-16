@@ -3,10 +3,10 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
-#include "hexbase.h"
-#include "hexarray.h"
-#include "hexvector.h"
-#include "exception.h"
+
+#include "../headers/hexbase.h"
+#include "../headers/hexvector.h"
+#include "../headers/exception.h"
 
 using namespace std;
 using namespace excNamespace;
