@@ -185,10 +185,6 @@ namespace hex{
 			delete[] previousMoves;
 		}
 
-		// I have used malloc and free, because we were told to use one dimensional dynamic 'C array' for the hexCells
-		// if(hexCells != nullptr)
-		// 	free(hexCells);
-
 	}
 
 	template<template<typename...> class T>
@@ -323,7 +319,6 @@ namespace hex{
 			if(yPos == size-1)
 			{
 				hexCells[xPos][yPos].setCellStatus(xCapital);
-				// hexCells[size * xPos + yPos].setCellStatus(xCapital);
 				return 1;
 			}
 
@@ -346,7 +341,6 @@ namespace hex{
 					{
 						// capitalize
 						hexCells[xPos][yPos].setCellStatus(xCapital);
-						// hexCells[size * xPos + yPos].setCellStatus(xCapital);
 						return 1;
 					}
 				}
@@ -361,7 +355,6 @@ namespace hex{
 			{
 				// capitalize
 				hexCells[xPos][yPos] = oCapital;
-				// hexCells[size * xPos + yPos].setCellStatus(oCapital);
 				return 1;
 			}
 
@@ -385,7 +378,6 @@ namespace hex{
 					{
 						// capitalize
 						hexCells[xPos][yPos].setCellStatus(oCapital);
-						// hexCells[size * xPos + yPos].setCellStatus(oCapital);
 						return 1;
 					}
 				}
@@ -402,14 +394,10 @@ namespace hex{
 		{
 			if(hexCells[xPos][yPos].getCellStatus() == xLower && visited[xPos][yPos] == 0)
 				return 1;
-			// if(hexCells[xPos * size + yPos].getCellStatus() == xLower && visited[xPos][yPos] == 0)
-			// 	return 1;
 		}else
 		{
 			if(hexCells[xPos][yPos].getCellStatus() == oLower && visited[xPos][yPos] == 0)
 				return 1;
-			// if(hexCells[xPos * size + yPos].getCellStatus() == oLower && visited[xPos][yPos] == 0)
-			// 	return 1;
 		}
 
 		return 0;
@@ -418,30 +406,6 @@ namespace hex{
 	template<template<typename...> class T>
 	AbstractHex::Cell HexAdapter<T>::play(AbstractHex::Cell c1)
 	{
-		// // out of border
-		// if(xPos < 0 || xPos >= size || yPos < 0 || yPos >= size)
-		// {
-		// 	cerr << "Out of border..." << endl;
-		// 	continue;
-		// }
-
-		// if(hexCells[xPos * size + yPos].getCellStatus() != empty)
-		// {
-		// 	cerr << "Position is not empty" << endl;
-		// 	continue;
-		// }
-
-		// if(hexCells[xPos][yPos].getCellStatus() != empty)
-		// {
-		// 	cerr << "Position is not empty" << endl;
-		// 	continue;
-		// }
-
-		// temp.setX(xPos);
-		// temp.setY(yPos);
-
-		// c1->temp
-
 
 		if(c1.getX() < 0 || c1.getX() > size || c1.getY() < 0 || c1.getY() > size)
 		{
@@ -452,7 +416,6 @@ namespace hex{
 			throw AllocatedCell();
 
 		}
-
 
 		// user's turn
 		if(counter == cap)
@@ -491,15 +454,12 @@ namespace hex{
 		if(getTurn() == 0)
 		{
 			hexCells[c1.getX()][c1.getY()].setCellStatus(xLower);
-			// hexCells[c1.getX() * size + c1.getY()].setCellStatus(xLower);
 		}
 		else
 		{
 			hexCells[c1.getX()][c1.getY()].setCellStatus(oLower);
-			// hexCells[c1.getX() * size + c1.getY()].setCellStatus(oLower);
 		}
 
-		// return hexCells[c1.getX() * size + c1.getY()];
 		return hexCells[c1.getX()][c1.getY()];
 
 	}
@@ -584,7 +544,6 @@ namespace hex{
 
 		if(!fin)
 		{
-			// cerr << "No such file exists...\n\n";
 			throw FileError();
 			return;
 		}
@@ -594,9 +553,6 @@ namespace hex{
 		fin >> newGameType;
 		fin >> newTurn;
 
-		// // free hexCells
-		// free(hexCells);
-
 		for(int i=0; i<size; i++)
 		{
 			hexCells[i].erase(hexCells[i].begin(), hexCells[i].end());
@@ -604,18 +560,11 @@ namespace hex{
 		hexCells.erase(hexCells.begin(), hexCells.end());
 
 
-		// for(int i=0; i<h1.getSize(); i++)
-		// {
-		// 	delete[] h1.hexCells[i];
-		// }
-		// delete[] h1.hexCells;
-
 		size = newSize;
 		counter = newCounter;
 		gameType = newGameType;
 		turn = newTurn;
 
-		// hexCells = (AbstractHex::Cell*)malloc(sizeof(AbstractHex::Cell) * newSize * newSize);
 		initHexCells();
 
 		for(int i=0; i<getSize(); i++)
@@ -713,10 +662,8 @@ namespace hex{
 
 		nonEmptyCells++;
 		counter++;
-		// hexCells[xPos * size + yPos].setCellStatus(xLower);
 		hexCells[xPos][yPos].setCellStatus(xLower);
 
-		// return hexCells[xPos * size + yPos];
 		return hexCells[xPos][yPos];
 
 	}
@@ -847,12 +794,10 @@ namespace hex{
 	template<template<typename...> class T>
 	AbstractHex::Cell HexAdapter<T>::operator()(int x, int y)const
 	{
-		// ERROR HANDLING YAPILACAK
 
 		if(x < 0 || x >= getSize() || y < 0 || y >= getSize())
 		{
-			cout << "out of border" << endl;
-			exit(1);
+			throw IndexError();
 		}
 
 		// return hexCells[x * getSize() + y];
@@ -1045,7 +990,6 @@ namespace hex{
 	template<template<typename...> class T>
 	void HexAdapter<T>::undo()
 	{
-		// ERROR HANDLING
 		if(getCounter() == 0)
 		{
 			// cout << "Cannot undo..." << endl;
@@ -1055,7 +999,6 @@ namespace hex{
 		counter--;
 		
 		// make the last move empty
-		// hexCells[previousMoves[counter][0] * size + previousMoves[counter][1]] = empty;
 		hexCells[previousMoves[counter][0]][previousMoves[counter][1]] = empty;
 
 		if(turn == 0)

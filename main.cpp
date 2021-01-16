@@ -27,6 +27,7 @@ int main()
 	unsigned int index;
 	unsigned int index2;
 	int cmp;
+	bool val;
 
 	string s1 = "board1.txt", s2 = "board2.txt";
 
@@ -46,9 +47,6 @@ int main()
 	{
 		cerr << err.what() << endl;
 	}
-
-	bool val = isValidSequence(gameVector);
-	cout << "Does game vector have valid sequence : " << val << endl;
 
 
 
@@ -180,7 +178,7 @@ int main()
 
 		}else if(input == '5')
 		{
-			bool val = isValidSequence(gameVector);
+			val = isValidSequence(gameVector);
 
 			cout << "Does game vector have valid sequence : " << val << endl << endl;
 			

@@ -314,7 +314,6 @@ namespace hex{
 			// X's turn
 			if(yPos == size-1)
 			{
-				// hexCells[xPos][yPos].setCellStatus(xCapital);
 				hexCells[size * xPos + yPos].setCellStatus(xCapital);
 				return 1;
 			}
@@ -337,7 +336,6 @@ namespace hex{
 					if(didSomebodyWin(visited, tempX, tempY))
 					{
 						// capitalize
-						// hexCells[xPos][yPos].setCellStatus(xCapital);
 						hexCells[size * xPos + yPos].setCellStatus(xCapital);
 						return 1;
 					}
@@ -352,7 +350,6 @@ namespace hex{
 			if(xPos == size-1)
 			{
 				// capitalize
-				// hexCells[xPos][yPos] = oCapital;
 				hexCells[size * xPos + yPos].setCellStatus(oCapital);
 				return 1;
 			}
@@ -376,7 +373,6 @@ namespace hex{
 					if(didSomebodyWin(visited, tempX, tempY))
 					{
 						// capitalize
-						// hexCells[xPos][yPos].setCellStatus(oCapital);
 						hexCells[size * xPos + yPos].setCellStatus(oCapital);
 						return 1;
 					}
@@ -391,14 +387,10 @@ namespace hex{
 	{
 		if(turn == 0)
 		{
-			// if(hexCells[xPos][yPos].getCellStatus() == xLower && visited[xPos][yPos] == 0)
-			// 	return 1;
 			if(hexCells[xPos * size + yPos].getCellStatus() == xLower && visited[xPos][yPos] == 0)
 				return 1;
 		}else
 		{
-			// if(hexCells[xPos][yPos].getCellStatus() == oLower && visited[xPos][yPos] == 0)
-			// 	return 1;
 			if(hexCells[xPos * size + yPos].getCellStatus() == oLower && visited[xPos][yPos] == 0)
 				return 1;
 		}
@@ -409,30 +401,6 @@ namespace hex{
 
 	AbstractHex::Cell HexArray1D::play(AbstractHex::Cell c1)
 	{
-		// // out of border
-		// if(xPos < 0 || xPos >= size || yPos < 0 || yPos >= size)
-		// {
-		// 	cerr << "Out of border..." << endl;
-		// 	continue;
-		// }
-
-		// if(hexCells[xPos * size + yPos].getCellStatus() != empty)
-		// {
-		// 	cerr << "Position is not empty" << endl;
-		// 	continue;
-		// }
-
-		// if(hexCells[xPos][yPos].getCellStatus() != empty)
-		// {
-		// 	cerr << "Position is not empty" << endl;
-		// 	continue;
-		// }
-
-		// temp.setX(xPos);
-		// temp.setY(yPos);
-
-		// c1->temp
-
 
 		if(c1.getX() < 0 || c1.getX() > size || c1.getY() < 0 || c1.getY() > size)
 		{
@@ -481,12 +449,10 @@ namespace hex{
 
 		if(getTurn() == 0)
 		{
-			// hexCells[c1.getX()][c1.getY()].setCellStatus(xLower);
 			hexCells[c1.getX() * size + c1.getY()].setCellStatus(xLower);
 		}
 		else
 		{
-			// hexCells[c1.getX()][c1.getY()].setCellStatus(oLower);
 			hexCells[c1.getX() * size + c1.getY()].setCellStatus(oLower);
 		}
 
@@ -574,7 +540,6 @@ namespace hex{
 
 		if(!fin)
 		{
-			// cerr << "No such file exists...\n\n";
 			throw FileError();
 			return;
 		}
@@ -587,18 +552,11 @@ namespace hex{
 		// free hexCells
 		free(hexCells);
 
-		// for(int i=0; i<h1.getSize(); i++)
-		// {
-		// 	delete[] h1.hexCells[i];
-		// }
-		// delete[] h1.hexCells;
-
 		size = newSize;
 		counter = newCounter;
 		gameType = newGameType;
 		turn = newTurn;
 
-		// hexCells = (AbstractHex::Cell*)malloc(sizeof(AbstractHex::Cell) * newSize * newSize);
 		initHexCells();
 
 		for(int i=0; i<getSize(); i++)
@@ -781,8 +739,7 @@ namespace hex{
 
 	void HexArray1D::reset()
 	{
-		// cout << "reset function" << endl;
-
+		
 		if(previousMoves != nullptr)
 		{
 			for(int i=0; i<cap; i++)
@@ -817,46 +774,15 @@ namespace hex{
 
 		reset();
 
-		// AbstractHex::Cell *temp = (AbstractHex::Cell*)malloc(sizeof(AbstractHex::Cell) * newSize * newSize);
-
-		// for(int i=0; i<size * size; i++)
-		// {
-		// 	temp[i] = hexCells[i];
-		// }
-
-		// for(int i=size*size; i<newSize * newSize; i++)
-		// {
-		// 	temp[i].setCellStatus(empty);
-		// }
-		
-		// free(hexCells);
-
-		// hexCells = temp;
-		// size = newSize;
-
-		// cout << "QWEQWEQWEQ" << endl;
 	}
 
 
-
-
-
-	// AbstractHex::Cell HexArray1D::play(AbstractHex::Cell c1)
-	// {
-	// 	return c1;
-	// }
-
-	// bool isEnd()const;
-	// Cell operator()(int x, int y)const;
-
 	AbstractHex::Cell HexArray1D::operator()(int x, int y)const
 	{
-		// ERROR HANDLING YAPILACAK
 
 		if(x < 0 || x >= getSize() || y < 0 || y >= getSize())
 		{
-			cout << "out of border" << endl;
-			exit(1);
+			throw IndexError();
 		}
 
 		return hexCells[x * getSize() + y];
@@ -1046,7 +972,6 @@ namespace hex{
 		// ERROR HANDLING
 		if(getCounter() == 0)
 		{
-			// cout << "Cannot undo..." << endl;
 			throw UndoError();
 		}
 
