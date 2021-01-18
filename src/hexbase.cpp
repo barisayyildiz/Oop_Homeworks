@@ -105,7 +105,6 @@ namespace hex
 		Cell temp;
 
 		// draw the board
-		// cout << *this << endl;
 		print();
 
 		while(getGameStatus() == true)
@@ -234,7 +233,6 @@ namespace hex
 					play(temp);
 				}catch(const IndexError &err)
 				{
-					cout << xPos << "," << yPos << endl;
 					cerr << "Index is out of board" << endl << endl;
 					continue;
 				}catch(const AllocatedCell &err)

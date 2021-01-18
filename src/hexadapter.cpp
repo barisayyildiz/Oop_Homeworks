@@ -174,7 +174,6 @@ namespace hex{
 	// destructor
 	template<template<typename...> class T>
 	HexAdapter<T>::~HexAdapter(){
-		cout << "~destructor" << endl;
 
 		if(previousMoves != nullptr)
 		{
@@ -749,7 +748,6 @@ namespace hex{
 	template<template<typename...> class T>
 	void HexAdapter<T>::reset()
 	{
-		// cout << "reset function" << endl;
 
 		if(previousMoves != nullptr)
 		{
@@ -992,7 +990,6 @@ namespace hex{
 	{
 		if(getCounter() == 0)
 		{
-			// cout << "Cannot undo..." << endl;
 			throw UndoError();
 		}
 

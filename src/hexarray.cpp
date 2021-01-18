@@ -168,7 +168,6 @@ namespace hex{
 
 	// destructor
 	HexArray1D::~HexArray1D(){
-		cout << "~destructor" << endl;
 
 		if(previousMoves != nullptr)
 		{

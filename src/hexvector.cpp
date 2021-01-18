@@ -167,7 +167,6 @@ namespace hex{
 
 	// destructor
 	HexVector::~HexVector(){
-		cout << "~destructor" << endl;
 
 		if(previousMoves != nullptr)
 		{
@@ -974,7 +973,6 @@ namespace hex{
 		// ERROR HANDLING
 		if(getCounter() == 0)
 		{
-			// cout << "Cannot undo..." << endl;
 			throw UndoError();
 		}
 
