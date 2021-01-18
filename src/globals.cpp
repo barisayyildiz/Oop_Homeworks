@@ -4,62 +4,74 @@
 #include <exception>
 
 #include "../headers/hexbase.h"
+#include "../headers/hexarray.h"
+#include "../headers/hexvector.h"
+#include "../headers/hexadapter.h"
+#include "../headers/globals.h"
+
+#include "./hexadapter.cpp"
+
+#include "../headers/exception.h"
+
+#include "../headers/hexbase.h"
 
 using namespace std;
 using namespace hex;
+using namespace excNamespace;
+
+
+void checkUserInput(const string& input)
+{
+	if(input != "1" && input != "2" && input != "3" && input != "4" && input != "5" && input != "6" &&
+	input != "7" && input != "8" && input != "9" && input != "10" && input != "11" && input != "12" && input != "q")
+	{
+		throw InvalidInput();
+	}
+}
 
 bool isValidSequence(vector<AbstractHex*> arr)
 {
-	if(arr.size() == 0 || arr.size() == 1)
-		return true;
-
-
-	vector<AbstractHex::Cell> moves;
-
-	int initSize = arr[0]->getSize();
 	
-	// for difference
-	int diffCounter = 0;
-	AbstractHex::Cell temp;
+	cell stat;
 
-	for(int i=0; i<initSize; i++)
+	for(unsigned int i=0; i<arr.size(); i++)
 	{
-		for(int j=0; j<initSize; j++)
+		for(int x=0; x<arr[i]->getSize(); x++)
 		{
-			if(arr[0]->operator()(i,j).getCellStatus() != empty)
+			for(int y=0; y<arr[i]->getSize(); y++)
 			{
-				moves.push_back(AbstractHex::Cell(arr[0]->operator()(i,j).getCellStatus()));
-				moves[moves.size()-1].setX(i);
-				moves[moves.size()-1].setY(j);
-			}
-		}
-	}
-
-	for(unsigned int i=1; i<arr.size(); i++)
-	{
-		if(initSize != arr[i]->getSize() || (arr[i-1]->getCounter() != arr[i]->getCounter() - 1) || (arr[i-1]->getTurn() == arr[i]->getTurn()))
-			return false;
-
-		for(unsigned int j=0; j<moves.size(); j++)
-		{
-
-			if(arr[i]->operator()(moves[j].getX(), moves[j].getY()).getCellStatus() != moves[j].getCellStatus())
-			{
-				if(diffCounter == 1 || arr[i-1]->getCounter() == 1)
+				stat= arr[i]->operator()(x,y).getCellStatus();
+				if(stat != empty && stat != xLower && stat != oLower && stat != xCapital && stat != oCapital)
+				{
 					return false;
-				
-				diffCounter++;
-
-				temp.setX(moves[j].getX());
-				temp.setY(moves[j].getY());
-				temp.setCellStatus(moves[j].getCellStatus());
+				}
 			}
 		}
-
-		moves.push_back(temp);
-
 	}
 
-	return true;	
+	return true;
+
+}
+
+void testGlobalFuncton()
+{
+	bool val;
+	vector<AbstractHex*> gameVector;
+
+	gameVector.push_back(new HexArray1D(8,0));
+	gameVector.push_back(new HexVector(12,1));
+	gameVector.push_back(new HexAdapter<vector>(9,0));
+
+	gameVector[2]->readFromFile("nonproper.txt");
+
+	val = isValidSequence(gameVector);
+	cout << "Is valid game : " << val << endl;
+
+	cout << "-----------------" << endl;
+
+	gameVector[2]->readFromFile("proper.txt");
+	val = isValidSequence(gameVector);
+	cout << "Is valid game : " << val << endl << endl;
+
 
 }

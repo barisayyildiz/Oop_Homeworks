@@ -22,8 +22,9 @@ int main()
 {
 	vector < AbstractHex* > gameVector;
 
+	AbstractHex::Cell c1(empty);
 	bool mainLoop = true;
-	char input;
+	string input;
 	unsigned int index;
 	unsigned int index2;
 	int cmp;
@@ -48,6 +49,19 @@ int main()
 		cerr << err.what() << endl;
 	}
 
+	// val = isValidSequence(gameVector);
+	// cout << "val : " << val << endl;
+
+	// gameVector.push_back(new HexArray1D(8,0));
+
+	// try
+	// {
+	// 	gameVector[0]->readFromFile("nonproper.txt");
+	// }
+	// catch(const std::exception& e)
+	// {
+	// 	std::cerr << e.what() << '\n';
+	// }
 
 
 	cout << "Welcome to the HEX game..." << endl << endl;
@@ -56,56 +70,47 @@ int main()
 	while(mainLoop)
 	{
 		cout << "\nPress:" << endl;
-		cout << "1 : to create a new game" << endl;
-		cout << "2 : to continue an active game" << endl;
-		cout << "3 : to compare two active games" << endl;
-		cout << "4 : to get non empty cells for all the games" << endl;
-		cout << "5 : to check if all the active games form a valid sequence together" << endl;
+		cout << "1 : to create a new game with HexArray1D" << endl;
+		cout << "2 : to create a new game with HexVector" << endl;
+		cout << "3 : to create a new game with HexAdapter<vector>" << endl;
+		cout << "4 : to create a new game with HexAdapter<deque>" << endl;
+		cout << "5 : to continue an active game" << endl;
+		cout << "6 : to compare two active games" << endl;
+		cout << "7 : to get non empty cells for all the games" << endl;
+		cout << "8 : to test global function" << endl;
+		cout << "9 : to test operator()" << endl;
+		cout << "10 : to get last move of a game" << endl;
+		cout << "11 : to test numberOfMoves function" << endl;
+		
 		cout << "q : to exit" << endl << endl;
 
-		cin >> input;
 
-
-		if(input == '1')
+		try
 		{
-			while(1)
-			{
-				cout << "1 : to create a HexArray1D object"	<< endl;
-				cout << "2 : to create a HexVector object" << endl;
-				cout << "3 : to create a HexAdapter object (deque will be given)" << endl;
+			cin >> input;
+			cin.ignore(1000, '\n');
 
-				cin >> input;
-				
-				// clears buffer
-				cin.ignore(1000, '\n');
-				
-				if(input != '1' && input != '2' && input != '3')
-				{
-					cout << "Invalid input..." << endl << endl;
-					continue;
-				}
-				break;
-			}
+			checkUserInput(input);
 
-			if(input == '1')
-			{
-				gameVector.push_back(new HexArray1D());
-			}else if(input == '2')
-			{
-				gameVector.push_back(new HexVector());
-			}else if(input == '3')
-			{
-				gameVector.push_back(new HexAdapter<deque>);
-			}
+		}catch(const InvalidInput &err)
+		{
+			cout << err.what() << endl << endl;
+			continue;
+		}
 
-			// if the latest game is terminated
-			if(gameVector[gameVector.size()-1]->getGameStatus() == false)
-			{
-				// remove it from active games
-				gameVector.pop_back();
-			}
-
-		}else if(input == '2')
+		if(input == "1")
+		{
+			gameVector.push_back(new HexArray1D());
+		}else if(input == "2")
+		{
+			gameVector.push_back(new HexVector());
+		}else if(input == "3")
+		{
+			gameVector.push_back(new HexAdapter<vector>());
+		}else if(input == "4")
+		{
+			gameVector.push_back(new HexAdapter<deque>());
+		}else if(input == "5")
 		{
 			cout << "There are " << gameVector.size() << " active games" << endl;
 
@@ -128,20 +133,7 @@ int main()
 			}
 
 			gameVector[index]->gameLoop();
-
-			// if the game is terminated
-			if(gameVector[index]->getGameStatus() == false)
-			{
-				// if the current game is over
-				for(unsigned int i=index; i<gameVector.size() - 1; i++)
-				{
-					gameVector[index] = gameVector[index+1];
-				}
-				gameVector.resize(gameVector.size() - 1);
-			}
-
-
-		}else if(input == '3')
+		}else if(input == "6")
 		{
 			cout << "There are " << gameVector.size() << " active games" << endl;
 
@@ -171,23 +163,104 @@ int main()
 			else
 				cout << "\nThe games are not equal..." << endl << endl;
 
-
-		}else if(input == '4')
+		}else if(input == "7")
 		{
 			cout << "Total of non empty cells : " << AbstractHex::getNonEmptyCells() << endl << endl;
-
-		}else if(input == '5')
+		
+		}else if(input == "8")
 		{
-			val = isValidSequence(gameVector);
+			testGlobalFuncton();
+		}else if(input == "9")
+		{
+			cout << "There are " << gameVector.size() << " active games" << endl;
 
-			cout << "Does game vector have valid sequence : " << val << endl << endl;
+			if(gameVector.size() == 0)
+			{
+				cerr << "At least one game needed..." << endl << endl;
+				continue;
+			}
+
+			cout << "Enter game index , (indexing starts at 0): ";
+			cin >> index;
+
+			cin.ignore(1000, '\n');
+
+			if(index >= gameVector.size())
+			{
+				cerr << "Wrong index number..." << endl << endl;
+				continue;
+			}
+
+			cout << "For the game in gameVector[" << index << "] : " << endl;
+			cout << "At index (0,0), ASCII val -> " << gameVector[index]->operator()(0,0).getCellStatus() << endl;
+			cout << "At index (1,1), ASCII val -> " << gameVector[index]->operator()(1,1).getCellStatus() << endl;
+			cout << "At index (2,2), ASCII val -> " << gameVector[index]->operator()(2,2).getCellStatus() << endl;
+
+			cout << "Only for demostration purposes, I have used operator() inside global function named 'isValidSequence'" << endl << endl;
+
+		}else if(input == "10")
+		{
+			cout << "There are " << gameVector.size() << " active games" << endl;
+
+			if(gameVector.size() == 0)
+			{
+				cerr << "At least one game needed..." << endl << endl;
+				continue;
+			}
+
+			cout << "Enter game index, (indexing starts at 0) : ";
+			cin >> index;
+
+			cin.ignore(1000, '\n');
+
+			if(index >= gameVector.size())
+			{
+				cerr << "Wrong index number..." << endl << endl;
+				continue;
+			}
+
+			try
+			{
+				c1 = gameVector[index]->lastMove();
+
+				cout << "For the game in gameVector[" << index << "] : " << endl;
+				cout << "Last move, x position : " << c1.getX() << endl;
+				cout << "Last move, y position : " << c1.getY() << endl;
+
+			}
+			catch(const CounterZero& err)
+			{
+				cerr << err.what() << endl << endl;
+			}
+
+		}else if(input == "11")
+		{
+			cout << "There are " << gameVector.size() << " active games" << endl;
 			
-		}else if(input == 'q')
+			if(gameVector.size() == 0)
+			{
+				cerr << "At least one game needed..." << endl << endl;
+				continue;
+			}
+
+			cout << "Enter game index, (indexing starts at 0) : ";
+			cin >> index;
+
+			cin.ignore(1000, '\n');
+
+			if(index >= gameVector.size())
+			{
+				cerr << "Wrong index number..." << endl << endl;
+				continue;
+			}
+
+			cout << "For the game in gameVector[" << index << "] : " << endl;
+			cout << "Number of moves : " << gameVector[index]->getCounter() << endl;
+
+
+		}else if(input == "q")
 		{
 			mainLoop = false;
-		}else
-		{
-			cerr << "Invalid input, try again..." << endl;
 		}
 
 	}

@@ -32,13 +32,10 @@ namespace hex
 					int x,y;
 			};
 
-			virtual void print()const = 0;
 			virtual void readFromFile(const std::string &filename) = 0;
 			virtual void writeToFile(const std::string &filename) = 0;
 			virtual void reset() = 0;
 			virtual void setSize(int newSize) = 0;
-			virtual Cell play() = 0;
-			virtual Cell play(Cell c1) = 0;
 			virtual bool isEnd() = 0;
 			virtual Cell operator()(int x, int y)const = 0;
 			virtual bool operator==(AbstractHex *aHex) = 0;
@@ -90,6 +87,10 @@ namespace hex
 
 			// undo
 			virtual void undo() = 0;
+
+			virtual void print()const = 0;
+			virtual Cell play() = 0;
+			virtual Cell play(Cell c1) = 0;
 
 
 	};
