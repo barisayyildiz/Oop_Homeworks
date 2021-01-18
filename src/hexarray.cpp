@@ -198,11 +198,16 @@ namespace hex{
 
 	void HexArray1D::initHexCells()
 	{
+		int row, col;
 		hexCells = (AbstractHex::Cell*)malloc(sizeof(AbstractHex::Cell) * size * size);
 
 		for(int i=0; i<size*size; i++)
 		{
 			hexCells[i].setCellStatus(empty);
+			row = i / size;
+			col = i % size;
+			hexCells[i].setX(row);
+			hexCells[i].setY(col);
 		}
 
 	}

@@ -22,6 +22,7 @@ int main()
 {
 	vector < AbstractHex* > gameVector;
 
+	AbstractHex::Cell c1(empty);
 	bool mainLoop = true;
 	string input;
 	unsigned int index;
@@ -206,10 +207,11 @@ int main()
 
 			try
 			{
+				c1 = gameVector[index]->lastMove();
 
 				cout << "For the game in gameVector[" << index << "] : " << endl;
-				cout << "Last move, x position : " << gameVector[index]->lastMove().getX() << endl;
-				cout << "Last move, y position : " << gameVector[index]->lastMove().getY() << endl;
+				cout << "Last move, x position : " << c1.getX() << endl;
+				cout << "Last move, y position : " << c1.getY() << endl;
 
 			}
 			catch(const CounterZero& err)

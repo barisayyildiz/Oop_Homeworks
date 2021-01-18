@@ -199,6 +199,15 @@ namespace hex{
 			hexCells[i].resize(size, Cell(empty));
 		}
 
+		for(int i=0; i<size; i++)
+		{
+			for(int j=0; j<size; j++)
+			{
+				hexCells[i][j].setX(i);
+				hexCells[i][j].setY(j);
+			}
+		}
+
 	}
 
 	void HexVector::print()const
