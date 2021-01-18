@@ -31,20 +31,21 @@ namespace hex
 			// destructor
 			~HexAdapter();
 
-		private:
-
 			void readFromFile(const std::string &filename);
 			void writeToFile(const std::string &filename);
 			void setSize(int newSize);
-			Cell play();
-			Cell play(Cell c1);
 			bool operator==(AbstractHex *aHex);
 			Cell lastMove();
 			int numberOfMoves()const;
-			void print()const;
 			bool isEnd();
 			void reset();
 			Cell operator()(int x, int y)const;
+
+		private:
+
+			Cell play();
+			Cell play(Cell c1);
+			void print()const;
 
 			void undo();
 

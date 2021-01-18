@@ -22,13 +22,11 @@ int main()
 {
 	vector < AbstractHex* > gameVector;
 
-	AbstractHex::Cell c1(empty);
 	bool mainLoop = true;
 	string input;
 	unsigned int index;
 	unsigned int index2;
 	int cmp;
-	bool val;
 
 	string s1 = "board1.txt", s2 = "board2.txt";
 
@@ -49,20 +47,6 @@ int main()
 		cerr << err.what() << endl;
 	}
 
-	// val = isValidSequence(gameVector);
-	// cout << "val : " << val << endl;
-
-	// gameVector.push_back(new HexArray1D(8,0));
-
-	// try
-	// {
-	// 	gameVector[0]->readFromFile("nonproper.txt");
-	// }
-	// catch(const std::exception& e)
-	// {
-	// 	std::cerr << e.what() << '\n';
-	// }
-
 
 	cout << "Welcome to the HEX game..." << endl << endl;
 
@@ -75,6 +59,7 @@ int main()
 		cout << "3 : to create a new game with HexAdapter<vector>" << endl;
 		cout << "4 : to create a new game with HexAdapter<deque>" << endl;
 		cout << "5 : to continue an active game" << endl;
+		cout << "------------------------------------------------------------" << endl;
 		cout << "6 : to compare two active games" << endl;
 		cout << "7 : to get non empty cells for all the games" << endl;
 		cout << "8 : to test global function" << endl;
@@ -221,11 +206,10 @@ int main()
 
 			try
 			{
-				c1 = gameVector[index]->lastMove();
 
 				cout << "For the game in gameVector[" << index << "] : " << endl;
-				cout << "Last move, x position : " << c1.getX() << endl;
-				cout << "Last move, y position : " << c1.getY() << endl;
+				cout << "Last move, x position : " << gameVector[index]->lastMove().getX() << endl;
+				cout << "Last move, y position : " << gameVector[index]->lastMove().getY() << endl;
 
 			}
 			catch(const CounterZero& err)
