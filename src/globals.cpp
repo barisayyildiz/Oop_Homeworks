@@ -33,9 +33,12 @@ bool isValidSequence(vector<AbstractHex*> arr)
 {
 	
 	cell stat;
+	int xCounter, oCounter;
 
 	for(unsigned int i=0; i<arr.size(); i++)
 	{
+		xCounter = 0;
+		oCounter = 0;
 		for(int x=0; x<arr[i]->getSize(); x++)
 		{
 			for(int y=0; y<arr[i]->getSize(); y++)
@@ -45,9 +48,21 @@ bool isValidSequence(vector<AbstractHex*> arr)
 				{
 					return false;
 				}
+
+				if(stat == xLower)
+				{
+					xCounter++;
+				}else if(stat == oLower)
+				{
+					oCounter++;
+				}
 			}
 		}
+
 	}
+
+	if( (xCounter - oCounter > 1) || (xCounter - oCounter < -1) ) 
+		return false;
 
 	return true;
 
