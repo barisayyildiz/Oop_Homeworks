@@ -89,39 +89,73 @@ class GameFrame extends JFrame implements ActionListener
 
 	private JButton[][] buttons;
 
+	private final int MARGIN = 5;
+	private final int BTNSIZE = 70;
+	
+	private int size = 6;
+
 	public GameFrame()
 	{
 		super("HEX GAME...");
 
 		// setLayout(new FlowLayout());
-		setLayout(new GridLayout(6,6));
+		setLayout(null);
+		// setLayout(new GridLayout(6,6));
 
-		buttons = new JButton[6][6];
+		buttons = new JButton[size][size];
 
-		for(int i=0; i<6; i++)
+		for(int i=0; i<size; i++)
 		{
-			for(int j=0; j<6; j++)
+			for(int j=0; j<size; j++)
 			{
 				buttons[i][j] = new JButton();
-				buttons[i][j] .setPreferredSize(new Dimension(100,100));
-				buttons[i][j] .addActionListener(this);
-				add(buttons[i][j]);
+				buttons[i][j].setPreferredSize(new Dimension(BTNSIZE,BTNSIZE));
+				buttons[i][j].addActionListener(this);
+
+				// buttons[i][j].setBounds( (j+1) * MARGIN + j * BTNSIZE, (i+1) * MARGIN + i * BTNSIZE , BTNSIZE, BTNSIZE );
+
+				buttons[i][j].setBounds(  MARGIN + (i) * (BTNSIZE/2) + j * MARGIN + j * BTNSIZE    , (i+1) * MARGIN + i * BTNSIZE , BTNSIZE, BTNSIZE );
+
+				this.add(buttons[i][j]);
 			}
 		}
+
+		// btn = new JButton();
+		// btn.setPreferredSize(new Dimension(BTNSIZE,BTNSIZE));
+		// btn.addActionListener(this);
+		// btn.setBounds(MARGIN + BTNSIZE,MARGIN + BTNSIZE,BTNSIZE,BTNSIZE);
+
+		// this.add(btn);
+
+
+
+		// for(int i=0; i<6; i++)
+		// {
+		// 	for(int j=0; j<6; j++)
+		// 	{
+		// 		buttons[i][j] = new JButton();
+		//		buttons[i][j] .setPreferredSize(new Dimension(100,100));
+		// 		buttons[i][j] .addActionListener(this);
+		// 		add(buttons[i][j]);
+		// 	}
+		// }
 
 		// setLayout(new GridLayout(2,1));
 
 		btn = new JButton("Reset");
 		btn2 = new JButton("Undo");
 
+		btn.setBounds( MARGIN, (this.size + 1) * MARGIN + this.size * BTNSIZE, BTNSIZE * 3, BTNSIZE);
+		btn2.setBounds( MARGIN, (this.size + 2) * MARGIN + (this.size + 1) * BTNSIZE, BTNSIZE * 3, BTNSIZE);
 
-		// this.add(btn);
-		// this.add(btn2);
+
+		this.add(btn);
+		this.add(btn2);
 
 
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(500, 500);
+		this.setSize(MARGIN + (size -1) * (BTNSIZE/2) + size * MARGIN + size * BTNSIZE , (size+2) * BTNSIZE + (size+10) * MARGIN);
 		this.setVisible(true);
 
 
