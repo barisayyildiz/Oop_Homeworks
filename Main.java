@@ -74,7 +74,7 @@ class MyFrame extends JFrame implements ActionListener
 }
 
 
-class GameFrame extends JFrame implements ActionListener
+class GameFrame extends JFrame implements ActionListener, HexGame
 {
 	private JButton btn;
 	private JButton btn2;
@@ -107,24 +107,10 @@ class GameFrame extends JFrame implements ActionListener
 
 		BTNSIZE = 1200 / (2 * this.size - 1);
 
-		hexCells = new Cell[size][size];
 
-		for(int i=0; i<size; i++)
-		{
-			for(int j=0; j<size; j++)
-			{
-				this.hexCells[i][j] = new Cell(cell.empty, i, j);
-			}
-		}
+		this.hexCells = initHexCells();
 
-		this.previousMoves = new int[size*size][2];
-		for(int i=0; i<size*size; i++)
-		{
-			for(int j=0; j<2; j++)
-			{
-				this.previousMoves[i][j] = 0;
-			}
-		}
+		this.previousMoves = initPreviousMoves();
 
 
 		buttons = new JButton[size][size];
@@ -163,6 +149,36 @@ class GameFrame extends JFrame implements ActionListener
 		this.setVisible(true);
 
 
+	}
+
+	public int[][] initPreviousMoves()
+	{
+
+		int[][] temp = new int[size*size][2];
+		for(int i=0; i<size*size; i++)
+		{
+			for(int j=0; j<2; j++)
+			{
+				temp[i][j] = 0;
+			}
+		}
+
+		return temp;
+	}
+
+	public Cell[][] initHexCells()
+	{
+		Cell[][] temp = new Cell[size][size];
+
+		for(int i=0; i<size; i++)
+		{
+			for(int j=0; j<size; j++)
+			{
+				temp[i][j] = new Cell(cell.empty, i, j);
+			}
+		}
+
+		return temp;
 	}
 
 	public void printHexCells()

@@ -2,17 +2,27 @@ package com;
 
 public interface HexGame
 {
-	Cell play();
+	void play();
 	
-	Cell play(Cell c1);
+	void play(Cell c1);
 
-	void initHexCells();
+	Cell[][] initHexCells();
 
-	void randomMove();
-
-	void calculateBestMove();
+	int[][] initPreviousMoves();
 	
-	int isEndOfTheGame();
+	boolean isEndOfTheGame();
+
+	boolean didSomebodyWin(int visited[][], int xPos, int yPos);
+
+	boolean isMoveable(int visited[][], int xPos, int yPos);
+
+	public int[][] initVisited();
+
+	void toggleTurn();
+
+	void reset();
+
+	void undo();
 	
 }
 
