@@ -215,6 +215,10 @@ class GameFrame extends JFrame implements ActionListener
 		{
 			// undo button
 			undo();
+
+			if(this.gameType == false && this.counter != 0)
+				undo();
+
 			return;
 		}
 
@@ -249,7 +253,7 @@ class GameFrame extends JFrame implements ActionListener
 		this.counter++;
 
 
-		printHexCells();		
+		// printHexCells();
 
 		if(this.turn == 0)
 		{
