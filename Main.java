@@ -15,11 +15,6 @@ public class Main
 		f1.setSize(325, 100);
 		f1.setVisible(true);
 
-
-		System.out.println("asdeasdasd");
-
-		// f1.dispose(); // closes the frame
-
 		
 	}
 }
@@ -37,7 +32,7 @@ class MyFrame extends JFrame implements ActionListener
 
 	public MyFrame()
 	{
-		super("HEX GAME!!");
+		super("Hex Game...");
 
 		setLayout(new FlowLayout());
 
@@ -47,9 +42,6 @@ class MyFrame extends JFrame implements ActionListener
 
 		radioButton2 = new JRadioButton("2-player", true);
 		radioButton1 = new JRadioButton("1-player");
-
-		// radioButton2.setBounds(120,30,120,50);
-		// radioButton1.setBounds(250,30,80,50);
 
 		radioGroup = new ButtonGroup();
 
@@ -64,7 +56,7 @@ class MyFrame extends JFrame implements ActionListener
 		add(textField);
 		add(radioButton2);
 		add(radioButton1);
-		add(submitButton);		
+		add(submitButton);
 
 	}
 
@@ -76,9 +68,7 @@ class MyFrame extends JFrame implements ActionListener
 		GameFrame f1 = new GameFrame( Integer.parseInt( this.textField.getText() ) , this.radioButton2.isSelected() );
 
 		this.dispose();
-		
-		// this.dispose();
-		// System.out.println("clicked...");
+
 	}
 
 }
@@ -100,17 +90,13 @@ class GameFrame extends JFrame implements ActionListener
 
 	private int BTNSIZE;
 
-
-	// private int size = 6;
 	private int size;
 
 	public GameFrame(int s, boolean gt)
 	{
-		super("HEX GAME...");
+		super("Hex Game...");
 
-		// setLayout(new FlowLayout());
 		setLayout(null);
-		// setLayout(new GridLayout(6,6));
 
 		this.size = s;
 		this.gameType = gt;
@@ -139,8 +125,6 @@ class GameFrame extends JFrame implements ActionListener
 				this.previousMoves[i][j] = 0;
 			}
 		}
-
-		
 
 
 		buttons = new JButton[size][size];
@@ -178,10 +162,6 @@ class GameFrame extends JFrame implements ActionListener
 		this.setSize((size -1) * (BTNSIZE/2) +  size * BTNSIZE , (size+3) * BTNSIZE );
 		this.setVisible(true);
 
-		// System.out.println("Sizes : ");
-		// System.out.println( (size -1) * (BTNSIZE/2) +  size * BTNSIZE);
-		// System.out.println((size+2) * BTNSIZE);
-
 
 	}
 
@@ -201,7 +181,6 @@ class GameFrame extends JFrame implements ActionListener
 
 	public void actionPerformed(ActionEvent e)
 	{
-		// System.out.println((JButton)e.getSource());
 
 		System.out.println(e.getSource() == btn);
 
@@ -222,7 +201,7 @@ class GameFrame extends JFrame implements ActionListener
 			return;
 		}
 
-
+		// clicked on board
 
 		int xPos = 0, yPos = 0;
 
@@ -240,34 +219,13 @@ class GameFrame extends JFrame implements ActionListener
 				}
 			}
 		}
+		Cell c1 = new Cell(xPos, yPos);
 
-		// PLAY FONKSİYONUN BURALARA BİR YERE EKLE
+		play(c1);
 
-		if(this.turn == 0)
-			this.hexCells[xPos][yPos].setCellStatus(cell.xLower);
-		else
-			this.hexCells[xPos][yPos].setCellStatus(cell.oLower);
-
-		this.previousMoves[this.counter][0] = xPos;
-		this.previousMoves[this.counter][1] = yPos;
-		this.counter++;
-
-
-		// printHexCells();
-
-		if(this.turn == 0)
-		{
-			((JButton)e.getSource()).setBackground(Color.RED);
-		}
-
-		if(this.turn == 1)
-		{
-			((JButton)e.getSource()).setBackground(Color.BLUE);
-		}
 
 		if(isEndOfTheGame())
 		{
-			System.out.println("GAME IS OVER!!!!");
 
 			JOptionPane.showMessageDialog(null, "Game is Over");
 		
@@ -276,10 +234,9 @@ class GameFrame extends JFrame implements ActionListener
 
 		}
 
-		// toggle turn
-		this.turn += 1;
-		this.turn %= 2;
+		toggleTurn();
 		
+		// Skip if the game is PVP
 		if(this.turn == 1 && this.gameType == false)
 			play();
 		else
@@ -296,10 +253,15 @@ class GameFrame extends JFrame implements ActionListener
 
 		}
 
+		toggleTurn();
+
+	}
+
+	public void toggleTurn()
+	{
 		// toggle turn
 		this.turn += 1;
 		this.turn %= 2;
-
 	}
 
 	public void reset()
@@ -345,6 +307,35 @@ class GameFrame extends JFrame implements ActionListener
 		// toggle turn
 		this.turn += 1;
 		this.turn %= 2;
+	}
+
+	public void play(Cell c1)
+	{
+
+		// PLAY FONKSİYONUN BURALARA BİR YERE EKLE
+		if(this.turn == 0)
+			this.hexCells[c1.getX()][c1.getY()].setCellStatus(cell.xLower);
+		else
+			this.hexCells[c1.getX()][c1.getY()].setCellStatus(cell.oLower);
+
+		this.previousMoves[this.counter][0] = c1.getX();
+		this.previousMoves[this.counter][1] = c1.getY();
+		this.counter++;
+
+
+		// printHexCells();
+
+		if(this.turn == 0)
+		{
+			this.buttons[c1.getX()][c1.getY()].setBackground(Color.RED);
+		}
+
+		if(this.turn == 1)
+		{
+			this.buttons[c1.getX()][c1.getY()].setBackground(Color.BLUE);
+		}
+
+
 	}
 
 
@@ -509,7 +500,6 @@ class GameFrame extends JFrame implements ActionListener
 
 	public int[][] initVisited()
 	{
-		// ArrayList<Integer> temp[] = new ArrayList[this.size];
 
 		int temp[][] = new int[this.size][this.size];
 
@@ -523,12 +513,6 @@ class GameFrame extends JFrame implements ActionListener
 
 		return temp;
 	}
-
-
-
-
-
-
 
 }
 

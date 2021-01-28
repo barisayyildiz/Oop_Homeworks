@@ -13,6 +13,13 @@ public class Cell
 		this.y = y;
 	}
 
+	public Cell(int x, int y)
+	{
+		this.cellStatus = cell.empty;
+		this.x = x;
+		this.y = y;
+	}
+
 	public cell getCellStatus(){return cellStatus;};
 	public void setCellStatus(cell s){cellStatus = s;};
 
