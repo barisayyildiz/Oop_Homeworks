@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.lang.NumberFormatException;
+
 import com.*;
 
 public class Main
@@ -64,8 +66,28 @@ class MyFrame extends JFrame implements ActionListener
 	{
 		System.out.println(this.radioButton2.isSelected());
 		System.out.println(this.textField.getText());
+
+		boolean isSelected = this.radioButton2.isSelected();
+		String textVal = this.textField.getText();
+		int size = 0;
+
+		try
+		{
+			size = Integer.parseInt(textVal);
+		}catch(NumberFormatException ex)
+		{
+			JOptionPane.showMessageDialog(null, "Invalid input, try again");
+			return;
+		}
+
+		if(size < 6)
+		{
+			JOptionPane.showMessageDialog(null, "Size should be greater than 5");
+			return;
+		}
+
+		GameFrame f1 = new GameFrame( size , isSelected );
 		
-		GameFrame f1 = new GameFrame( Integer.parseInt( this.textField.getText() ) , this.radioButton2.isSelected() );
 
 		this.dispose();
 
