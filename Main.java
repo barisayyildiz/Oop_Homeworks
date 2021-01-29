@@ -4,6 +4,8 @@ import java.awt.event.*;
 import java.util.*;
 import java.lang.NumberFormatException;
 
+import java.io.*;
+
 import com.*;
 
 public class Main
@@ -98,8 +100,10 @@ class MyFrame extends JFrame implements ActionListener
 
 class GameFrame extends JFrame implements ActionListener, HexGame
 {
-	private JButton btn;
-	private JButton btn2;
+	private JButton resetButton;
+	private JButton undoButton;
+	private JButton writeFileButton;
+	private JButton readFileButton;
 
 	private int turn;
 	private boolean gameType;
@@ -152,22 +156,30 @@ class GameFrame extends JFrame implements ActionListener, HexGame
 		}
 
 		// ================ RESET/UNDO BUTTONS ================= //
-		btn = new JButton("Reset");
-		btn2 = new JButton("Undo");
+		resetButton = new JButton("Reset");
+		undoButton = new JButton("Undo");
+		writeFileButton = new JButton("Save board");
+		readFileButton = new JButton("Load board");
 
-		btn.setBounds( 0, this.size * BTNSIZE, BTNSIZE * 3, BTNSIZE);
-		btn2.setBounds( 0, (this.size + 1) * BTNSIZE, BTNSIZE * 3, BTNSIZE);
+		resetButton.setBounds( 0, this.size * BTNSIZE, BTNSIZE * 3, BTNSIZE);
+		undoButton.setBounds( 0, (this.size + 1) * BTNSIZE, BTNSIZE * 3, BTNSIZE);
+		writeFileButton.setBounds( 0, (this.size + 2 ) * BTNSIZE, BTNSIZE * 3, BTNSIZE);
+		readFileButton.setBounds( 0, (this.size + 3 ) * BTNSIZE, BTNSIZE * 3, BTNSIZE);
 
-		btn.addActionListener(this);
-		btn2.addActionListener(this);
+		resetButton.addActionListener(this);
+		undoButton.addActionListener(this);
+		writeFileButton.addActionListener(this);
+		readFileButton.addActionListener(this);
 
-		this.add(btn);
-		this.add(btn2);
+		this.add(resetButton);
+		this.add(undoButton);
+		this.add(writeFileButton);
+		this.add(readFileButton);
 
 
 		// ===================== FRAME OPTIONS ==================== //
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize((size -1) * (BTNSIZE/2) +  size * BTNSIZE , (size+3) * BTNSIZE );
+		this.setSize((size -1) * (BTNSIZE/2) +  size * BTNSIZE , (size+5) * BTNSIZE );
 		this.setVisible(true);
 
 
@@ -220,23 +232,44 @@ class GameFrame extends JFrame implements ActionListener, HexGame
 	public void actionPerformed(ActionEvent e)
 	{
 
-		System.out.println(e.getSource() == btn);
-
-		if(e.getSource() == btn)
+		if(e.getSource() == resetButton)
 		{
 			// reset button
 			reset();
 			return;
 
-		}else if(e.getSource() == btn2)
+		}else if(e.getSource() == undoButton)
 		{
 			// undo button
+
+			if(this.counter == 0)
+			{
+				JOptionPane.showMessageDialog(null, "Cannot undo more...");
+				return;				
+			}
+
 			undo();
 
 			if(this.gameType == false && this.counter != 0)
 				undo();
 
 			return;
+		
+		}else if(e.getSource() == writeFileButton)
+		{
+			// write to file, save board
+			saveToFile();
+
+			return;
+
+		}else if(e.getSource() == readFileButton)
+		{
+			// read from file, load board
+			loadFromFile();
+
+
+			return;
+
 		}
 
 		// clicked on board
@@ -295,6 +328,128 @@ class GameFrame extends JFrame implements ActionListener, HexGame
 
 	}
 
+	public void saveToFile()
+	{
+		String filename = JOptionPane.showInputDialog("Enter filename...");
+
+		try
+		{
+			BufferedWriter bw = new BufferedWriter(new FileWriter(filename));
+
+			bw.write( String.valueOf(this.size) + "\n");
+			bw.write( String.valueOf(this.counter) + "\n");
+			bw.write( String.valueOf(this.gameType) + "\n");
+			bw.write( String.valueOf(this.turn) + "\n");
+			
+			// SAVE BOARD
+			for(int i=0; i<this.size; i++)
+			{
+				for(int j=0; j<this.size; j++)
+				{
+					bw.write( this.hexCells[i][j].getCellStatus() + "\n");
+				}
+			}
+
+			// SAVE PREVIOUS MOVES
+			for(int i=0; i<this.counter; i++)
+			{
+				bw.write( this.previousMoves[i][0] + "_" + this.previousMoves[i][1] + "\n");
+			}
+
+
+			bw.close();
+
+			
+		}catch(Exception e)
+		{
+			JOptionPane.showInputDialog(null, e.getMessage());
+		}
+
+	}
+
+	public void loadFromFile()
+	{
+
+		String filename = JOptionPane.showInputDialog("Enter filename...");
+
+		try
+		{
+			BufferedReader br = new BufferedReader(new FileReader(filename));
+			
+			String s;
+			String[] tokens;
+			int val;
+			
+			s = br.readLine();
+			this.size = Integer.parseInt(s);
+
+			s = br.readLine();
+			this.counter = Integer.parseInt(s);
+
+			s = br.readLine();
+			this.gameType = Boolean.parseBoolean(s);
+
+			s = br.readLine();
+			this.turn = Integer.parseInt(s);
+
+			// LOAD BOARD
+			for(int i=0; i<this.size; i++)
+			{
+				for(int j=0; j<this.size; j++)
+				{
+					s = br.readLine();
+
+					this.hexCells[i][j].setCellStatus( cell.valueOf( s ) );
+
+				}
+			}
+
+			// LOAD PREVIOUS MOVES
+			for(int i=0; i<this.counter; i++)
+			{
+				s = br.readLine();
+				tokens = s.split("_");
+
+				this.previousMoves[i][0] = Integer.parseInt(tokens[0]);
+				this.previousMoves[i][1] = Integer.parseInt(tokens[1]);
+
+			}
+
+
+
+
+			// ADJUST BUTTON COLORS
+			for(int i=0; i<this.size; i++)
+			{
+				for(int j=0; j<this.size; j++)
+				{
+					
+					if(this.hexCells[i][j].getCellStatus() == cell.empty)
+					{
+						this.buttons[i][j].setBackground(null);
+					}else if(this.hexCells[i][j].getCellStatus() == cell.xLower)
+					{
+						this.buttons[i][j].setBackground(Color.RED);
+					}else if(this.hexCells[i][j].getCellStatus() == cell.oLower)
+					{
+						this.buttons[i][j].setBackground(Color.BLUE);
+					}
+
+				}
+			}
+
+
+			br.close();
+
+			
+		}catch(Exception e)
+		{
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+		
+
+	}
+
 	public void toggleTurn()
 	{
 		// toggle turn
@@ -342,15 +497,13 @@ class GameFrame extends JFrame implements ActionListener, HexGame
 
 		this.buttons[this.previousMoves[this.counter][0]][this.previousMoves[this.counter][1]].setBackground(null);
 
-		// toggle turn
-		this.turn += 1;
-		this.turn %= 2;
+		toggleTurn();
 	}
 
 	public void play(Cell c1)
 	{
+		// for user move
 
-		// PLAY FONKSİYONUN BURALARA BİR YERE EKLE
 		if(this.turn == 0)
 			this.hexCells[c1.getX()][c1.getY()].setCellStatus(cell.xLower);
 		else
@@ -359,9 +512,6 @@ class GameFrame extends JFrame implements ActionListener, HexGame
 		this.previousMoves[this.counter][0] = c1.getX();
 		this.previousMoves[this.counter][1] = c1.getY();
 		this.counter++;
-
-
-		// printHexCells();
 
 		if(this.turn == 0)
 		{
@@ -401,11 +551,6 @@ class GameFrame extends JFrame implements ActionListener, HexGame
 		this.previousMoves[this.counter][1] = yPos;
 		this.counter++;
 
-		// // toggle turn
-		// this.turn += 1;
-		// this.turn %= 2;
-
-
 	}
 
 	public boolean isEndOfTheGame()
@@ -439,7 +584,6 @@ class GameFrame extends JFrame implements ActionListener, HexGame
 	public boolean didSomebodyWin(int visited[][], int xPos, int yPos)
 	{
 		int tempX = xPos, tempY = yPos;
-		// int moveRange[6][2] = {{-1,0}, {0,1}, {1,0}, {0,-1}, {-1,1}, {1,-1}};
 		int moveRange[][] = {{-1,0}, {0,1}, {1,0}, {0,-1}, {-1,1}, {1,-1}};
 
 		if(this.turn == 0)
@@ -485,7 +629,6 @@ class GameFrame extends JFrame implements ActionListener, HexGame
 			if(xPos == this.size-1)
 			{
 				// capitalize
-				// this.hexCells[xPos][yPos] = cell.oCapital;
 				this.hexCells[xPos][yPos].setCellStatus(cell.oCapital);
 				this.buttons[xPos][yPos].setBackground(Color.BLACK);
 				return true;
