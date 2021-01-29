@@ -1,4 +1,0 @@
-baris
-ayyildiz
-true
-2
