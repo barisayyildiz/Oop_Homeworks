@@ -10,6 +10,17 @@ import java.io.*;
 
 import com.*;
 
+/**
+
+GameFrame class, implements HexGame
+
+@author Barış Ayyıldız
+
+
+*/
+
+
+
 public class GameFrame extends JFrame implements ActionListener, HexGame
 {
 	private JButton resetButton;
@@ -127,20 +138,10 @@ public class GameFrame extends JFrame implements ActionListener, HexGame
 		return temp;
 	}
 
-	public void printHexCells()
-	{
-		System.out.printf("\n");
-		for(int i=0; i<this.size; i++)
-		{
-			for(int j=0; j<this.size; j++)
-			{
-				System.out.printf("%s\t|", this.hexCells[i][j].getCellStatus());			
-			}
-			System.out.printf("\n");
-		}
-		System.out.printf("\n");
-	}
-
+	/**
+	Invoked when a button is pressed
+	@param e ActionEvent object
+	*/
 	public void actionPerformed(ActionEvent e)
 	{
 
@@ -227,7 +228,6 @@ public class GameFrame extends JFrame implements ActionListener, HexGame
 
 		if(isEndOfTheGame())
 		{
-			System.out.println("GAME IS OVER!!!!");
 
 			JOptionPane.showMessageDialog(null, "Game is Over");
 

@@ -10,6 +10,14 @@ import java.io.*;
 
 import com.*;
 
+/**
+
+InputFrame class, asks user input and initializes the game
+
+@author Barış Ayyıldız
+
+*/
+
 
 public class InputFrame extends JFrame implements ActionListener
 {
@@ -20,7 +28,9 @@ public class InputFrame extends JFrame implements ActionListener
 	private JButton submitButton;
 	private ButtonGroup radioGroup;
 	
-
+	/**
+	Constructor method for InputFrame
+	*/
 	public InputFrame()
 	{
 		super("Hex Game...");
@@ -51,6 +61,9 @@ public class InputFrame extends JFrame implements ActionListener
 
 	}
 
+	/**
+	Invoked when the button is pressed	
+	*/
 	public void actionPerformed(ActionEvent e)
 	{
 		System.out.println(this.radioButton2.isSelected());
