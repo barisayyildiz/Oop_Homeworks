@@ -79,15 +79,23 @@ public class GameFrame extends JFrame implements ActionListener, HexGame
 		}
 
 		// ================ RESET/UNDO BUTTONS ================= //
+		int width = (size -1) * (BTNSIZE/2) +  size * BTNSIZE;
+		int height = (size+5) * BTNSIZE;
+
 		resetButton = new JButton("Reset");
 		undoButton = new JButton("Undo");
 		writeFileButton = new JButton("Save board");
 		readFileButton = new JButton("Load board");
 
-		resetButton.setBounds( 0, this.size * BTNSIZE, BTNSIZE * 3, BTNSIZE);
-		undoButton.setBounds( 0, (this.size + 1) * BTNSIZE, BTNSIZE * 3, BTNSIZE);
-		writeFileButton.setBounds( 0, (this.size + 2 ) * BTNSIZE, BTNSIZE * 3, BTNSIZE);
-		readFileButton.setBounds( 0, (this.size + 3 ) * BTNSIZE, BTNSIZE * 3, BTNSIZE);
+		// resetButton.setBounds( 0, this.size * BTNSIZE, BTNSIZE * 3, BTNSIZE);
+		// undoButton.setBounds( 0, (this.size + 1) * BTNSIZE, BTNSIZE * 3, BTNSIZE);
+		// writeFileButton.setBounds( 0, (this.size + 2 ) * BTNSIZE, BTNSIZE * 3, BTNSIZE);
+		// readFileButton.setBounds( 0, (this.size + 3 ) * BTNSIZE, BTNSIZE * 3, BTNSIZE);
+
+		resetButton.setBounds( 0, this.size * BTNSIZE, width, BTNSIZE);
+		undoButton.setBounds( 0, (this.size + 1) * BTNSIZE, width, BTNSIZE);
+		writeFileButton.setBounds( 0, (this.size + 2 ) * BTNSIZE, width, BTNSIZE);
+		readFileButton.setBounds( 0, (this.size + 3 ) * BTNSIZE, width, BTNSIZE);
 
 		resetButton.addActionListener(this);
 		undoButton.addActionListener(this);
@@ -102,7 +110,7 @@ public class GameFrame extends JFrame implements ActionListener, HexGame
 
 		// ===================== FRAME OPTIONS ==================== //
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize((size -1) * (BTNSIZE/2) +  size * BTNSIZE , (size+5) * BTNSIZE );
+		this.setSize(width , height );
 		this.setVisible(true);
 
 
@@ -293,6 +301,10 @@ public class GameFrame extends JFrame implements ActionListener, HexGame
 			int val;
 			
 			s = br.readLine();
+
+			if(this.size != Integer.parseInt(s))
+				throw new Exception("Board sizes should be same...");
+
 			this.size = Integer.parseInt(s);
 
 			s = br.readLine();
