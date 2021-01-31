@@ -634,10 +634,6 @@ public class GameFrame extends JFrame implements ActionListener, HexGame
 		
 		return temp;
 
-		// private JButton[][] buttons;
-		// private Cell[][] hexCells;
-		// private int[][] previousMoves;
-
 	}
 
 }
