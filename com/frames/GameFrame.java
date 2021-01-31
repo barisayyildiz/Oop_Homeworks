@@ -619,6 +619,27 @@ public class GameFrame extends JFrame implements ActionListener, HexGame
 		return temp;
 	}
 
+	@Override
+	public Object clone() throws CloneNotSupportedException
+	{
+		GameFrame temp = (GameFrame)super.clone();
+
+		JButton tempButton[][] = new JButton[size][size];
+		Cell tempCell[][] = new Cell[size][size];
+		int tempPrev[][] = new int[size*size][2];
+
+		temp.buttons = tempButton;
+		temp.hexCells = tempCell;
+		temp.previousMoves = tempPrev;
+		
+		return temp;
+
+		// private JButton[][] buttons;
+		// private Cell[][] hexCells;
+		// private int[][] previousMoves;
+
+	}
+
 }
 
 
