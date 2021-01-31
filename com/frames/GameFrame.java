@@ -219,7 +219,7 @@ public class GameFrame extends JFrame implements ActionListener, HexGame
 		if(isEndOfTheGame())
 		{
 
-			JOptionPane.showMessageDialog(null, "Game is Over");
+			JOptionPane.showMessageDialog(null, "Game Over");
 		
 			// terminate
 			this.dispose();
@@ -250,7 +250,7 @@ public class GameFrame extends JFrame implements ActionListener, HexGame
 
 	public void saveToFile()
 	{
-		String filename = JOptionPane.showInputDialog("Enter filename...");
+		String filename = JOptionPane.showInputDialog("Enter filename for saving...");
 
 		try
 		{
@@ -290,7 +290,7 @@ public class GameFrame extends JFrame implements ActionListener, HexGame
 	public void loadFromFile()
 	{
 
-		String filename = JOptionPane.showInputDialog("Enter filename...");
+		String filename = JOptionPane.showInputDialog("Enter filename for loading...");
 
 		try
 		{
