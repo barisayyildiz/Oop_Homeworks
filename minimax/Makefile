@@ -1,4 +1,4 @@
 run:
-	g++ score.cpp lib.cpp -o score
-	./score
-	rm score
+	g++ main.cpp hex.cpp -o main
+	./main
+	rm main

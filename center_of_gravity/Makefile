@@ -1,4 +1,3 @@
 run:
-	g++ main.cpp lib.cpp -o main
+	g++ -std=c++11 main.cpp lib.cpp -o main -Wall -Wextra
 	./main
-	rm main

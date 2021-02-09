@@ -1,3 +1,14 @@
+//===============================
+//
+//	Name 						:	Barış
+//	Surname 				: Ayyıldız
+//	Number 					:	1901042252
+//	Lecture					:	CSE 241
+//	Homework number	:	1
+//
+//===============================
+
+
 #include <iostream>
 #include <string>
 #include "lib.h"
@@ -10,12 +21,14 @@ int main()
 	char grid[12][12];
 
 	// turn => 0 : computer / user-1, 1 : user-1 / user-2
+	// gameType => 0 : 2-player mode, 1 : human vs ai 
+	// n : size of the grid that user wants to play
+	// counter : number of moves
+	// moveChar moveNum (row and column) => A 3
 	int gameOver = 0, gameType, turn = 0, n, counter = 0;
 	string moveChar;
 	int moveNum;
 	int xPos, yPos;
-
-	int bestPos[2];
 
 	while(1)
 	{
@@ -50,20 +63,13 @@ int main()
 			// computer's turn
 			cout << "\nComputer's turn" << endl;
 
-			// make your move
-
-			calculateBestMove(grid, bestPos, counter, n);
-
-			xPos = bestPos[0];
-			yPos = bestPos[1];
-
-			//cout << bestPos[0] << " : "<<bestPos[1] << endl << endl;
+			// computer decides its move and saves it to variables xPos and yPos
+			calculateBestMove(grid, counter, n, &xPos, &yPos);
 
 
 		}else
 		{
 			// user's turn
-
 			// header message
 			if(gameType == 1)
 			{
@@ -106,9 +112,15 @@ int main()
 
 		// place x's and o's
 		if(turn == 0)
+		{
 			grid[xPos][yPos] = 'x';
+			cout << "x to " <<  static_cast<char>(yPos+65) << " " << xPos + 1 << endl << endl;
+		}
 		else
+		{
 			grid[xPos][yPos] = 'o';
+			cout << "o to " <<  static_cast<char>(yPos+65) << " " << xPos + 1 << endl << endl;
+		}
 
 		counter++;
 

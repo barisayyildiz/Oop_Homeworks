@@ -5,10 +5,6 @@ using namespace std;
 
 int isMoveable(char (*grid)[12], int (*visited)[12], int xPos, int yPos, int n, int turn)
 {
-	/*
-	if((turn == 0 && grid[xPos][yPos] == 'x' && visited[xPos][yPos] == 0) || (turn == 1 && grid[xPos][yPos] == 'o' && visited[xPos][yPos] == 0))
-		return 1;
-	*/
 
 	if(turn == 0)
 	{
@@ -56,12 +52,9 @@ int didSomebodyWin(char (*grid)[12], int (*visited)[12], int xPos, int yPos, int
 			tempX = xPos + moveRange[i][0];
 			tempY = yPos + moveRange[i][1];
 
-			//cout << "tempX : " << tempX << " tempY : " << tempY << endl;
-
 			// out of border
 			if(tempX < 0 || tempX >= n || tempY < 0 || tempY >= n)
 			{
-				//cout << "out of border...\n";
 				continue;
 			}
 
@@ -70,13 +63,9 @@ int didSomebodyWin(char (*grid)[12], int (*visited)[12], int xPos, int yPos, int
 				if(didSomebodyWin(grid, visited, tempX, tempY, n, turn))
 				{
 					// capitalize
-					cout << "qweqwe" << endl;
 					grid[xPos][yPos] -= 32;
 					return 1;
 				}
-			}else
-			{
-				//cout << "gidilemez!!!\n";
 			}
 		}
 
@@ -99,8 +88,6 @@ int didSomebodyWin(char (*grid)[12], int (*visited)[12], int xPos, int yPos, int
 			tempX = xPos + moveRange[i][0];
 			tempY = yPos + moveRange[i][1];
 
-			//cout << "tempX : " << tempX << " tempY : " << tempY << endl;
-
 			// out of border
 			if(tempX < 0 || tempX >= n || tempY < 0 || tempY >= n)
 			{
@@ -113,13 +100,9 @@ int didSomebodyWin(char (*grid)[12], int (*visited)[12], int xPos, int yPos, int
 				if(didSomebodyWin(grid, visited, tempX, tempY, n, turn))
 				{
 					// capitalize
-					cout << "qweqwe" << endl;
 					grid[xPos][yPos] -= 32;
 					return 1;
 				}
-			}else
-			{
-				//cout << "gidilemez!!!\n";
 			}
 		}
 
@@ -129,14 +112,14 @@ int didSomebodyWin(char (*grid)[12], int (*visited)[12], int xPos, int yPos, int
 }
 
 
-void calculateBestMove(char (*grid)[12], int *pos, int counter, int n)
+void calculateBestMove(char (*grid)[12], int counter, int n, int *xPos, int *yPos)
 {
 	// computer is making the first move
 	if(counter == 0)
 	{
-		pos[0] = n/2;
-		pos[1] = n/2;
-		return ;
+		*xPos = n/2;
+		*yPos = n/2;
+		return;
 	}
 	counter = 0;
 
@@ -162,14 +145,11 @@ void calculateBestMove(char (*grid)[12], int *pos, int counter, int n)
 	center[0] = totalX / counter;
 	center[1] = totalY / counter;
 
-	cout << "total x : totalY : counter ==> " << totalX << " : " << totalY << " : " << counter << endl;
-
-	cout << "center of gravity : " << center[0] << " : " << center[1] << endl;
 
 	if(grid[center[0]][center[1]] == '.')
 	{
-		pos[0] = center[0];
-		pos[1] = center[1];
+		*xPos = center[0];
+		*yPos = center[1];
 		return;
 	}
 
@@ -190,8 +170,8 @@ void calculateBestMove(char (*grid)[12], int *pos, int counter, int n)
 
 	}
 
-	pos[0] = center[0];
-	pos[1] = center[1];
+	*xPos = center[0];
+	*yPos = center[1];
 
 	return;
 }
@@ -212,8 +192,6 @@ int isEndOfTheGame(char (*grid)[12], int xPos, int yPos, int n, int turn)
 	// 0 -> no win
 	// 1 -> win
 
-	cout << "xpos : " << xPos << ", ypos : " << yPos << ", n : " << n << endl;
-
 	int visited[12][12];
 	initVisited(visited);
 
@@ -225,10 +203,7 @@ int isEndOfTheGame(char (*grid)[12], int xPos, int yPos, int n, int turn)
 			initVisited(visited);
 
 			if(grid[i][0] == 'x' && didSomebodyWin(grid, visited, i, 0, n, turn))
-			{
-				cout << "doğru" << endl;
 				return 1;
-			}
 		}
 		
 	}else
@@ -261,10 +236,10 @@ void drawGrid(char (*grid)[12], int n)
 
 	for(int i=0; i<n; i++)
 	{
-		// rakamlar
+		// numbers
 		cout << i+1 << " ";
 
-		// baştaki boşluklar
+		// indentation
 		for(int indent=0; indent<=i; indent++)
 			cout << " ";
 
